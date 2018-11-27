@@ -1,9 +1,7 @@
 import elBuilder from "./elementBuilder"
+import shotData from "./shotData"
 
 const webpage = document.getElementById("container-master");
-
-let shotCounter = 0;
-let newShotEditing = false;
 
 const gameplay = {
 
@@ -135,58 +133,28 @@ const gameplay = {
     const btn_newShot = document.getElementById("newShot");
     const btn_saveShot = document.getElementById("saveShot");
     const btn_cancelShot = document.getElementById("cancelShot");
-    const btn_editPrevGame = document.getElementById("editPrevGame");
-    const btn_saveGame = document.getElementById("saveGame");
-    const btn_3v3 = document.getElementById("_3v3");
-    const btn_2v2 = document.getElementById("_2v2");
-    const btn_1v1 = document.getElementById("_1v1");
+    // const btn_editPrevGame = document.getElementById("editPrevGame");
+    // const btn_saveGame = document.getElementById("saveGame");
+    // const btn_3v3 = document.getElementById("_3v3");
+    // const btn_2v2 = document.getElementById("_2v2");
+    // const btn_1v1 = document.getElementById("_1v1");
 
-    // select dropdowns
-    const sel_aerial = document.getElementById("aerialInput");
-    const sel_gameMode = document.getElementById("gameModeInput");
-    const sel_teamColor = document.getElementById("teamInput");
-    const sel_overtime = document.getElementById("overtimeInput");
+    // // select dropdowns
+    // const sel_aerial = document.getElementById("aerialInput");
+    // const sel_gameMode = document.getElementById("gameModeInput");
+    // const sel_teamColor = document.getElementById("teamInput");
+    // const sel_overtime = document.getElementById("overtimeInput");
 
-    // input fields
-    const inpt_ballSpeed = document.getElementById("ballSpeedInput");
-    const inpt_orangeScore = document.getElementById("orangeScoreInput");
-    const inpt_blueScore = document.getElementById("blueScoreInput");
+    // // input fields
+    // const inpt_ballSpeed = document.getElementById("ballSpeedInput");
+    // const inpt_orangeScore = document.getElementById("orangeScoreInput");
+    // const inpt_blueScore = document.getElementById("blueScoreInput");
 
     // add listeners
-    btn_newShot.addEventListener("click", this.createNewShot);
-    btn_saveShot.addEventListener("click", this.saveShot);
-    btn_cancelShot.addEventListener("click", this.cancelshot);
+    btn_newShot.addEventListener("click", shotData.createNewShot);
+    btn_saveShot.addEventListener("click", shotData.saveShot);
+    btn_cancelShot.addEventListener("click", shotData.cancelShot);
 
-  },
-
-  createNewShot() {
-    console.log("new shot")
-    // establish editing mode variable true
-    // disable functionality of new shot btn if edit var = true
-    // activate click functionality and conditional statements on both field and goal images
-  },
-
-  cancelShot() {
-    const inpt_ballSpeed = document.getElementById("ballSpeedInput");
-    const sel_aerial = document.getElementById("aerialInput");
-    // reset editing mode var to false
-    // clear clicked items in field and goal images
-    inpt_ballSpeed.value = null;
-    sel_aerial.value = "Standard";
-  },
-
-  saveShot() {
-    const inpt_ballSpeed = document.getElementById("ballSpeedInput");
-    const sel_aerial = document.getElementById("aerialInput");
-    const shotBtnContainer = document.getElementById("shotControls");
-
-    shotCounter++;
-
-
-    const newShotBtn = elBuilder("button", {"id":`shot${shotCounter}`, "class":"button is-link"}, `Shot ${shotCounter}`)
-    shotBtnContainer.appendChild(newShotBtn);
-    inpt_ballSpeed.value = null;
-    sel_aerial.value = "Standard";
   }
 
 }
