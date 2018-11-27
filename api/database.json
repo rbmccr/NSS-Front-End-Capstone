@@ -1,0 +1,93 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Brendan",
+      "username": "Tremulous",
+      "password": "pass"
+    },
+    {
+      "id": 2,
+      "name": "Zac",
+      "username": "Viper16",
+      "password": "word"
+    },
+    {
+      "name": "Rick G",
+      "username": "Rick",
+      "password": "pass2",
+      "id": 3
+    },
+    {
+      "name": "ousama",
+      "username": "my pleasure",
+      "password": "thanks",
+      "id": 4
+    },
+    {
+      "name": "test signup",
+      "username": "test username",
+      "password": "test password",
+      "id": 5
+    }
+  ],
+  "games": [
+    {
+      "id": 1,
+      "playerId": 1,
+      "blue": true,
+      "score": 3,
+      "opp_score": 2,
+      "overtime": true
+    },
+    {
+      "id": 2,
+      "playerId": 2,
+      "blue": false,
+      "score": 2,
+      "opp_score": 3,
+      "overtime": false
+    }
+  ],
+  "shots": [
+    {
+      "id": 1,
+      "gameId": 1,
+      "fieldX": 0.5,
+      "fieldY": 0.5,
+      "goalX": 0.5,
+      "goalY": 0.5,
+      "aerial": true,
+      "ball_speed": 100
+    },
+    {
+      "id": 2,
+      "gameId": 1,
+      "fieldX": 0.75,
+      "fieldY": 0.75,
+      "goalX": 0.75,
+      "goalY": 0.75,
+      "aerial": false,
+      "ball_speed": 50
+    }
+  ],
+  "heatmaps": [
+    {
+      "id": 1,
+      "userId": 1,
+      "name": "Test map 1"
+    }
+  ],
+  "shot_heatmap": [
+    {
+      "id": 1,
+      "heatmapId": 1,
+      "shotId": 1
+    },
+    {
+      "id": 2,
+      "heatmapId": 1,
+      "shotId": 2
+    }
+  ]
+}
