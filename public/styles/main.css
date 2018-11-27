@@ -1,0 +1,16 @@
+/* @import "../../src/lib/node_modules/bulma/css/bulma.css"; */
+
+html,
+body {
+  min-height: 100vh
+}
+
+#container {
+  box-sizing: border-box;
+  margin: 0 auto;
+  height: 400px;
+  /* 400px */
+  width: 90%;
+  /* 600px */
+  border: 1px solid black;
+}
