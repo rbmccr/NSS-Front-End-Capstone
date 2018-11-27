@@ -20,46 +20,55 @@ const shotData = {
       console.log("new shot");
       console.log(shotData.getClickCoords)
       fieldImg.addEventListener("click", shotData.getClickCoords)
+      goalImg.addEventListener("click", shotData.getClickCoords)
     }
     // activate click functionality and conditional statements on both field and goal images
   },
 
   getClickCoords(e) {
-    console.log(e)
     // this function gets the relative x and y of the click within the field image container
     // and then calls the function that appends a marker on the page
-    const fieldImgContainer = document.getElementById("field-img-parent");
+    let parentContainer;
+    if (e.target.id === "field-img") {
+      parentContainer = document.getElementById("field-img-parent");
+    } else {
+      parentContainer = document.getElementById("goal-img-parent");
+    }
     // offsetX and Y are the x and y coordinates (pixels) of the click in the container
     // the expressions divide the click x and y by the parent full width and height
-    const xCoordRelative = Number((e.offsetX / fieldImgContainer.offsetWidth).toFixed(3))
-    const yCoordRelative = Number((e.offsetY / fieldImgContainer.offsetHeight).toFixed(3));
+    const xCoordRelative = Number((e.offsetX / parentContainer.offsetWidth).toFixed(3))
+    const yCoordRelative = Number((e.offsetY / parentContainer.offsetHeight).toFixed(3));
     console.log("x:", xCoordRelative, "y:", yCoordRelative)
-    shotData.markClickonImage(xCoordRelative, yCoordRelative)
+    shotData.markClickonImage(xCoordRelative, yCoordRelative, parentContainer)
   },
 
-  markClickonImage(x, y) {
-    const fieldImgContainer = document.getElementById("field-img-parent");
-
+  markClickonImage(x, y, parentContainer) {
+    let markerId;
+    if (parentContainer.id === "field-img-parent") {
+      markerId = "shot-marker-field";
+    } else {
+      markerId = "shot-marker-goal";
+    }
     // adjust for 50% of width and height of marker so it's centered about mouse pointer
-    let adjustMarkerX = 12.5 / fieldImgContainer.offsetWidth;
-    let adjustMarkerY = 12.5 / fieldImgContainer.offsetHeight;
+    let adjustMarkerX = 12.5 / parentContainer.offsetWidth;
+    let adjustMarkerY = 12.5 / parentContainer.offsetHeight;
 
     // if there's NOT already a marker, then make one and place it
     // else move the marker to the new position
-    if (!fieldImgContainer.contains(document.getElementById("shot-marker-field"))) {
+    if (!parentContainer.contains(document.getElementById(markerId))) {
       const div = document.createElement("div");
-      div.id = "shot-marker-field";
+      div.id = markerId;
       div.style.width = "25px";
       div.style.height = "25px";
-      div.style.backgroundColor = "white";
+      div.style.backgroundColor = "lightgreen";
       div.style.border = "1px solid black";
       div.style.borderRadius = "50%";
       div.style.position = "absolute";
       div.style.left = (x - adjustMarkerX) * 100 + "%";
       div.style.top = (y - adjustMarkerY) * 100 + "%";
-      fieldImgContainer.appendChild(div);
+      parentContainer.appendChild(div);
     } else {
-      const currentMarker = document.getElementById("shot-marker-field");
+      const currentMarker = document.getElementById(markerId);
       currentMarker.style.left = (x - adjustMarkerX) * 100 + "%";
       currentMarker.style.top = (y - adjustMarkerY) * 100 + "%";
     }
