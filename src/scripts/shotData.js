@@ -1,13 +1,10 @@
 import elBuilder from "./elementBuilder"
 import shotOnGoal from "./shotClass"
 
-const webpage = document.getElementById("container-master");
-
 let shotCounter = 0;
 let newShotEditing = false;
 let shotObj = undefined;
 let shotArray = []; // reset when game is saved
-let shotIdx = 1; //reset when game is saved
 
 const shotData = {
 
@@ -19,8 +16,6 @@ const shotData = {
 
     newShotEditing = true;
     btn_newShot.disabled = true;
-    console.log("new shot");
-    console.log(shotData.getClickCoords)
     fieldImg.addEventListener("click", shotData.getClickCoords)
     goalImg.addEventListener("click", shotData.getClickCoords)
 
@@ -73,7 +68,6 @@ const shotData = {
       currentMarker.style.left = (x - adjustMarkerX) * 100 + "%";
       currentMarker.style.top = (y - adjustMarkerY) * 100 + "%";
     }
-    console.log("parent", parentContainer)
     shotData.addCoordsToClass(markerId, x, y)
   },
 
@@ -92,29 +86,42 @@ const shotData = {
     const btn_newShot = document.getElementById("newShot");
     const inpt_ballSpeed = document.getElementById("ballSpeedInput");
     const sel_aerial = document.getElementById("aerialInput");
+    const fieldImgParent = document.getElementById("field-img-parent");
+    const goalImgParent = document.getElementById("goal-img-parent");
+    const fieldMarker = document.getElementById("shot-marker-field");
+    const goalMarker = document.getElementById("shot-marker-goal");
 
     if (!newShotEditing) {
       return
     } else {
-      // reset editing mode var to false
-      // clear clicked items in field and goal images
       newShotEditing = false;
       btn_newShot.disabled = false;
       inpt_ballSpeed.value = null;
       sel_aerial.value = "Standard";
+      shotObj = undefined;
+      // remove markers from field and goal
+      console.log(fieldMarker, goalMarker)
+      if (fieldMarker !== null) {
+        fieldImgParent.removeChild(fieldMarker);
+      }
+      if (goalMarker !== null) {
+        goalImgParent.removeChild(goalMarker);
+      }
     }
 
   },
 
   saveShot() {
     const btn_newShot = document.getElementById("newShot");
+    const fieldImgParent = document.getElementById("field-img-parent");
+    const goalImgParent = document.getElementById("goal-img-parent");
     const fieldImg = document.getElementById("field-img");
     const goalImg = document.getElementById("goal-img");
+    const fieldMarker = document.getElementById("shot-marker-field");
+    const goalMarker = document.getElementById("shot-marker-goal");
     const inpt_ballSpeed = document.getElementById("ballSpeedInput");
     const sel_aerial = document.getElementById("aerialInput");
     const shotBtnContainer = document.getElementById("shotControls");
-
-    // include condition that prevents user from not entering field or goal position
 
     if (!newShotEditing) {
       return
@@ -123,22 +130,32 @@ const shotData = {
       btn_newShot.disabled = false;
       shotCounter++;
       // clear field and goal event listeners
-      fieldImg.removeEventListener("click", shotData.getClickCoords)
-      goalImg.removeEventListener("click", shotData.getClickCoords)
+      fieldImg.removeEventListener("click", shotData.getClickCoords);
+      goalImg.removeEventListener("click", shotData.getClickCoords);
       // remove markers from field and goal
+      fieldImgParent.removeChild(fieldMarker);
+      goalImgParent.removeChild(goalMarker);
 
       //TODO: add condition to prevent blank entries and missing coordinates
-      if (sel_aerial.value === "Aerial") {shotObj.aerial = true} else {shotObj.aerial = false};
+      if (sel_aerial.value === "Aerial") { shotObj.aerial = true } else { shotObj.aerial = false };
       shotObj.ballSpeed = inpt_ballSpeed.value;
       shotArray.push(shotObj)
-      shotObj = undefined;
       console.log(shotArray)
 
-      const newShotBtn = elBuilder("button", { "id": `shot${shotCounter}`, "class": "button is-link" }, `Shot ${shotCounter}`)
+      const newShotBtn = elBuilder("button", { "id": `shot-${shotCounter}`, "class": "button is-link" }, `Shot ${shotCounter}`)
       shotBtnContainer.appendChild(newShotBtn);
+      document.getElementById(`shot-${shotCounter}`).addEventListener("click", shotData.renderSavedShot);
+
+      shotObj = undefined;
       inpt_ballSpeed.value = null;
       sel_aerial.value = "Standard";
     }
+
+  },
+
+  renderSavedShot(e) {
+    let btnId = e.target.id.slice(5);
+    let previousShotData = shotArray[btnId - 1];
 
   }
 
