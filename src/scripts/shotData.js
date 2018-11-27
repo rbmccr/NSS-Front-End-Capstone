@@ -5,6 +5,7 @@ let shotCounter = 0;
 let newShotEditing = false;
 let shotObj = undefined;
 let shotArray = []; // reset when game is saved
+let previousShotData;
 
 const shotData = {
 
@@ -52,33 +53,52 @@ const shotData = {
     // if there's NOT already a marker, then make one and place it
     // else move the marker to the new position
     if (!parentContainer.contains(document.getElementById(markerId))) {
-      const div = document.createElement("div");
-      div.id = markerId;
-      div.style.width = "25px";
-      div.style.height = "25px";
-      div.style.backgroundColor = "lightgreen";
-      div.style.border = "1px solid black";
-      div.style.borderRadius = "50%";
-      div.style.position = "absolute";
-      div.style.left = (x - adjustMarkerX) * 100 + "%";
-      div.style.top = (y - adjustMarkerY) * 100 + "%";
-      parentContainer.appendChild(div);
+      this.generateMarker(parentContainer, adjustMarkerX, adjustMarkerY, markerId, x, y);
     } else {
-      const currentMarker = document.getElementById(markerId);
-      currentMarker.style.left = (x - adjustMarkerX) * 100 + "%";
-      currentMarker.style.top = (y - adjustMarkerY) * 100 + "%";
+      this.moveMarker(markerId, x, y, adjustMarkerX, adjustMarkerY);
     }
-    shotData.addCoordsToClass(markerId, x, y)
+    this.addCoordsToClass(markerId, x, y)
+  },
+
+  generateMarker(parentContainer, adjustMarkerX, adjustMarkerY, markerId, x, y) {
+    const div = document.createElement("div");
+    div.id = markerId;
+    div.style.width = "25px";
+    div.style.height = "25px";
+    div.style.backgroundColor = "lightgreen";
+    div.style.border = "1px solid black";
+    div.style.borderRadius = "50%";
+    div.style.position = "absolute";
+    div.style.left = (x - adjustMarkerX) * 100 + "%";
+    div.style.top = (y - adjustMarkerY) * 100 + "%";
+    parentContainer.appendChild(div);
+  },
+
+  moveMarker(markerId, x, y, adjustMarkerX, adjustMarkerY) {
+    const currentMarker = document.getElementById(markerId);
+    currentMarker.style.left = (x - adjustMarkerX) * 100 + "%";
+    currentMarker.style.top = (y - adjustMarkerY) * 100 + "%";
   },
 
   addCoordsToClass(markerId, x, y) {
     // this function updates the instance of shotOnGoal class to record click coordinates
-    if (markerId === "shot-marker-field") {
-      shotObj.fieldX = x;
-      shotObj.fieldY = y;
+    if (previousShotData !== undefined) {
+      if (markerId === "shot-marker-field") {
+        previousShotData._fieldX = x;
+        previousShotData._fieldY = y;
+      } else {
+        previousShotData._goalX = x;
+        previousShotData._goalY = y;
+      }
+      console.log("previous shot", previousShotData)
     } else {
-      shotObj.goalX = x;
-      shotObj.goalY = y;
+      if (markerId === "shot-marker-field") {
+        shotObj.fieldX = x;
+        shotObj.fieldY = y;
+      } else {
+        shotObj.goalX = x;
+        shotObj.goalY = y;
+      }
     }
   },
 
@@ -100,7 +120,6 @@ const shotData = {
       sel_aerial.value = "Standard";
       shotObj = undefined;
       // remove markers from field and goal
-      console.log(fieldMarker, goalMarker)
       if (fieldMarker !== null) {
         fieldImgParent.removeChild(fieldMarker);
       }
@@ -154,9 +173,27 @@ const shotData = {
   },
 
   renderSavedShot(e) {
-    let btnId = e.target.id.slice(5);
-    let previousShotData = shotArray[btnId - 1];
+    // this function references the shotArray to get a shot object that matches the shot# button clicked
+    // the data is rendered on the page and can be saved by using the "save shot" button
 
+    const inpt_ballSpeed = document.getElementById("ballSpeedInput");
+    const sel_aerial = document.getElementById("aerialInput");
+    const fieldImg = document.getElementById("field-img");
+    const goalImg = document.getElementById("goal-img");
+
+    let btnId = e.target.id.slice(5);
+    previousShotData = shotArray[btnId - 1];
+
+    inpt_ballSpeed.value = previousShotData.ball_speed;
+    if (previousShotData._aerial === true) { sel_aerial.value = "Aerial" } else { sel_aerial.value = "Standard" }
+
+    fieldImg.addEventListener("click", shotData.getClickCoords)
+    goalImg.addEventListener("click", shotData.getClickCoords)
+
+    // re initialize click on images
+    // revive instance of class for editing coordinates stored, ball speed, and aerial
+    // method to save
+    // method to cancel edit
   }
 
 }
