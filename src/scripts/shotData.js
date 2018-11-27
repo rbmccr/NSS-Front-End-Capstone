@@ -1,9 +1,13 @@
 import elBuilder from "./elementBuilder"
+import shotOnGoal from "./shotClass"
 
 const webpage = document.getElementById("container-master");
 
 let shotCounter = 0;
 let newShotEditing = false;
+let shotObj = undefined;
+let shotArray = []; // reset when game is saved
+let shotIdx = 1; //reset when game is saved
 
 const shotData = {
 
@@ -11,17 +15,15 @@ const shotData = {
     const btn_newShot = document.getElementById("newShot");
     const fieldImg = document.getElementById("field-img");
     const goalImg = document.getElementById("goal-img");
+    shotObj = new shotOnGoal;
 
-    if (newShotEditing) {
-      return
-    } else {
-      newShotEditing = true;
-      btn_newShot.disabled = true;
-      console.log("new shot");
-      console.log(shotData.getClickCoords)
-      fieldImg.addEventListener("click", shotData.getClickCoords)
-      goalImg.addEventListener("click", shotData.getClickCoords)
-    }
+    newShotEditing = true;
+    btn_newShot.disabled = true;
+    console.log("new shot");
+    console.log(shotData.getClickCoords)
+    fieldImg.addEventListener("click", shotData.getClickCoords)
+    goalImg.addEventListener("click", shotData.getClickCoords)
+
     // activate click functionality and conditional statements on both field and goal images
   },
 
@@ -38,7 +40,6 @@ const shotData = {
     // the expressions divide the click x and y by the parent full width and height
     const xCoordRelative = Number((e.offsetX / parentContainer.offsetWidth).toFixed(3))
     const yCoordRelative = Number((e.offsetY / parentContainer.offsetHeight).toFixed(3));
-    console.log("x:", xCoordRelative, "y:", yCoordRelative)
     shotData.markClickonImage(xCoordRelative, yCoordRelative, parentContainer)
   },
 
@@ -72,7 +73,19 @@ const shotData = {
       currentMarker.style.left = (x - adjustMarkerX) * 100 + "%";
       currentMarker.style.top = (y - adjustMarkerY) * 100 + "%";
     }
+    console.log("parent", parentContainer)
+    shotData.addCoordsToClass(markerId, x, y)
+  },
 
+  addCoordsToClass(markerId, x, y) {
+    // this function updates the instance of shotOnGoal class to record click coordinates
+    if (markerId === "shot-marker-field") {
+      shotObj.fieldX = x;
+      shotObj.fieldY = y;
+    } else {
+      shotObj.goalX = x;
+      shotObj.goalY = y;
+    }
   },
 
   cancelShot() {
@@ -95,9 +108,13 @@ const shotData = {
 
   saveShot() {
     const btn_newShot = document.getElementById("newShot");
+    const fieldImg = document.getElementById("field-img");
+    const goalImg = document.getElementById("goal-img");
     const inpt_ballSpeed = document.getElementById("ballSpeedInput");
     const sel_aerial = document.getElementById("aerialInput");
     const shotBtnContainer = document.getElementById("shotControls");
+
+    // include condition that prevents user from not entering field or goal position
 
     if (!newShotEditing) {
       return
@@ -105,6 +122,17 @@ const shotData = {
       newShotEditing = false;
       btn_newShot.disabled = false;
       shotCounter++;
+      // clear field and goal event listeners
+      fieldImg.removeEventListener("click", shotData.getClickCoords)
+      goalImg.removeEventListener("click", shotData.getClickCoords)
+      // remove markers from field and goal
+
+      //TODO: add condition to prevent blank entries and missing coordinates
+      if (sel_aerial.value === "Aerial") {shotObj.aerial = true} else {shotObj.aerial = false};
+      shotObj.ballSpeed = inpt_ballSpeed.value;
+      shotArray.push(shotObj)
+      shotObj = undefined;
+      console.log(shotArray)
 
       const newShotBtn = elBuilder("button", { "id": `shot${shotCounter}`, "class": "button is-link" }, `Shot ${shotCounter}`)
       shotBtnContainer.appendChild(newShotBtn);
