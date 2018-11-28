@@ -174,7 +174,7 @@ const shotData = {
 
   renderSavedShot(e) {
     // this function references the shotArray to get a shot object that matches the shot# button clicked
-    // the data is rendered on the page and can be saved by using the "save shot" button
+    // the data is rendered on the page and can be saved (overwritten) by using the "save shot" button
 
     const inpt_ballSpeed = document.getElementById("ballSpeedInput");
     const sel_aerial = document.getElementById("aerialInput");
@@ -183,17 +183,20 @@ const shotData = {
 
     let btnId = e.target.id.slice(5);
     previousShotData = shotArray[btnId - 1];
+    console.log(previousShotData)
 
     inpt_ballSpeed.value = previousShotData.ball_speed;
-    if (previousShotData._aerial === true) { sel_aerial.value = "Aerial" } else { sel_aerial.value = "Standard" }
+    if (previousShotData._aerial === true) { sel_aerial.value = "Aerial"; } else { sel_aerial.value = "Standard"; }
 
-    fieldImg.addEventListener("click", shotData.getClickCoords)
-    goalImg.addEventListener("click", shotData.getClickCoords)
+    fieldImg.addEventListener("click", shotData.getClickCoords);
+    goalImg.addEventListener("click", shotData.getClickCoords);
 
     // re initialize click on images
     // revive instance of class for editing coordinates stored, ball speed, and aerial
-    // method to save
-    // method to cancel edit
+    // TODO: render points on images for shot to be edited
+    // TODO: method to save
+    // TODO: method to cancel edit
+    // TODO: set parameters to prevent user from clicking another edit shot button
   }
 
 }

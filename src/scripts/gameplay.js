@@ -7,7 +7,7 @@ const gameplay = {
 
   loadGameplay() {
     webpage.innerHTML = null;
-    const activeUser = sessionStorage.getItem("activeUserId");
+    // const activeUser = sessionStorage.getItem("activeUserId");
     // const xButton = elBuilder("button", { "class": "delete" });
     // xButton.addEventListener("click", closeBox, event); // button will display: none on parent container
     // const headerInfo = elBuilder("div", { "class": "notification is-info" }, "Create and save shots - then save the game record.", xButton);
