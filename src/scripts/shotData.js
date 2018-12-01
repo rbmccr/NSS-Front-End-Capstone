@@ -12,7 +12,7 @@ let previousShotGoalX; // global var used with shot editing
 let previousShotGoalY; // global var used with shot editing
 
 //FIXME: bug occurs with shot editing button numbers
-//FIXME: bug occurs with ball speed on shot edit (line 239)
+//FIXME: bug occurs with ball speed on shot edit (line 239) - caused by first FIXME
 
 const shotData = {
 
@@ -169,7 +169,6 @@ const shotData = {
     } else {
       editingShot = false;
       btn_newShot.disabled = false;
-      shotCounter++;
       // clear field and goal event listeners
       fieldImg.removeEventListener("click", shotData.getClickCoords);
       goalImg.removeEventListener("click", shotData.getClickCoords);
@@ -191,6 +190,7 @@ const shotData = {
         shotObj.ballSpeed = inpt_ballSpeed.value;
         shotArray.push(shotObj);
         // append new button
+        shotCounter++;
         const newShotBtn = elBuilder("button", { "id": `shot-${shotCounter}`, "class": "button is-link" }, `Shot ${shotCounter}`);
         shotBtnContainer.appendChild(newShotBtn);
         document.getElementById(`shot-${shotCounter}`).addEventListener("click", shotData.renderSavedShot);
