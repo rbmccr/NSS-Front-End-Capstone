@@ -5,7 +5,14 @@ let shotCounter = 0;
 let editingShot = false; //editing shot is used for both new and old shots
 let shotObj = undefined;
 let shotArray = []; // reset when game is saved
-let previousShotData;
+let previousShotData; // global var used with shot editing
+let previousShotFieldX; // global var used with shot editing
+let previousShotFieldY; // global var used with shot editing
+let previousShotGoalX; // global var used with shot editing
+let previousShotGoalY; // global var used with shot editing
+
+//FIXME: bug occurs with shot editing button numbers
+//FIXME: bug occurs with ball speed on shot edit (line 239)
 
 const shotData = {
 
@@ -86,11 +93,12 @@ const shotData = {
     // if a shot is being edited, then append the coordinates to the object in question
     if (previousShotData !== undefined) {
       if (markerId === "shot-marker-field") {
-        previousShotData._fieldX = x;
-        previousShotData._fieldY = y;
+        // use global vars instead of updating object directly here to prevent accidental editing of marker without clicking "save shot"
+        previousShotFieldX = x;
+        previousShotFieldY = y;
       } else {
-        previousShotData._goalX = x;
-        previousShotData._goalY = y;
+        previousShotGoalX = x;
+        previousShotGoalY = y;
       }
       console.log("previous shot", previousShotData)
       // otherwise, a new shot is being created, so append coordinates to the new object
@@ -125,8 +133,12 @@ const shotData = {
       sel_aerial.value = "Standard";
       // if a new shot is being created, cancel the new instance of shotClass
       shotObj = undefined;
-      // if a previously saved shot is being edited, then set global var to undefined
+      // if a previously saved shot is being edited, then set global vars to undefined
       previousShotData = undefined;
+      previousShotFieldX = undefined;
+      previousShotFieldY = undefined;
+      previousShotGoalX = undefined;
+      previousShotGoalY = undefined;
       // remove markers from field and goal
       if (fieldMarker !== null) {
         fieldImgParent.removeChild(fieldMarker);
@@ -169,7 +181,11 @@ const shotData = {
       if (previousShotData !== undefined) {
         if (sel_aerial.value === "Aerial") { previousShotData._aerial = true } else { previousShotData._aerial = false };
         previousShotData.ball_speed = inpt_ballSpeed.value;
-      // else save to new instance of class and append button to page with correct ID for editing
+        previousShotData._fieldX = previousShotFieldX;
+        previousShotData._fieldY = previousShotFieldY;
+        previousShotData._goalX = previousShotGoalX;
+        previousShotData._goalY = previousShotGoalY;
+        // else save to new instance of class and append button to page with correct ID for editing
       } else {
         if (sel_aerial.value === "Aerial") { shotObj.aerial = true } else { shotObj.aerial = false };
         shotObj.ballSpeed = inpt_ballSpeed.value;
@@ -184,10 +200,14 @@ const shotData = {
 
       inpt_ballSpeed.value = null;
       sel_aerial.value = "Standard";
-      // if a new shot is being created, cancel the new instance of shotClass
+      // cancel the new instance of shotClass (matters if a new shot is being created)
       shotObj = undefined;
-      // if a previously saved shot is being edited, then set global var to undefined
+      // set global vars to undefined (matters if a previously saved shot is being edited)
       previousShotData = undefined;
+      previousShotFieldX = undefined;
+      previousShotFieldY = undefined;
+      previousShotGoalX = undefined;
+      previousShotGoalY = undefined;
     }
 
   },
