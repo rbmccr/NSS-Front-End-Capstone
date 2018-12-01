@@ -51,12 +51,13 @@ const shotData = {
     let adjustMarkerY = 12.5 / parentContainer.offsetHeight;
 
     // if there's NOT already a marker, then make one and place it
-    // else move the marker to the new position
     if (!parentContainer.contains(document.getElementById(markerId))) {
       this.generateMarker(parentContainer, adjustMarkerX, adjustMarkerY, markerId, x, y);
+      // else move the existing marker to the new position
     } else {
       this.moveMarker(markerId, x, y, adjustMarkerX, adjustMarkerY);
     }
+    // save coordinates to object
     this.addCoordsToClass(markerId, x, y)
   },
 
@@ -92,7 +93,7 @@ const shotData = {
         previousShotData._goalY = y;
       }
       console.log("previous shot", previousShotData)
-    // otherwise, a new shot is being created, so append coordinates to the new object
+      // otherwise, a new shot is being created, so append coordinates to the new object
     } else {
       if (markerId === "shot-marker-field") {
         shotObj.fieldX = x;
@@ -163,26 +164,43 @@ const shotData = {
       // remove markers from field and goal
       fieldImgParent.removeChild(fieldMarker);
       goalImgParent.removeChild(goalMarker);
-
+      // conditional statement to save correct object (i.e. shot being edited vs. new shot)
+      // if shot is being edited, then previousShotData will not be undefined
+      if (previousShotData !== undefined) {
+        if (sel_aerial.value === "Aerial") { previousShotData._aerial = true } else { previousShotData._aerial = false };
+        previousShotData.ball_speed = inpt_ballSpeed.value;
+      // else save to new instance of class and append button to page with correct ID for editing
+      } else {
+        if (sel_aerial.value === "Aerial") { shotObj.aerial = true } else { shotObj.aerial = false };
+        shotObj.ballSpeed = inpt_ballSpeed.value;
+        shotArray.push(shotObj);
+        // append new button
+        const newShotBtn = elBuilder("button", { "id": `shot-${shotCounter}`, "class": "button is-link" }, `Shot ${shotCounter}`);
+        shotBtnContainer.appendChild(newShotBtn);
+        document.getElementById(`shot-${shotCounter}`).addEventListener("click", shotData.renderSavedShot);
+      }
       //TODO: add condition to prevent blank entries and missing coordinates
-      if (sel_aerial.value === "Aerial") { shotObj.aerial = true } else { shotObj.aerial = false };
-      shotObj.ballSpeed = inpt_ballSpeed.value;
-      shotArray.push(shotObj)
       console.log(shotArray)
 
-      const newShotBtn = elBuilder("button", { "id": `shot-${shotCounter}`, "class": "button is-link" }, `Shot ${shotCounter}`)
-      shotBtnContainer.appendChild(newShotBtn);
-      document.getElementById(`shot-${shotCounter}`).addEventListener("click", shotData.renderSavedShot);
-
-      shotObj = undefined;
       inpt_ballSpeed.value = null;
       sel_aerial.value = "Standard";
+      // if a new shot is being created, cancel the new instance of shotClass
+      shotObj = undefined;
+      // if a previously saved shot is being edited, then set global var to undefined
+      previousShotData = undefined;
     }
 
   },
 
   renderSavedShot(e) {
     // this function references the shotArray to get a shot object that matches the shot# button clicked (e.g. shot 2 button = index 1 of the shotArray)
+    // the function (and its associated conditional statements in other local functions) has these basic requirements:
+    // re-initialize click listeners on images
+    // revive a saved instance of shotClass for editing shot coordinates, ball speed, and aerial
+    // render markers for existing coordinates on field and goal images
+    // TODO: method to save edits
+    // method to cancel edits
+    // TODO: set parameters to prevent user from clicking another edit shot button
     // the data is rendered on the page and can be saved (overwritten) by using the "save shot" button or canceled by clicking the "cancel shot" button
     const btn_newShot = document.getElementById("newShot");
     const inpt_ballSpeed = document.getElementById("ballSpeedInput");
@@ -195,7 +213,7 @@ const shotData = {
     // allow cancel and saved buttons to be clicked
     editingShot = true;
     // get ID of shot# btn clicked and access shotArray at [btnID - 1]
-    let btnId = e.target.id.slice(5); //TODO: use btnId as condition with save!
+    let btnId = e.target.id.slice(5);
     previousShotData = shotArray[btnId - 1];
     // render ball speed and aerial dropdown for the shot
     inpt_ballSpeed.value = previousShotData.ball_speed;
@@ -214,12 +232,6 @@ const shotData = {
     y = Number(((previousShotData._goalY * parentContainer.offsetHeight) / parentContainer.offsetHeight).toFixed(3));
     shotData.markClickonImage(x, y, parentContainer);
 
-    // re initialize click on images
-    // revive instance of class for editing coordinates stored, ball speed, and aerial
-    // render points on images for shot to be edited
-    // TODO: method to save
-    // method to cancel edit
-    // TODO: set parameters to prevent user from clicking another edit shot button
   }
 
 }
