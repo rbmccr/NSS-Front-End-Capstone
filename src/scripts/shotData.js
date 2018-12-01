@@ -11,16 +11,30 @@ let previousShotFieldY; // global var used with shot editing
 let previousShotGoalX; // global var used with shot editing
 let previousShotGoalY; // global var used with shot editing
 
-//FIXME: bug occurs with shot editing button numbers
-//FIXME: bug occurs with ball speed on shot edit (line 239) - caused by first FIXME
-
 const shotData = {
+
+  resetGlobalShotVariables() {
+    // this function is called when gameplay is clicked on the navbar (from navbar.js) in order to prevent bugs with previously created shots
+    //TODO: call this function with "Save Game"
+    shotCounter = 0;
+    editingShot = false;
+    shotObj = undefined;
+    shotArray = [];
+    previousShotData = undefined;
+    previousShotFieldX = undefined;
+    previousShotFieldY = undefined;
+    previousShotGoalX = undefined;
+    previousShotGoalY = undefined;
+  },
 
   createNewShot() {
     const btn_newShot = document.getElementById("newShot");
     const fieldImg = document.getElementById("field-img");
     const goalImg = document.getElementById("goal-img");
     shotObj = new shotOnGoal;
+
+    // prevent user from selecting any edit shot buttons
+    shotData.disableEditShotbuttons(true);
 
     editingShot = true;
     btn_newShot.disabled = true;
@@ -100,7 +114,6 @@ const shotData = {
         previousShotGoalX = x;
         previousShotGoalY = y;
       }
-      console.log("previous shot", previousShotData)
       // otherwise, a new shot is being created, so append coordinates to the new object
     } else {
       if (markerId === "shot-marker-field") {
@@ -146,8 +159,11 @@ const shotData = {
       if (goalMarker !== null) {
         goalImgParent.removeChild(goalMarker);
       }
+      // remove click listeners from field and goal
       fieldImg.removeEventListener("click", shotData.getClickCoords);
       goalImg.removeEventListener("click", shotData.getClickCoords);
+      // allow user to select edit shot buttons
+      shotData.disableEditShotbuttons(false);
     }
 
   },
@@ -208,6 +224,8 @@ const shotData = {
       previousShotFieldY = undefined;
       previousShotGoalX = undefined;
       previousShotGoalY = undefined;
+      // allow user to select any edit shot buttons
+      shotData.disableEditShotbuttons(false);
     }
 
   },
@@ -218,9 +236,8 @@ const shotData = {
     // re-initialize click listeners on images
     // revive a saved instance of shotClass for editing shot coordinates, ball speed, and aerial
     // render markers for existing coordinates on field and goal images
-    // TODO: method to save edits
-    // method to cancel edits
-    // TODO: set parameters to prevent user from clicking another edit shot button
+    // affordance to save edits
+    // affordance to cancel edits
     // the data is rendered on the page and can be saved (overwritten) by using the "save shot" button or canceled by clicking the "cancel shot" button
     const btn_newShot = document.getElementById("newShot");
     const inpt_ballSpeed = document.getElementById("ballSpeedInput");
@@ -251,6 +268,18 @@ const shotData = {
     x = Number(((previousShotData._goalX * parentContainer.offsetWidth) / parentContainer.offsetWidth).toFixed(3));
     y = Number(((previousShotData._goalY * parentContainer.offsetHeight) / parentContainer.offsetHeight).toFixed(3));
     shotData.markClickonImage(x, y, parentContainer);
+
+  },
+
+  disableEditShotbuttons(disableOrNot) {
+    // for each button after "New Shot", "Save Shot", and "Cancel Shot" disable the buttons if the user is creating a new shot (disableOrNot = true) or enable them on save/cancel of a new shot (disableOrNot = false)
+    const shotBtnContainer = document.getElementById("shotControls");
+    let editBtn;
+    let length = shotBtnContainer.childNodes.length
+    for (let i = 3; i < length; i++) {
+      editBtn = document.getElementById(`shot-${i - 2}`)
+      editBtn.disabled = disableOrNot
+    }
 
   }
 
