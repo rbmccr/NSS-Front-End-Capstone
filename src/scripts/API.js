@@ -19,7 +19,7 @@ const API = {
       .then(e => e.json())
   },
 
-  postSingleItem(obj, extension) {
+  postItem(obj, extension) {
     return fetch(`${URL}/${extension}`, {
       method: "POST",
       headers: {

@@ -8,7 +8,6 @@ const gameplay = {
 
   loadGameplay() {
     webpage.innerHTML = null;
-    // const activeUser = sessionStorage.getItem("activeUserId");
     // const xButton = elBuilder("button", { "class": "delete" });
     // xButton.addEventListener("click", closeBox, event); // button will display: none on parent container
     // const headerInfo = elBuilder("div", { "class": "notification is-info" }, "Create and save shots - then save the game record.", xButton);
@@ -74,17 +73,17 @@ const gameplay = {
 
     // 1v1/2v2/3v3 buttons (note: control class is used with field to adhere buttons together)
     const gameType3v3 = elBuilder("div", { "id": "_3v3", "class": "button" }, "3v3");
-    const gameType3v3Control = elBuilder("div", { "id": "_3v3", "class": "control" }, null, gameType3v3);
-    const gameType2v2 = elBuilder("div", { "id": "_2v2", "class": "button" }, "2v2");
-    const gameType2v2Control = elBuilder("div", { "id": "_2v2", "class": "control" }, null, gameType2v2);
+    const gameType3v3Control = elBuilder("div", { "class": "control" }, null, gameType3v3);
+    const gameType2v2 = elBuilder("div", { "id": "_2v2", "class": "button is-selected is-link" }, "2v2");
+    const gameType2v2Control = elBuilder("div", { "class": "control" }, null, gameType2v2);
     const gameType1v1 = elBuilder("div", { "id": "_1v1", "class": "button" }, "1v1");
-    const gameType1v1Control = elBuilder("div", { "id": "_1v1", "class": "control" }, null, gameType1v1);
+    const gameType1v1Control = elBuilder("div", { "class": "control" }, null, gameType1v1);
     const gameTypeButtonField = elBuilder("div", { "class": "field has-addons" }, null, gameType3v3Control, gameType2v2Control, gameType1v1Control);
     const gameTypeButtonContainer = elBuilder("div", { "class": "level-item" }, null, gameTypeButtonField);
 
     // game mode select
-    const modeOption1 = elBuilder("option", {}, "Competitive");
-    const modeOption2 = elBuilder("option", {}, "Casual");
+    const modeOption1 = elBuilder("option", {}, "Casual");
+    const modeOption2 = elBuilder("option", {}, "Competitive");
     const modeSelect = elBuilder("select", { "id": "gameModeInput", "class": "select" }, null, modeOption1, modeOption2);
     const modeSelectParent = elBuilder("div", { "class": "select" }, null, modeSelect);
     const modeControl = elBuilder("div", { "class": "control level-item" }, null, modeSelectParent);

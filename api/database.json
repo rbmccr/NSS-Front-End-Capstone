@@ -17,24 +17,14 @@
       "username": "Rick",
       "password": "pass2",
       "id": 3
-    },
-    {
-      "name": "ousama",
-      "username": "my pleasure",
-      "password": "thanks",
-      "id": 4
-    },
-    {
-      "name": "test signup",
-      "username": "test username",
-      "password": "test password",
-      "id": 5
     }
   ],
   "games": [
     {
       "id": 1,
       "playerId": 1,
+      "type": "3v3",
+      "mode": "Casual",
       "blue": true,
       "score": 3,
       "opp_score": 2,
@@ -43,6 +33,8 @@
     {
       "id": 2,
       "playerId": 2,
+      "type": "2v2",
+      "mode": "Competitive",
       "blue": false,
       "score": 2,
       "opp_score": 3,
