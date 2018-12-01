@@ -5,7 +5,7 @@ let shotCounter = 0;
 let editingShot = false; //editing shot is used for both new and old shots
 let shotObj = undefined;
 let shotArray = []; // reset when game is saved
-let previousShotData; // global var used with shot editing
+let previousShotObj; // global var used with shot editing
 let previousShotFieldX; // global var used with shot editing
 let previousShotFieldY; // global var used with shot editing
 let previousShotGoalX; // global var used with shot editing
@@ -20,7 +20,7 @@ const shotData = {
     editingShot = false;
     shotObj = undefined;
     shotArray = [];
-    previousShotData = undefined;
+    previousShotObj = undefined;
     previousShotFieldX = undefined;
     previousShotFieldY = undefined;
     previousShotGoalX = undefined;
@@ -105,7 +105,7 @@ const shotData = {
   addCoordsToClass(markerId, x, y) {
     // this function updates the instance of shotOnGoal class to record click coordinates
     // if a shot is being edited, then append the coordinates to the object in question
-    if (previousShotData !== undefined) {
+    if (previousShotObj !== undefined) {
       if (markerId === "shot-marker-field") {
         // use global vars instead of updating object directly here to prevent accidental editing of marker without clicking "save shot"
         previousShotFieldX = x;
@@ -147,7 +147,7 @@ const shotData = {
       // if a new shot is being created, cancel the new instance of shotClass
       shotObj = undefined;
       // if a previously saved shot is being edited, then set global vars to undefined
-      previousShotData = undefined;
+      previousShotObj = undefined;
       previousShotFieldX = undefined;
       previousShotFieldY = undefined;
       previousShotGoalX = undefined;
@@ -192,14 +192,14 @@ const shotData = {
       fieldImgParent.removeChild(fieldMarker);
       goalImgParent.removeChild(goalMarker);
       // conditional statement to save correct object (i.e. shot being edited vs. new shot)
-      // if shot is being edited, then previousShotData will not be undefined
-      if (previousShotData !== undefined) {
-        if (sel_aerial.value === "Aerial") { previousShotData._aerial = true } else { previousShotData._aerial = false };
-        previousShotData.ball_speed = inpt_ballSpeed.value;
-        previousShotData._fieldX = previousShotFieldX;
-        previousShotData._fieldY = previousShotFieldY;
-        previousShotData._goalX = previousShotGoalX;
-        previousShotData._goalY = previousShotGoalY;
+      // if shot is being edited, then previousShotObj will not be undefined
+      if (previousShotObj !== undefined) {
+        if (sel_aerial.value === "Aerial") { previousShotObj._aerial = true } else { previousShotObj._aerial = false };
+        previousShotObj.ball_speed = inpt_ballSpeed.value;
+        previousShotObj._fieldX = previousShotFieldX;
+        previousShotObj._fieldY = previousShotFieldY;
+        previousShotObj._goalX = previousShotGoalX;
+        previousShotObj._goalY = previousShotGoalY;
         // else save to new instance of class and append button to page with correct ID for editing
       } else {
         if (sel_aerial.value === "Aerial") { shotObj.aerial = true } else { shotObj.aerial = false };
@@ -219,7 +219,7 @@ const shotData = {
       // cancel the new instance of shotClass (matters if a new shot is being created)
       shotObj = undefined;
       // set global vars to undefined (matters if a previously saved shot is being edited)
-      previousShotData = undefined;
+      previousShotObj = undefined;
       previousShotFieldX = undefined;
       previousShotFieldY = undefined;
       previousShotGoalX = undefined;
@@ -251,22 +251,22 @@ const shotData = {
     editingShot = true;
     // get ID of shot# btn clicked and access shotArray at [btnID - 1]
     let btnId = e.target.id.slice(5);
-    previousShotData = shotArray[btnId - 1];
+    previousShotObj = shotArray[btnId - 1];
     // render ball speed and aerial dropdown for the shot
-    inpt_ballSpeed.value = previousShotData.ball_speed;
-    if (previousShotData._aerial === true) { sel_aerial.value = "Aerial"; } else { sel_aerial.value = "Standard"; }
+    inpt_ballSpeed.value = previousShotObj.ball_speed;
+    if (previousShotObj._aerial === true) { sel_aerial.value = "Aerial"; } else { sel_aerial.value = "Standard"; }
     // add event listeners to field and goal
     fieldImg.addEventListener("click", shotData.getClickCoords);
     goalImg.addEventListener("click", shotData.getClickCoords);
     // render shot marker on field
     let parentContainer = document.getElementById("field-img-parent")
-    let x = (previousShotData._fieldX * parentContainer.offsetWidth) / parentContainer.offsetWidth;
-    let y = (previousShotData._fieldY * parentContainer.offsetHeight) / parentContainer.offsetHeight;
+    let x = (previousShotObj._fieldX * parentContainer.offsetWidth) / parentContainer.offsetWidth;
+    let y = (previousShotObj._fieldY * parentContainer.offsetHeight) / parentContainer.offsetHeight;
     shotData.markClickonImage(x, y, parentContainer);
     // render goal marker on field
     parentContainer = document.getElementById("goal-img-parent")
-    x = Number(((previousShotData._goalX * parentContainer.offsetWidth) / parentContainer.offsetWidth).toFixed(3));
-    y = Number(((previousShotData._goalY * parentContainer.offsetHeight) / parentContainer.offsetHeight).toFixed(3));
+    x = Number(((previousShotObj._goalX * parentContainer.offsetWidth) / parentContainer.offsetWidth).toFixed(3));
+    y = Number(((previousShotObj._goalY * parentContainer.offsetHeight) / parentContainer.offsetHeight).toFixed(3));
     shotData.markClickonImage(x, y, parentContainer);
 
   },

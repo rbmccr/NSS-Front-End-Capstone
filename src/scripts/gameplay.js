@@ -1,5 +1,6 @@
 import elBuilder from "./elementBuilder"
 import shotData from "./shotData"
+import gameData from "./gameData"
 
 const webpage = document.getElementById("container-master");
 
@@ -134,26 +135,13 @@ const gameplay = {
     const btn_saveShot = document.getElementById("saveShot");
     const btn_cancelShot = document.getElementById("cancelShot");
     // const btn_editPrevGame = document.getElementById("editPrevGame");
-    // const btn_saveGame = document.getElementById("saveGame");
-    // const btn_3v3 = document.getElementById("_3v3");
-    // const btn_2v2 = document.getElementById("_2v2");
-    // const btn_1v1 = document.getElementById("_1v1");
-
-    // // select dropdowns
-    // const sel_aerial = document.getElementById("aerialInput");
-    // const sel_gameMode = document.getElementById("gameModeInput");
-    // const sel_teamColor = document.getElementById("teamInput");
-    // const sel_overtime = document.getElementById("overtimeInput");
-
-    // // input fields
-    // const inpt_ballSpeed = document.getElementById("ballSpeedInput");
-    // const inpt_orangeScore = document.getElementById("orangeScoreInput");
-    // const inpt_blueScore = document.getElementById("blueScoreInput");
+    const btn_saveGame = document.getElementById("saveGame");
 
     // add listeners
     btn_newShot.addEventListener("click", shotData.createNewShot);
     btn_saveShot.addEventListener("click", shotData.saveShot);
     btn_cancelShot.addEventListener("click", shotData.cancelShot);
+    btn_saveGame.addEventListener("click", gameData.saveData);
 
   }
 
