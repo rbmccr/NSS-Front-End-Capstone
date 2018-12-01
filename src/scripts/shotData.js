@@ -2,7 +2,7 @@ import elBuilder from "./elementBuilder"
 import shotOnGoal from "./shotClass"
 
 let shotCounter = 0;
-let newShotEditing = false;
+let editingShot = false; //editing shot is used for both new and old shots
 let shotObj = undefined;
 let shotArray = []; // reset when game is saved
 let previousShotData;
@@ -15,7 +15,7 @@ const shotData = {
     const goalImg = document.getElementById("goal-img");
     shotObj = new shotOnGoal;
 
-    newShotEditing = true;
+    editingShot = true;
     btn_newShot.disabled = true;
     fieldImg.addEventListener("click", shotData.getClickCoords)
     goalImg.addEventListener("click", shotData.getClickCoords)
@@ -110,11 +110,13 @@ const shotData = {
     const goalImgParent = document.getElementById("goal-img-parent");
     const fieldMarker = document.getElementById("shot-marker-field");
     const goalMarker = document.getElementById("shot-marker-goal");
+    const fieldImg = document.getElementById("field-img");
+    const goalImg = document.getElementById("goal-img");
 
-    if (!newShotEditing) {
+    if (!editingShot) {
       return
     } else {
-      newShotEditing = false;
+      editingShot = false;
       btn_newShot.disabled = false;
       inpt_ballSpeed.value = null;
       sel_aerial.value = "Standard";
@@ -126,6 +128,8 @@ const shotData = {
       if (goalMarker !== null) {
         goalImgParent.removeChild(goalMarker);
       }
+      fieldImg.removeEventListener("click", shotData.getClickCoords);
+      goalImg.removeEventListener("click", shotData.getClickCoords);
     }
 
   },
@@ -142,10 +146,10 @@ const shotData = {
     const sel_aerial = document.getElementById("aerialInput");
     const shotBtnContainer = document.getElementById("shotControls");
 
-    if (!newShotEditing) {
+    if (!editingShot) {
       return
     } else {
-      newShotEditing = false;
+      editingShot = false;
       btn_newShot.disabled = false;
       shotCounter++;
       // clear field and goal event listeners
@@ -173,21 +177,25 @@ const shotData = {
   },
 
   renderSavedShot(e) {
-    // this function references the shotArray to get a shot object that matches the shot# button clicked
+    // this function references the shotArray to get a shot object that matches the shot# button clicked (e.g. shot 2 button = index 1 of the shotArray)
     // the data is rendered on the page and can be saved (overwritten) by using the "save shot" button
-
     const inpt_ballSpeed = document.getElementById("ballSpeedInput");
     const sel_aerial = document.getElementById("aerialInput");
     const fieldImg = document.getElementById("field-img");
     const goalImg = document.getElementById("goal-img");
 
-    let btnId = e.target.id.slice(5);
+    // prevent new shot button from being clicked
+    btn_newShot.disabled = true;
+    // allow cancel and saved buttons to be clicked
+    editingShot = true;
+    // get ID of shot# btn clicked and access shotArray at [btnID - 1]
+    let btnId = e.target.id.slice(5); //TODO: use btnId as condition with save!
     previousShotData = shotArray[btnId - 1];
     console.log(previousShotData)
-
+    // render ball speed and aerial for the shot on the screen
     inpt_ballSpeed.value = previousShotData.ball_speed;
     if (previousShotData._aerial === true) { sel_aerial.value = "Aerial"; } else { sel_aerial.value = "Standard"; }
-
+    // add event listeners to field and goal
     fieldImg.addEventListener("click", shotData.getClickCoords);
     goalImg.addEventListener("click", shotData.getClickCoords);
 
