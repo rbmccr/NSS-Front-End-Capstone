@@ -1,5 +1,6 @@
 // import shotData from "./shotData"
 import API from "./API"
+import shotData from "./shotData";
 
 // the purpose of this module is to:
 // 1. save all content in the gameplay page (shot and game data) to the database
@@ -31,7 +32,6 @@ const gameData = {
     let gameType = undefined;
 
     gameTypeBtns.forEach(btn => {
-      console.log("btn", btn)
       if (btn.classList.contains("is-selected")) {
         gameType = btn.textContent
       }
@@ -84,9 +84,25 @@ const gameData = {
       "overtime": overtime
     };
 
-    console.log(gameData)
-
-    API.postItem(gameData, "games").then(data => console.log(data));
+    API.postItem(gameData, "games")
+      .then(game => game.id)
+      .then(gameId => {
+        // post shots with gameId
+        const shotArr = shotData.getShotObjectsForPost();
+        let shotForPost = {};
+        shotArr.forEach(shotObj => {
+          shotForPost.playerId = activeUserId,
+          shotForPost.gameId = gameId,
+          shotForPost.fieldX = shotObj._fieldX
+          shotForPost.fieldY = shotObj._fieldY,
+          shotForPost.goalX = shotObj._goalX,
+          shotForPost.goalY = shotObj._goalY
+          shotForPost.ball_speed = shotObj.ball_speed,
+          shotForPost.aerial = shotObj._aerial
+        })
+        console.log(shotForPost)
+        //FIXME: get shots saving
+      });
 
   },
 

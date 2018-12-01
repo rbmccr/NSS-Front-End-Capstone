@@ -212,7 +212,6 @@ const shotData = {
         document.getElementById(`shot-${shotCounter}`).addEventListener("click", shotData.renderSavedShot);
       }
       //TODO: add condition to prevent blank entries and missing coordinates
-      console.log(shotArray)
 
       inpt_ballSpeed.value = null;
       sel_aerial.value = "Standard";
@@ -281,6 +280,10 @@ const shotData = {
       editBtn.disabled = disableOrNot
     }
 
+  },
+
+  getShotObjectsForPost() {
+    return shotArray
   }
 
 }
