@@ -14,8 +14,7 @@ let previousShotGoalY; // global var used with shot editing
 const shotData = {
 
   resetGlobalShotVariables() {
-    // this function is called when gameplay is clicked on the navbar (from navbar.js) in order to prevent bugs with previously created shots
-    //TODO: call this function with "Save Game"
+    // this function is called when gameplay is clicked on the navbar and when a game is saved, in order to prevent bugs with previously created shots
     shotCounter = 0;
     editingShot = false;
     shotObj = undefined;

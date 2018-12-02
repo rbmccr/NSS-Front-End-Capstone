@@ -65,6 +65,36 @@
       "opp_score": 0,
       "overtime": false,
       "id": 4
+    },
+    {
+      "userId": 1,
+      "mode": "casual",
+      "type": "2v2",
+      "team": "orange",
+      "score": 4,
+      "opp_score": 5,
+      "overtime": false,
+      "id": 5
+    },
+    {
+      "userId": 1,
+      "mode": "casual",
+      "type": "2v2",
+      "team": "orange",
+      "score": 2,
+      "opp_score": 1,
+      "overtime": false,
+      "id": 6
+    },
+    {
+      "userId": 1,
+      "mode": "casual",
+      "type": "2v2",
+      "team": "orange",
+      "score": 3,
+      "opp_score": 7,
+      "overtime": false,
+      "id": 7
     }
   ],
   "shots": [
@@ -107,6 +137,56 @@
       "ball_speed": 77,
       "aerial": true,
       "id": 4
+    },
+    {
+      "gameId": 5,
+      "fieldX": 0.72,
+      "fieldY": 0.229,
+      "goalX": 0.353,
+      "goalY": 0.579,
+      "ball_speed": 88,
+      "aerial": false,
+      "id": 5
+    },
+    {
+      "gameId": 5,
+      "fieldX": 0.707,
+      "fieldY": 0.359,
+      "goalX": 0.875,
+      "goalY": 0.431,
+      "ball_speed": 67,
+      "aerial": false,
+      "id": 6
+    },
+    {
+      "gameId": 6,
+      "fieldX": 0.684,
+      "fieldY": 0.46,
+      "goalX": 0.413,
+      "goalY": 0.48,
+      "ball_speed": 145,
+      "aerial": false,
+      "id": 7
+    },
+    {
+      "gameId": 7,
+      "fieldX": 0.744,
+      "fieldY": 0.218,
+      "goalX": 0.222,
+      "goalY": 0.475,
+      "ball_speed": 88,
+      "aerial": false,
+      "id": 8
+    },
+    {
+      "gameId": 7,
+      "fieldX": 0.822,
+      "fieldY": 0.79,
+      "goalX": 0.711,
+      "goalY": 0.629,
+      "ball_speed": 105,
+      "aerial": true,
+      "id": 9
     }
   ],
   "heatmaps": [

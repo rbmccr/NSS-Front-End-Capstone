@@ -144,7 +144,7 @@ const gameplay = {
     btn_newShot.addEventListener("click", shotData.createNewShot);
     btn_saveShot.addEventListener("click", shotData.saveShot);
     btn_cancelShot.addEventListener("click", shotData.cancelShot);
-    btn_saveGame.addEventListener("click", gameData.saveData);
+    btn_saveGame.addEventListener("click", gameData.packageGameData);
     gameTypeBtns.forEach(btn => btn.addEventListener("click", gameData.gameTypeButtonToggle));
     btn_editPrevGame.addEventListener("click", gameData.editPrevGame)
 
