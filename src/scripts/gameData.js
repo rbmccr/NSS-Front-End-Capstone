@@ -121,7 +121,7 @@ const gameData = {
           shotForPost.aerial = shotObj._aerial
           API.postItem("shots", shotForPost).then(post => {
             console.log(post);
-            // call functions that clear gameplay content and reset variables
+            // call functions that clear gameplay content and reset global shot data variables
             gameplay.loadGameplay();
             shotData.resetGlobalShotVariables();
           })
@@ -130,8 +130,17 @@ const gameData = {
 
   },
 
-  renderPrevGame(game) {
-    console.log(game)
+  savePrevGameEdits() {
+    console.log("saving edits...")
+    // TODO: PUT edits to database
+  },
+
+  cancelEditingMode() {
+    gameplay.loadGameplay();
+    shotData.resetGlobalShotVariables();
+  },
+
+  renderEditButtons() {
     // remove & replace edit and save game buttons with "Save Edits" and "Cancel Edits"
     const btn_editPrevGame = document.getElementById("editPrevGame");
     const btn_saveGame = document.getElementById("saveGame");
@@ -139,18 +148,23 @@ const gameData = {
     const btn_cancelEdits = elBuilder("button", { "id": "cancelEdits", "class": "button is-danger" }, "Cancel Edits")
     const btn_saveEdits = elBuilder("button", { "id": "saveEdits", "class": "button is-success" }, "Save Edits")
 
+    btn_cancelEdits.addEventListener("click", gameData.cancelEditingMode)
+    btn_saveEdits.addEventListener("click", gameData.savePrevGameEdits)
+
     btn_editPrevGame.replaceWith(btn_cancelEdits);
     btn_saveGame.replaceWith(btn_saveEdits);
 
-    // TODO: create a modal asking user if they want to edit previous game
-    // TODO: append save edits button and cancel edits button
-    // TODO: append click listeners to save edits button and cancel edits button that PUT to database
-    // TODO: render shot data and game data on page
+  },
 
+  renderPrevGame(game) {
+    console.log(game)
+    // TODO: render shot data and game data on page
   },
 
   editPrevGame() {
     // fetch content from most recent game saved to be rendered
+
+    // TODO: create a modal asking user if they want to edit previous game
     const activeUserId = sessionStorage.getItem("activeUserId");
 
     API.getSingleItem("users", `${activeUserId}?_embed=games`).then(user => {
@@ -160,7 +174,10 @@ const gameData = {
         // get max game id (which is the most recent game saved)
         const recentGameId = user.games.reduce((max, obj) => obj.id > max ? obj.id : max, user.games[0].id);
         // fetch most recent game and embed shots
-        API.getSingleItem("games", `${recentGameId}?_embed=shots`).then(game => gameData.renderPrevGame(game))
+        API.getSingleItem("games", `${recentGameId}?_embed=shots`).then(gameObj => {
+          gameData.renderEditButtons()
+          gameData.renderPrevGame(gameObj)
+        })
       }
     })
   }
