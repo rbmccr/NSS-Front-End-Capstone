@@ -135,12 +135,17 @@ const gameplay = {
     const btn_cancelShot = document.getElementById("cancelShot");
     // const btn_editPrevGame = document.getElementById("editPrevGame");
     const btn_saveGame = document.getElementById("saveGame");
+    const btn_3v3 = document.getElementById("_3v3");
+    const btn_2v2 = document.getElementById("_2v2");
+    const btn_1v1 = document.getElementById("_1v1");
+    const gameTypeBtns = [btn_3v3, btn_2v2, btn_1v1];
 
     // add listeners
     btn_newShot.addEventListener("click", shotData.createNewShot);
     btn_saveShot.addEventListener("click", shotData.saveShot);
     btn_cancelShot.addEventListener("click", shotData.cancelShot);
     btn_saveGame.addEventListener("click", gameData.saveData);
+    gameTypeBtns.forEach(btn => btn.addEventListener("click", gameData.gameTypeButtonToggle));
 
   }
 

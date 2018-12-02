@@ -39,26 +39,6 @@
       "score": 2,
       "opp_score": 3,
       "overtime": false
-    },
-    {
-      "playerId": 1,
-      "mode": "casual",
-      "type": "2v2",
-      "team": "orange",
-      "score": 0,
-      "opp_score": 0,
-      "overtime": false,
-      "id": 3
-    },
-    {
-      "playerId": 1,
-      "mode": "casual",
-      "type": "2v2",
-      "team": "orange",
-      "score": 0,
-      "opp_score": 0,
-      "overtime": false,
-      "id": 4
     }
   ],
   "shots": [

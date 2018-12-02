@@ -11,7 +11,27 @@ import shotData from "./shotData";
 
 const gameData = {
 
-  //TODO: add function that defaults the game type (3v3 etc) to 2v2 and will toggle classes "is-selected" and "is-link" when any of the buttons is clicked.
+  gameTypeButtonToggle(e) {
+    // this function toggles the "is-selected" class between the game type buttons
+
+    const btn_3v3 = document.getElementById("_3v3");
+    const btn_2v2 = document.getElementById("_2v2");
+    const btn_1v1 = document.getElementById("_1v1");
+    const gameTypeBtns = [btn_3v3, btn_2v2, btn_1v1];
+    let btnClicked = e.target;
+
+    if (!btnClicked.classList.contains("is-selected")) {
+      // filter returns single button that is currently selected
+      const currentGameTypeBtn = gameTypeBtns.filter(btn => btn.classList.contains("is-selected"));
+      currentGameTypeBtn[0].classList.remove("is-selected");
+      currentGameTypeBtn[0].classList.remove("is-link");
+      btnClicked.classList.add("is-selected");
+      btnClicked.classList.add("is-link");
+    } else {
+      return
+    }
+
+  },
 
   saveData() {
 
@@ -73,7 +93,6 @@ const gameData = {
       overtime = false;
     }
 
-
     let gameData = {
       "playerId": activeUserId,
       "mode": gameMode,
@@ -92,13 +111,13 @@ const gameData = {
         let shotForPost = {};
         shotArr.forEach(shotObj => {
           shotForPost.playerId = activeUserId,
-          shotForPost.gameId = gameId,
-          shotForPost.fieldX = shotObj._fieldX
+            shotForPost.gameId = gameId,
+            shotForPost.fieldX = shotObj._fieldX
           shotForPost.fieldY = shotObj._fieldY,
-          shotForPost.goalX = shotObj._goalX,
-          shotForPost.goalY = shotObj._goalY
+            shotForPost.goalX = shotObj._goalX,
+            shotForPost.goalY = shotObj._goalY
           shotForPost.ball_speed = shotObj.ball_speed,
-          shotForPost.aerial = shotObj._aerial
+            shotForPost.aerial = shotObj._aerial
         })
         console.log(shotForPost)
         //FIXME: get shots saving
