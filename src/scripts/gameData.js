@@ -1,6 +1,7 @@
 import API from "./API";
 import shotData from "./shotData";
 import gameplay from "./gameplay";
+import elBuilder from "./elementBuilder";
 
 // the purpose of this module is to:
 // 1. save all content in the gameplay page (shot and game data) to the database
@@ -39,6 +40,7 @@ const gameData = {
     // then get ID of latest game saved (returned immediately in object from POST)
     // package and save shots with the game ID
     // TODO: conditional statement to prevent blank score entries
+    // TODO: create a modal asking user if they want to save game
 
     // playerId
     const activeUserId = Number(sessionStorage.getItem("activeUserId"));
@@ -128,8 +130,27 @@ const gameData = {
 
   },
 
+  renderPrevGame(game) {
+    console.log(game)
+    // remove & replace edit and save game buttons with "Save Edits" and "Cancel Edits"
+    const btn_editPrevGame = document.getElementById("editPrevGame");
+    const btn_saveGame = document.getElementById("saveGame");
+
+    const btn_cancelEdits = elBuilder("button", { "id": "cancelEdits", "class": "button is-danger" }, "Cancel Edits")
+    const btn_saveEdits = elBuilder("button", { "id": "saveEdits", "class": "button is-success" }, "Save Edits")
+
+    btn_editPrevGame.replaceWith(btn_cancelEdits);
+    btn_saveGame.replaceWith(btn_saveEdits);
+
+    // TODO: create a modal asking user if they want to edit previous game
+    // TODO: append save edits button and cancel edits button
+    // TODO: append click listeners to save edits button and cancel edits button that PUT to database
+    // TODO: render shot data and game data on page
+
+  },
+
   editPrevGame() {
-    // TODO: allow user to edit content from most recent game saved
+    // fetch content from most recent game saved to be rendered
     const activeUserId = sessionStorage.getItem("activeUserId");
 
     API.getSingleItem("users", `${activeUserId}?_embed=games`).then(user => {
@@ -139,7 +160,7 @@ const gameData = {
         // get max game id (which is the most recent game saved)
         const recentGameId = user.games.reduce((max, obj) => obj.id > max ? obj.id : max, user.games[0].id);
         // fetch most recent game and embed shots
-        API.getSingleItem("games", `${recentGameId}?_embed=shots`).then(gameWithShots => console.log(gameWithShots))
+        API.getSingleItem("games", `${recentGameId}?_embed=shots`).then(game => gameData.renderPrevGame(game))
       }
     })
   }

@@ -117,7 +117,7 @@ const gameplay = {
     // edit/save game buttons
     const editPreviousGame = elBuilder("button", { "id": "editPrevGame", "class": "button is-danger" }, "Edit Previous Game");
     const saveGame = elBuilder("button", { "id": "saveGame", "class": "button is-success" }, "Save Game");
-    const gameButtonAlignment = elBuilder("div", { "class": "buttons level-item" }, null, editPreviousGame, saveGame);
+    const gameButtonAlignment = elBuilder("div", { "class": "buttons level-item" }, null, saveGame, editPreviousGame);
     const gameButtonContainer = elBuilder("div", { "class": "level-right" }, null, gameButtonAlignment);
 
     // append to webpage
