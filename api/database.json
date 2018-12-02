@@ -11,12 +11,18 @@
       "name": "Zac",
       "username": "Viper16",
       "password": "word"
+    },
+    {
+      "name": "Rob Boss",
+      "username": "rob",
+      "password": "pass",
+      "id": 3
     }
   ],
   "games": [
     {
       "id": 1,
-      "playerId": 1,
+      "userId": 1,
       "type": "3v3",
       "mode": "Casual",
       "blue": true,
@@ -26,7 +32,7 @@
     },
     {
       "id": 2,
-      "playerId": 2,
+      "userId": 2,
       "type": "2v2",
       "mode": "Competitive",
       "blue": false,
@@ -35,14 +41,24 @@
       "overtime": false
     },
     {
-      "playerId": 1,
+      "userId": 1,
+      "mode": "casual",
+      "type": "2v2",
+      "team": "orange",
+      "score": 2,
+      "opp_score": 3,
+      "overtime": false,
+      "id": 3
+    },
+    {
+      "userId": 1,
       "mode": "casual",
       "type": "2v2",
       "team": "orange",
       "score": 0,
       "opp_score": 0,
       "overtime": false,
-      "id": 3
+      "id": 4
     }
   ],
   "shots": [

@@ -97,7 +97,7 @@ const loginOrSignup = {
             username: _username,
             password: _password,
           };
-          API.postSingleItem(newUser, "users").then(user => {
+          API.postItem("users", newUser).then(user => {
             loginOrSignup.loginStatusActive(user)
           })
         }

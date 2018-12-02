@@ -94,7 +94,7 @@ const gameData = {
     }
 
     let gameData = {
-      "playerId": activeUserId,
+      "userId": activeUserId,
       "mode": gameMode,
       "type": gameType,
       "team": myTeam,
@@ -103,7 +103,7 @@ const gameData = {
       "overtime": overtime
     };
 
-    API.postItem(gameData, "games")
+    API.postItem("games", gameData)
       .then(game => game.id)
       .then(gameId => {
         // post shots with gameId
@@ -118,7 +118,7 @@ const gameData = {
           shotForPost.goalY = shotObj._goalY
           shotForPost.ball_speed = Number(shotObj.ball_speed)
           shotForPost.aerial = shotObj._aerial
-          API.postItem(shotForPost, "shots").then(post => console.log(post))
+          API.postItem("shots", shotForPost).then(post => console.log(post))
         })
       });
 
@@ -129,12 +129,21 @@ const gameData = {
   },
 
   editPrevGame() {
-
     //TODO: allow user to edit content from most recent game saved (consider both MAX gameId and CURRENT userId to get the user's most recent game)
-    // API.getSingleItem("")
+    const activeUserId = sessionStorage.getItem("activeUserId");
+
+    API.getSingleItem("users", `${activeUserId}?_embed=games`).then(user => {
+      if (user.games.length === 0) {
+        alert("No games have been saved by this user");
+      } else {
+        // get max game id (which is the most recent game saved)
+        const recentGameId = user.games.reduce((max, obj) => obj.id > max ? obj.id : max, user.games[0].id);
+        // fetch most recent game and embed shots
+        API.getSingleItem("games", `${recentGameId}?_embed=shots`).then(gameWithShots => console.log(gameWithShots))
+      }
+    })
   }
 
-  // const btn_editPrevGame = document.getElementById("editPrevGame");
 
   // // select dropdowns
   // const sel_aerial = document.getElementById("aerialInput");
