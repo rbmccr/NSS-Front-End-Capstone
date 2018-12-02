@@ -13,28 +13,24 @@
       "password": "word"
     },
     {
-      "name": "Rick G",
-      "username": "Rick",
-      "password": "pass2",
+      "name": "Rob Boss",
+      "username": "rob",
+      "password": "pass",
       "id": 3
     },
     {
-      "name": "ousama",
-      "username": "my pleasure",
-      "password": "thanks",
+      "name": "Jacquelyn",
+      "username": "jquelly",
+      "password": "pass",
       "id": 4
-    },
-    {
-      "name": "test signup",
-      "username": "test username",
-      "password": "test password",
-      "id": 5
     }
   ],
   "games": [
     {
       "id": 1,
-      "playerId": 1,
+      "userId": 1,
+      "type": "3v3",
+      "mode": "Casual",
       "blue": true,
       "score": 3,
       "opp_score": 2,
@@ -42,11 +38,33 @@
     },
     {
       "id": 2,
-      "playerId": 2,
+      "userId": 2,
+      "type": "2v2",
+      "mode": "Competitive",
       "blue": false,
       "score": 2,
       "opp_score": 3,
       "overtime": false
+    },
+    {
+      "userId": 1,
+      "mode": "casual",
+      "type": "2v2",
+      "team": "orange",
+      "score": 2,
+      "opp_score": 3,
+      "overtime": false,
+      "id": 3
+    },
+    {
+      "userId": 1,
+      "mode": "casual",
+      "type": "2v2",
+      "team": "orange",
+      "score": 0,
+      "opp_score": 0,
+      "overtime": false,
+      "id": 4
     }
   ],
   "shots": [
@@ -69,6 +87,26 @@
       "goalY": 0.75,
       "aerial": false,
       "ball_speed": 50
+    },
+    {
+      "gameId": 3,
+      "fieldX": 0.471,
+      "fieldY": 0.309,
+      "goalX": 0.195,
+      "goalY": 0.317,
+      "ball_speed": 34,
+      "aerial": false,
+      "id": 3
+    },
+    {
+      "gameId": 3,
+      "fieldX": 0.687,
+      "fieldY": 0.269,
+      "goalX": 0.795,
+      "goalY": 0.693,
+      "ball_speed": 77,
+      "aerial": true,
+      "id": 4
     }
   ],
   "heatmaps": [

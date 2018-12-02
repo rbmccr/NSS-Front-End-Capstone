@@ -1,15 +1,13 @@
 import elBuilder from "./elementBuilder"
+import shotData from "./shotData"
+import gameData from "./gameData"
 
 const webpage = document.getElementById("container-master");
-
-let shotCounter = 0;
-let newShotEditing = false;
 
 const gameplay = {
 
   loadGameplay() {
     webpage.innerHTML = null;
-    const activeUser = sessionStorage.getItem("activeUserId");
     // const xButton = elBuilder("button", { "class": "delete" });
     // xButton.addEventListener("click", closeBox, event); // button will display: none on parent container
     // const headerInfo = elBuilder("div", { "class": "notification is-info" }, "Create and save shots - then save the game record.", xButton);
@@ -75,17 +73,17 @@ const gameplay = {
 
     // 1v1/2v2/3v3 buttons (note: control class is used with field to adhere buttons together)
     const gameType3v3 = elBuilder("div", { "id": "_3v3", "class": "button" }, "3v3");
-    const gameType3v3Control = elBuilder("div", { "id": "_3v3", "class": "control" }, null, gameType3v3);
-    const gameType2v2 = elBuilder("div", { "id": "_2v2", "class": "button" }, "2v2");
-    const gameType2v2Control = elBuilder("div", { "id": "_2v2", "class": "control" }, null, gameType2v2);
+    const gameType3v3Control = elBuilder("div", { "class": "control" }, null, gameType3v3);
+    const gameType2v2 = elBuilder("div", { "id": "_2v2", "class": "button is-selected is-link" }, "2v2");
+    const gameType2v2Control = elBuilder("div", { "class": "control" }, null, gameType2v2);
     const gameType1v1 = elBuilder("div", { "id": "_1v1", "class": "button" }, "1v1");
-    const gameType1v1Control = elBuilder("div", { "id": "_1v1", "class": "control" }, null, gameType1v1);
+    const gameType1v1Control = elBuilder("div", { "class": "control" }, null, gameType1v1);
     const gameTypeButtonField = elBuilder("div", { "class": "field has-addons" }, null, gameType3v3Control, gameType2v2Control, gameType1v1Control);
     const gameTypeButtonContainer = elBuilder("div", { "class": "level-item" }, null, gameTypeButtonField);
 
     // game mode select
-    const modeOption1 = elBuilder("option", {}, "Competitive");
-    const modeOption2 = elBuilder("option", {}, "Casual");
+    const modeOption1 = elBuilder("option", {}, "Casual");
+    const modeOption2 = elBuilder("option", {}, "Competitive");
     const modeSelect = elBuilder("select", { "id": "gameModeInput", "class": "select" }, null, modeOption1, modeOption2);
     const modeSelectParent = elBuilder("div", { "class": "select" }, null, modeSelect);
     const modeControl = elBuilder("div", { "class": "control level-item" }, null, modeSelectParent);
@@ -140,53 +138,16 @@ const gameplay = {
     const btn_3v3 = document.getElementById("_3v3");
     const btn_2v2 = document.getElementById("_2v2");
     const btn_1v1 = document.getElementById("_1v1");
-
-    // select dropdowns
-    const sel_aerial = document.getElementById("aerialInput");
-    const sel_gameMode = document.getElementById("gameModeInput");
-    const sel_teamColor = document.getElementById("teamInput");
-    const sel_overtime = document.getElementById("overtimeInput");
-
-    // input fields
-    const inpt_ballSpeed = document.getElementById("ballSpeedInput");
-    const inpt_orangeScore = document.getElementById("orangeScoreInput");
-    const inpt_blueScore = document.getElementById("blueScoreInput");
+    const gameTypeBtns = [btn_3v3, btn_2v2, btn_1v1];
 
     // add listeners
-    btn_newShot.addEventListener("click", this.createNewShot);
-    btn_saveShot.addEventListener("click", this.saveShot);
-    btn_cancelShot.addEventListener("click", this.cancelshot);
+    btn_newShot.addEventListener("click", shotData.createNewShot);
+    btn_saveShot.addEventListener("click", shotData.saveShot);
+    btn_cancelShot.addEventListener("click", shotData.cancelShot);
+    btn_saveGame.addEventListener("click", gameData.saveData);
+    gameTypeBtns.forEach(btn => btn.addEventListener("click", gameData.gameTypeButtonToggle));
+    btn_editPrevGame.addEventListener("click", gameData.editPrevGame)
 
-  },
-
-  createNewShot() {
-    console.log("new shot")
-    // establish editing mode variable true
-    // disable functionality of new shot btn if edit var = true
-    // activate click functionality and conditional statements on both field and goal images
-  },
-
-  cancelShot() {
-    const inpt_ballSpeed = document.getElementById("ballSpeedInput");
-    const sel_aerial = document.getElementById("aerialInput");
-    // reset editing mode var to false
-    // clear clicked items in field and goal images
-    inpt_ballSpeed.value = null;
-    sel_aerial.value = "Standard";
-  },
-
-  saveShot() {
-    const inpt_ballSpeed = document.getElementById("ballSpeedInput");
-    const sel_aerial = document.getElementById("aerialInput");
-    const shotBtnContainer = document.getElementById("shotControls");
-
-    shotCounter++;
-
-
-    const newShotBtn = elBuilder("button", {"id":`shot${shotCounter}`, "class":"button is-link"}, `Shot ${shotCounter}`)
-    shotBtnContainer.appendChild(newShotBtn);
-    inpt_ballSpeed.value = null;
-    sel_aerial.value = "Standard";
   }
 
 }

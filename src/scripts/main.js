@@ -7,6 +7,6 @@ import gameplay from "./gameplay"
 //   }
 // }
 
-navbar.generateNavbar()
-// navbar.generateNavbar(true)
-// gameplay.loadGameplay()
+// navbar.generateNavbar()
+navbar.generateNavbar(true)
+gameplay.loadGameplay()

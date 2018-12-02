@@ -2,7 +2,7 @@ const URL = "http://localhost:8088"
 
 const API = {
 
-  getSingleItem(id, extension) {
+  getSingleItem(extension, id) {
     return fetch(`${URL}/${extension}/${id}`).then(data => data.json())
   },
 
@@ -10,7 +10,7 @@ const API = {
     return fetch(`${URL}/${extension}`).then(data => data.json())
   },
 
-  deleteSingleItem(id, extension) {
+  deleteItem(extension, id) {
     return fetch(`${URL}/${extension}/${id}`, {
       method: "DELETE"
     })
@@ -19,7 +19,7 @@ const API = {
       .then(e => e.json())
   },
 
-  postSingleItem(obj, extension) {
+  postItem(extension, obj) {
     return fetch(`${URL}/${extension}`, {
       method: "POST",
       headers: {
@@ -29,6 +29,7 @@ const API = {
     })
       .then(r => r.json())
   }
+
 }
 
 export default API

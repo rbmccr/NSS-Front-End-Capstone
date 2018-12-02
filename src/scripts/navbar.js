@@ -2,6 +2,7 @@ import elBuilder from "./elementBuilder"
 import loginOrSignup from "./login"
 import profile from "./profile"
 import gameplay from "./gameplay"
+import shotData from "./shotData"
 
 const webpageNav = document.getElementById("nav-master");
 
@@ -49,68 +50,69 @@ const navbar = {
     // if logged in, append additional menu options to navbar and remove signup/login buttons
     if (loggedInBoolean) {
       // remove log in and sign up buttons
-      const signup = buttonContainer.childNodes[0]
-      const login = buttonContainer.childNodes[1]
-      buttonContainer.removeChild(signup)
-      buttonContainer.removeChild(login)
+      const signup = buttonContainer.childNodes[0];
+      const login = buttonContainer.childNodes[1];
+      buttonContainer.removeChild(signup);
+      buttonContainer.removeChild(login);
       // add logout button
-      const button3 = elBuilder("a", { "class": "button is-dark" }, "Logout")
-      buttonContainer.appendChild(button3)
+      const button3 = elBuilder("a", { "class": "button is-dark" }, "Logout");
+      buttonContainer.appendChild(button3);
 
       // create and append new menu items for user
-      const loggedInItem1 = elBuilder("a", { "class": "navbar-item" }, "Profile")
-      const loggedInItem2 = elBuilder("a", { "class": "navbar-item" }, "Gameplay")
-      const loggedInItem3 = elBuilder("a", { "class": "navbar-item" }, "Heatmaps")
-      const loggedInItem4 = elBuilder("a", { "class": "navbar-item" }, "Leaderboard")
-      navbarStart.appendChild(loggedInItem1)
-      navbarStart.appendChild(loggedInItem2)
-      navbarStart.appendChild(loggedInItem3)
-      navbarStart.appendChild(loggedInItem4)
+      const loggedInItem1 = elBuilder("a", { "class": "navbar-item" }, "Profile");
+      const loggedInItem2 = elBuilder("a", { "class": "navbar-item" }, "Gameplay");
+      const loggedInItem3 = elBuilder("a", { "class": "navbar-item" }, "Heatmaps");
+      const loggedInItem4 = elBuilder("a", { "class": "navbar-item" }, "Leaderboard");
+      navbarStart.appendChild(loggedInItem1);
+      navbarStart.appendChild(loggedInItem2);
+      navbarStart.appendChild(loggedInItem3);
+      navbarStart.appendChild(loggedInItem4);
     }
 
     // add event listeners to navbar
-    this.navbarEventManager(nav)
+    this.navbarEventManager(nav);
 
     // append to webpage
-    webpageNav.appendChild(nav)
+    webpageNav.appendChild(nav);
 
   },
 
   navbarEventManager(nav) {
-    nav.addEventListener("click", this.loginClicked, event)
-    nav.addEventListener("click", this.signupClicked, event)
-    nav.addEventListener("click", this.logoutClicked, event)
-    nav.addEventListener("click", this.profileClicked, event)
-    nav.addEventListener("click", this.gameplayClicked, event)
+    nav.addEventListener("click", this.loginClicked, event);
+    nav.addEventListener("click", this.signupClicked, event);
+    nav.addEventListener("click", this.logoutClicked, event);
+    nav.addEventListener("click", this.profileClicked, event);
+    nav.addEventListener("click", this.gameplayClicked, event);
   },
 
   loginClicked(e) {
     if (e.target.textContent === "Login") {
-      loginOrSignup.loginForm()
+      loginOrSignup.loginForm();
     }
   },
 
   signupClicked(e) {
     if (e.target.textContent === "Sign up") {
-      loginOrSignup.signupForm()
+      loginOrSignup.signupForm();
     }
   },
 
   logoutClicked(e) {
     if (e.target.textContent === "Logout") {
-      loginOrSignup.logoutUser()
+      loginOrSignup.logoutUser();
     }
   },
 
   profileClicked(e) {
     if (e.target.textContent === "Profile") {
-      profile.loadProfile()
+      profile.loadProfile();
     }
   },
 
   gameplayClicked(e) {
     if (e.target.textContent === "Gameplay") {
-      gameplay.loadGameplay()
+      gameplay.loadGameplay();
+      shotData.resetGlobalShotVariables();
     }
   }
 
