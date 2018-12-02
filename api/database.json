@@ -17,6 +17,12 @@
       "username": "rob",
       "password": "pass",
       "id": 3
+    },
+    {
+      "name": "Jacquelyn",
+      "username": "jquelly",
+      "password": "pass",
+      "id": 4
     }
   ],
   "games": [

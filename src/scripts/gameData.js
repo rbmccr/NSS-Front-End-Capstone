@@ -1,6 +1,6 @@
-// import shotData from "./shotData"
-import API from "./API"
+import API from "./API";
 import shotData from "./shotData";
+import gameplay from "./gameplay";
 
 // the purpose of this module is to:
 // 1. save all content in the gameplay page (shot and game data) to the database
@@ -21,7 +21,6 @@ const gameData = {
     let btnClicked = e.target;
 
     if (!btnClicked.classList.contains("is-selected")) {
-      // filter returns single button that is currently selected
       const currentGameTypeBtn = gameTypeBtns.filter(btn => btn.classList.contains("is-selected"));
       currentGameTypeBtn[0].classList.remove("is-selected");
       currentGameTypeBtn[0].classList.remove("is-link");
@@ -37,8 +36,8 @@ const gameData = {
 
     // get user ID from session storage
     // package and save game data
-    // TODO: then get ID of latest game saved (returned immediately in object from POST)
-    // TODO: package and save shots with the game ID
+    // then get ID of latest game saved (returned immediately in object from POST)
+    // package and save shots with the game ID
     // TODO: conditional statement to prevent blank score entries
 
     // playerId
@@ -118,18 +117,19 @@ const gameData = {
           shotForPost.goalY = shotObj._goalY
           shotForPost.ball_speed = Number(shotObj.ball_speed)
           shotForPost.aerial = shotObj._aerial
-          API.postItem("shots", shotForPost).then(post => console.log(post))
+          API.postItem("shots", shotForPost).then(post => {
+            console.log(post);
+            // call functions that clear gameplay content and reset variables
+            gameplay.loadGameplay();
+            shotData.resetGlobalShotVariables();
+          })
         })
       });
 
   },
 
-  clearGameplayContent() {
-
-  },
-
   editPrevGame() {
-    //TODO: allow user to edit content from most recent game saved (consider both MAX gameId and CURRENT userId to get the user's most recent game)
+    // TODO: allow user to edit content from most recent game saved
     const activeUserId = sessionStorage.getItem("activeUserId");
 
     API.getSingleItem("users", `${activeUserId}?_embed=games`).then(user => {
@@ -143,14 +143,6 @@ const gameData = {
       }
     })
   }
-
-
-  // // select dropdowns
-  // const sel_aerial = document.getElementById("aerialInput");
-
-  // // input fields
-  // const inpt_ballSpeed = document.getElementById("ballSpeedInput");
-
 
 }
 
