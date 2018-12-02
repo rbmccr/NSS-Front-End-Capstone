@@ -10,7 +10,7 @@ const API = {
     return fetch(`${URL}/${extension}`).then(data => data.json())
   },
 
-  deleteSingleItem(id, extension) {
+  deleteItem(id, extension) {
     return fetch(`${URL}/${extension}/${id}`, {
       method: "DELETE"
     })
@@ -29,6 +29,7 @@ const API = {
     })
       .then(r => r.json())
   }
+
 }
 
 export default API

@@ -133,7 +133,7 @@ const gameplay = {
     const btn_newShot = document.getElementById("newShot");
     const btn_saveShot = document.getElementById("saveShot");
     const btn_cancelShot = document.getElementById("cancelShot");
-    // const btn_editPrevGame = document.getElementById("editPrevGame");
+    const btn_editPrevGame = document.getElementById("editPrevGame");
     const btn_saveGame = document.getElementById("saveGame");
     const btn_3v3 = document.getElementById("_3v3");
     const btn_2v2 = document.getElementById("_2v2");
@@ -146,6 +146,7 @@ const gameplay = {
     btn_cancelShot.addEventListener("click", shotData.cancelShot);
     btn_saveGame.addEventListener("click", gameData.saveData);
     gameTypeBtns.forEach(btn => btn.addEventListener("click", gameData.gameTypeButtonToggle));
+    btn_editPrevGame.addEventListener("click", gameData.editPrevGame)
 
   }
 

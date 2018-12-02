@@ -108,19 +108,18 @@ const gameData = {
       .then(gameId => {
         // post shots with gameId
         const shotArr = shotData.getShotObjectsForPost();
-        let shotForPost = {};
+        console.log(shotArr)
         shotArr.forEach(shotObj => {
-          shotForPost.playerId = activeUserId,
-            shotForPost.gameId = gameId,
-            shotForPost.fieldX = shotObj._fieldX
-          shotForPost.fieldY = shotObj._fieldY,
-            shotForPost.goalX = shotObj._goalX,
-            shotForPost.goalY = shotObj._goalY
-          shotForPost.ball_speed = shotObj.ball_speed,
-            shotForPost.aerial = shotObj._aerial
+          let shotForPost = {};
+          shotForPost.gameId = gameId
+          shotForPost.fieldX = shotObj._fieldX
+          shotForPost.fieldY = shotObj._fieldY
+          shotForPost.goalX = shotObj._goalX
+          shotForPost.goalY = shotObj._goalY
+          shotForPost.ball_speed = Number(shotObj.ball_speed)
+          shotForPost.aerial = shotObj._aerial
+          API.postItem(shotForPost, "shots").then(post => console.log(post))
         })
-        console.log(shotForPost)
-        //FIXME: get shots saving
       });
 
   },
@@ -132,7 +131,7 @@ const gameData = {
   editPrevGame() {
 
     //TODO: allow user to edit content from most recent game saved (consider both MAX gameId and CURRENT userId to get the user's most recent game)
-
+    // API.getSingleItem("")
   }
 
   // const btn_editPrevGame = document.getElementById("editPrevGame");
