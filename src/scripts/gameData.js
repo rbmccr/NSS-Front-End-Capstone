@@ -151,9 +151,12 @@ const gameData = {
   },
 
   renderEditButtons() {
-    // remove & replace edit and save game buttons with "Save Edits" and "Cancel Edits"
+    // this function removes & replaces edit and save game buttons with "Save Edits" and "Cancel Edits"
     const btn_editPrevGame = document.getElementById("editPrevGame");
     const btn_saveGame = document.getElementById("saveGame");
+    // in case of lag in fetch, prevent user from double clicking button
+    btn_editPrevGame.disabled = true;
+    btn_editPrevGame.classList.add("is-loading");
 
     const btn_cancelEdits = elBuilder("button", { "id": "cancelEdits", "class": "button is-danger" }, "Cancel Edits")
     const btn_saveEdits = elBuilder("button", { "id": "saveEdits", "class": "button is-success" }, "Save Edits")
@@ -195,6 +198,8 @@ const gameData = {
         const recentGameId = user.games.reduce((max, obj) => obj.id > max ? obj.id : max, user.games[0].id);
         // fetch most recent game and embed shots
         API.getSingleItem("games", `${recentGameId}?_embed=shots`).then(gameObj => {
+          gameplay.loadGameplay();
+          shotData.resetGlobalShotVariables();
           gameData.renderEditButtons();
           savedGameObject = gameObj;
           gameData.renderPrevGame(gameObj);
