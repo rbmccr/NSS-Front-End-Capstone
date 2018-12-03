@@ -172,7 +172,7 @@ const gameData = {
     console.log(game)
     // call function in shotData that calls gamaData.provideShotsToShotData()
     // the function will capture the array of saved shots and render the shot buttons
-    shotData.renderShotsFromPreviousGame()
+    shotData.renderShotsButtonsFromPreviousGame()
     // TODO: ((STEP 1)) render game data on page
   },
 

@@ -288,24 +288,31 @@ const shotData = {
     return shotArray;
   },
 
-  renderShotsFromPreviousGame() {
+  renderShotsButtonsFromPreviousGame() {
     // this function requests the array of shots from the previous saved game, sets it as shotArray, and TODO: renders shot buttons
     const shotBtnContainer = document.getElementById("shotControls");
     // get saved game with shots embedded as array
-    savedGameObj = gameData.provideShotsToShotData();
+    let savedGameObj = gameData.provideShotsToShotData();
     // create shotArray with format required by local functions
+    let savedShotObj
     savedGameObj.shots.forEach(shot => {
-
+      savedShotObj = new shotOnGoal
+      savedShotObj.fieldX = shot.fieldX;
+      savedShotObj.fieldY = shot.fieldY;
+      savedShotObj.goalX = shot.goalX;
+      savedShotObj.goalY = shot.goalY;
+      savedShotObj.aerial = shot.aerial;
+      savedShotObj.ball_speed = shot.ball_speed.toString();
+      shotArray.push(savedShotObj);
     })
-
-
 
     console.log(shotArray);
     shotArray.forEach((shot, idx) => {
-      const newShotBtn = elBuilder("button", { "id": `shot-${idx}`, "class": "button is-link" }, `Shot ${idx + 1}`);
+      const newShotBtn = elBuilder("button", { "id": `shot-${idx + 1}`, "class": "button is-link" }, `Shot ${idx + 1}`);
       shotBtnContainer.appendChild(newShotBtn);
-      document.getElementById(`shot-${shotCounter}`).addEventListener("click", shotData.renderSavedShot);
+      document.getElementById(`shot-${idx + 1}`).addEventListener("click", shotData.renderSavedShot);
     });
+    shotCounter = shotArray.length;
   }
 
 }
