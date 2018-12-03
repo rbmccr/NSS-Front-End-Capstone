@@ -289,7 +289,7 @@ const shotData = {
   },
 
   renderShotsButtonsFromPreviousGame() {
-    // this function requests the array of shots from the previous saved game, sets it as shotArray, and TODO: renders shot buttons
+    // this function requests the array of shots from the previous saved game, sets it as shotArray, and renders shot buttons
     const shotBtnContainer = document.getElementById("shotControls");
     // get saved game with shots embedded as array
     let savedGameObj = gameData.provideShotsToShotData();
@@ -318,3 +318,9 @@ const shotData = {
 }
 
 export default shotData
+
+// TODO: notes on rendering game data and savings edited shots
+// --- may need to create another global var in shotData.js that is assigned an integer representing
+// the initial number of shots. If a user forgot to add a shot, for instance, and they add a new one in editing mode,
+// then that shot needs to be POSTed, not PUT. Need to differentiate the methods
+// fetch.PUT the already saved shots => then fetch.POST any new shots
