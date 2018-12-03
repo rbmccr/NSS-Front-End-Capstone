@@ -10,6 +10,9 @@ import elBuilder from "./elementBuilder";
 // 4. affordance for user to recall all data from previous saved game for editing
 // 5. include any other functions needed to support the first 4 requirements
 
+// this global variable is used to pass saved shots, ball speed, and aerial boolean to shotData.js during the edit process
+let savedGameObject;
+
 const gameData = {
 
   gameTypeButtonToggle(e) {
@@ -34,8 +37,8 @@ const gameData = {
   },
 
   saveData(gameData) {
-    // gets ID of latest game saved (returned immediately in object from POST)
-    // packages and saves shots with the game ID (POST to database)
+    // this function determines the user's most recent game played (the game just saved),
+    // and then saves all shots to the database with the correct gameId
     // calls functions to reload container and reset global shot data variables
 
     API.postItem("games", gameData)
@@ -164,8 +167,18 @@ const gameData = {
   },
 
   renderPrevGame(game) {
+    // this function is responsible for rendering the saved game information in the "Enter Game Data" container.
+    // it relies on a function in shotData.js to render the shot buttons
     console.log(game)
-    // TODO: ((STEP 1)) render shot data and game data on page
+    // call function in shotData that calls gamaData.provideShotsToShotData()
+    // the function will capture the array of saved shots and render the shot buttons
+    shotData.renderShotsFromPreviousGame()
+    // TODO: ((STEP 1)) render game data on page
+  },
+
+  provideShotsToShotData() {
+    // this function provides the shots for rendering to shotData
+    return savedGameObject
   },
 
   editPrevGame() {
@@ -182,8 +195,9 @@ const gameData = {
         const recentGameId = user.games.reduce((max, obj) => obj.id > max ? obj.id : max, user.games[0].id);
         // fetch most recent game and embed shots
         API.getSingleItem("games", `${recentGameId}?_embed=shots`).then(gameObj => {
-          gameData.renderEditButtons()
-          gameData.renderPrevGame(gameObj)
+          gameData.renderEditButtons();
+          savedGameObject = gameObj;
+          gameData.renderPrevGame(gameObj);
         })
       }
     })

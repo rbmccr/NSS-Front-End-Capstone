@@ -1,15 +1,17 @@
 import elBuilder from "./elementBuilder"
 import shotOnGoal from "./shotClass"
+import gameData from "./gameData";
 
 let shotCounter = 0;
 let editingShot = false; //editing shot is used for both new and old shots
 let shotObj = undefined;
 let shotArray = []; // reset when game is saved
-let previousShotObj; // global var used with shot editing
-let previousShotFieldX; // global var used with shot editing
-let previousShotFieldY; // global var used with shot editing
-let previousShotGoalX; // global var used with shot editing
-let previousShotGoalY; // global var used with shot editing
+// global vars used with shot editing
+let previousShotObj;
+let previousShotFieldX;
+let previousShotFieldY;
+let previousShotGoalX;
+let previousShotGoalY;
 
 const shotData = {
 
@@ -273,16 +275,37 @@ const shotData = {
     // for each button after "New Shot", "Save Shot", and "Cancel Shot" disable the buttons if the user is creating a new shot (disableOrNot = true) or enable them on save/cancel of a new shot (disableOrNot = false)
     const shotBtnContainer = document.getElementById("shotControls");
     let editBtn;
-    let length = shotBtnContainer.childNodes.length
+    let length = shotBtnContainer.childNodes.length;
     for (let i = 3; i < length; i++) {
-      editBtn = document.getElementById(`shot-${i - 2}`)
-      editBtn.disabled = disableOrNot
+      editBtn = document.getElementById(`shot-${i - 2}`);
+      editBtn.disabled = disableOrNot;
     }
 
   },
 
   getShotObjectsForPost() {
-    return shotArray
+    // provides array for use in gameData.js (when saving a new game, not when saving an edited game)
+    return shotArray;
+  },
+
+  renderShotsFromPreviousGame() {
+    // this function requests the array of shots from the previous saved game, sets it as shotArray, and TODO: renders shot buttons
+    const shotBtnContainer = document.getElementById("shotControls");
+    // get saved game with shots embedded as array
+    savedGameObj = gameData.provideShotsToShotData();
+    // create shotArray with format required by local functions
+    savedGameObj.shots.forEach(shot => {
+
+    })
+
+
+
+    console.log(shotArray);
+    shotArray.forEach((shot, idx) => {
+      const newShotBtn = elBuilder("button", { "id": `shot-${idx}`, "class": "button is-link" }, `Shot ${idx + 1}`);
+      shotBtnContainer.appendChild(newShotBtn);
+      document.getElementById(`shot-${shotCounter}`).addEventListener("click", shotData.renderSavedShot);
+    });
   }
 
 }
