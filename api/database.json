@@ -11,101 +11,64 @@
       "name": "Zac",
       "username": "Viper16",
       "password": "word"
-    },
-    {
-      "name": "Rob Boss",
-      "username": "rob",
-      "password": "pass",
-      "id": 3
-    },
-    {
-      "name": "Jacquelyn",
-      "username": "jquelly",
-      "password": "pass",
-      "id": 4
     }
   ],
   "games": [
     {
-      "id": 1,
       "userId": 1,
+      "mode": "competitive",
       "type": "3v3",
-      "mode": "Casual",
-      "blue": true,
+      "team": "blue",
       "score": 3,
-      "opp_score": 2,
-      "overtime": true
-    },
-    {
-      "id": 2,
-      "userId": 2,
-      "type": "2v2",
-      "mode": "Competitive",
-      "blue": false,
-      "score": 2,
-      "opp_score": 3,
-      "overtime": false
-    },
-    {
-      "userId": 1,
-      "mode": "casual",
-      "type": "2v2",
-      "team": "orange",
-      "score": 2,
-      "opp_score": 3,
-      "overtime": false,
-      "id": 3
-    },
-    {
-      "userId": 1,
-      "mode": "casual",
-      "type": "2v2",
-      "team": "orange",
-      "score": 0,
-      "opp_score": 0,
-      "overtime": false,
-      "id": 4
+      "opp_score": 4,
+      "overtime": true,
+      "timeStamp": "2018-12-05T19:32:56.695Z",
+      "id": 1
     }
   ],
   "shots": [
     {
-      "id": 1,
       "gameId": 1,
-      "fieldX": 0.5,
-      "fieldY": 0.5,
-      "goalX": 0.5,
-      "goalY": 0.5,
+      "fieldX": 0.682,
+      "fieldY": 0.423,
+      "goalX": 0.082,
+      "goalY": 0.411,
+      "ball_speed": 65,
+      "aerial": false,
+      "timeStamp": "2018-12-05T19:32:47.663Z",
+      "id": 1
+    },
+    {
+      "gameId": 1,
+      "fieldX": 0.24899999999999997,
+      "fieldY": 0.39100000000000007,
+      "goalX": 0.176,
+      "goalY": 0.634,
+      "ball_speed": 130,
       "aerial": true,
-      "ball_speed": 100
+      "timeStamp": "2018-12-05T19:38:26.936Z",
+      "id": 2
     },
     {
-      "id": 2,
       "gameId": 1,
-      "fieldX": 0.75,
-      "fieldY": 0.75,
-      "goalX": 0.75,
-      "goalY": 0.75,
+      "fieldX": 0.702,
+      "fieldY": 0.566,
+      "goalX": 0.271,
+      "goalY": 0.802,
+      "ball_speed": 44,
       "aerial": false,
-      "ball_speed": 50
-    },
-    {
-      "gameId": 3,
-      "fieldX": 0.471,
-      "fieldY": 0.309,
-      "goalX": 0.195,
-      "goalY": 0.317,
-      "ball_speed": 34,
-      "aerial": false,
+      "timeStamp": "2018-12-05T19:38:54.441Z",
       "id": 3
     },
     {
-      "gameId": 3,
-      "fieldX": 0.687,
-      "fieldY": 0.269,
-      "goalX": 0.795,
-      "goalY": 0.693,
-      "ball_speed": 77,
-      "aerial": true,
+      "gameId": 1,
+      "fieldX": 0.305,
+      "fieldY": 0.729,
+      "goalX": 0.842,
+      "goalY": 0.817,
+      "ball_speed": 88,
+      "aerial": false,
+      "timeStamp": "2018-12-05T19:38:59.289Z",
       "id": 4
     }
   ],

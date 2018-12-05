@@ -1,21 +1,24 @@
 import elBuilder from "./elementBuilder"
 import shotOnGoal from "./shotClass"
+import gameData from "./gameData";
 
 let shotCounter = 0;
 let editingShot = false; //editing shot is used for both new and old shots
 let shotObj = undefined;
 let shotArray = []; // reset when game is saved
-let previousShotObj; // global var used with shot editing
-let previousShotFieldX; // global var used with shot editing
-let previousShotFieldY; // global var used with shot editing
-let previousShotGoalX; // global var used with shot editing
-let previousShotGoalY; // global var used with shot editing
+// global vars used with shot editing
+let previousShotObj;
+let previousShotFieldX;
+let previousShotFieldY;
+let previousShotGoalX;
+let previousShotGoalY;
+// global var used when saving an edited game (to determine if new shots were added for POST)
+let initialLengthOfShotArray;
 
 const shotData = {
 
   resetGlobalShotVariables() {
-    // this function is called when gameplay is clicked on the navbar (from navbar.js) in order to prevent bugs with previously created shots
-    //TODO: call this function with "Save Game"
+    // this function is called when gameplay is clicked on the navbar and when a game is saved, in order to prevent bugs with previously created shots
     shotCounter = 0;
     editingShot = false;
     shotObj = undefined;
@@ -25,6 +28,7 @@ const shotData = {
     previousShotFieldY = undefined;
     previousShotGoalX = undefined;
     previousShotGoalY = undefined;
+    initialLengthOfShotArray = undefined;
   },
 
   createNewShot() {
@@ -32,6 +36,7 @@ const shotData = {
     const fieldImg = document.getElementById("field-img");
     const goalImg = document.getElementById("goal-img");
     shotObj = new shotOnGoal;
+    shotObj.timeStamp = new Date();
 
     // prevent user from selecting any edit shot buttons
     shotData.disableEditShotbuttons(true);
@@ -274,16 +279,52 @@ const shotData = {
     // for each button after "New Shot", "Save Shot", and "Cancel Shot" disable the buttons if the user is creating a new shot (disableOrNot = true) or enable them on save/cancel of a new shot (disableOrNot = false)
     const shotBtnContainer = document.getElementById("shotControls");
     let editBtn;
-    let length = shotBtnContainer.childNodes.length
+    let length = shotBtnContainer.childNodes.length;
     for (let i = 3; i < length; i++) {
-      editBtn = document.getElementById(`shot-${i - 2}`)
-      editBtn.disabled = disableOrNot
+      editBtn = document.getElementById(`shot-${i - 2}`);
+      editBtn.disabled = disableOrNot;
     }
 
   },
 
-  getShotObjectsForPost() {
-    return shotArray
+  getShotObjectsForSaving() {
+    // provides array for use in gameData.js (when saving a new game, not when saving an edited game)
+    return shotArray;
+  },
+
+  getInitialNumOfShots() {
+    // provides initial number of shots that were saved to database to gameData.js to identify an edited game is being saved
+    return initialLengthOfShotArray;
+  },
+
+  renderShotsButtonsFromPreviousGame() {
+    // this function requests the array of shots from the previous saved game, sets it as shotArray, and renders shot buttons
+    const shotBtnContainer = document.getElementById("shotControls");
+    // get saved game with shots embedded as array
+    let savedGameObj = gameData.provideShotsToShotData();
+    // create shotArray with format required by local functions
+    let savedShotObj
+    savedGameObj.shots.forEach(shot => {
+      savedShotObj = new shotOnGoal
+      savedShotObj.fieldX = shot.fieldX;
+      savedShotObj.fieldY = shot.fieldY;
+      savedShotObj.goalX = shot.goalX;
+      savedShotObj.goalY = shot.goalY;
+      savedShotObj.aerial = shot.aerial;
+      savedShotObj.ball_speed = shot.ball_speed.toString();
+      savedShotObj.timeStamp = shot.timeStamp
+      savedShotObj.id = shot.id
+      shotArray.push(savedShotObj);
+    })
+
+    console.log(shotArray);
+    shotArray.forEach((shot, idx) => {
+      const newShotBtn = elBuilder("button", { "id": `shot-${idx + 1}`, "class": "button is-link" }, `Shot ${idx + 1}`);
+      shotBtnContainer.appendChild(newShotBtn);
+      document.getElementById(`shot-${idx + 1}`).addEventListener("click", shotData.renderSavedShot);
+    });
+    shotCounter = shotArray.length;
+    initialLengthOfShotArray = shotArray.length;
   }
 
 }

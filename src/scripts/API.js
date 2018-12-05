@@ -28,6 +28,17 @@ const API = {
       body: JSON.stringify(obj)
     })
       .then(r => r.json())
+  },
+
+  putItem(extension, obj) {
+    return fetch(`${URL}/${extension}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(obj)
+    })
+      .then(r => r.json())
   }
 
 }

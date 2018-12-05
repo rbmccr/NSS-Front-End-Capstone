@@ -34,7 +34,7 @@ const gameplay = {
 
     // ball speed input and aerial select
     const ballSpeedInputTitle = elBuilder("div", { "class": "level-item" }, "Ball speed (kph):")
-    const ballSpeedInput = elBuilder("input", { "id": "ballSpeedInput", "class": "level-item input", "placeholder": "enter ball speed" });
+    const ballSpeedInput = elBuilder("input", { "id": "ballSpeedInput", "class": "level-item input", "type":"number", "placeholder": "enter ball speed" });
     const aerialOption1 = elBuilder("option", {}, "Standard");
     const aerialOption2 = elBuilder("option", {}, "Aerial");
     const aerialSelect = elBuilder("select", { "id": "aerialInput", "class": "select" }, null, aerialOption1, aerialOption2);
@@ -90,7 +90,7 @@ const gameplay = {
 
     // team select
     const teamOption1 = elBuilder("option", {}, "Orange team");
-    const teamOption2 = elBuilder("option", {}, "Blue Team");
+    const teamOption2 = elBuilder("option", {}, "Blue team");
     const teamSelect = elBuilder("select", { "id": "teamInput", "class": "select" }, null, teamOption1, teamOption2);
     const teamSelectParent = elBuilder("div", { "class": "select" }, null, teamSelect);
     const teamControl = elBuilder("div", { "class": "control level-item" }, null, teamSelectParent);
@@ -117,7 +117,7 @@ const gameplay = {
     // edit/save game buttons
     const editPreviousGame = elBuilder("button", { "id": "editPrevGame", "class": "button is-danger" }, "Edit Previous Game");
     const saveGame = elBuilder("button", { "id": "saveGame", "class": "button is-success" }, "Save Game");
-    const gameButtonAlignment = elBuilder("div", { "class": "buttons level-item" }, null, editPreviousGame, saveGame);
+    const gameButtonAlignment = elBuilder("div", { "class": "buttons level-item" }, null, saveGame, editPreviousGame);
     const gameButtonContainer = elBuilder("div", { "class": "level-right" }, null, gameButtonAlignment);
 
     // append to webpage
@@ -144,7 +144,7 @@ const gameplay = {
     btn_newShot.addEventListener("click", shotData.createNewShot);
     btn_saveShot.addEventListener("click", shotData.saveShot);
     btn_cancelShot.addEventListener("click", shotData.cancelShot);
-    btn_saveGame.addEventListener("click", gameData.saveData);
+    btn_saveGame.addEventListener("click", gameData.packageGameData);
     gameTypeBtns.forEach(btn => btn.addEventListener("click", gameData.gameTypeButtonToggle));
     btn_editPrevGame.addEventListener("click", gameData.editPrevGame)
 
