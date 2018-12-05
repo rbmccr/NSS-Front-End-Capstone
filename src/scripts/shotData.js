@@ -12,6 +12,8 @@ let previousShotFieldX;
 let previousShotFieldY;
 let previousShotGoalX;
 let previousShotGoalY;
+// global var used when saving an edited game (to determine if new shots were added for POST)
+let initialLengthOfShotArray;
 
 const shotData = {
 
@@ -26,6 +28,7 @@ const shotData = {
     previousShotFieldY = undefined;
     previousShotGoalX = undefined;
     previousShotGoalY = undefined;
+    initialLengthOfShotArray = undefined;
   },
 
   createNewShot() {
@@ -315,6 +318,7 @@ const shotData = {
       document.getElementById(`shot-${idx + 1}`).addEventListener("click", shotData.renderSavedShot);
     });
     shotCounter = shotArray.length;
+    initialLengthOfShotArray = shotArray.length;
   }
 
 }

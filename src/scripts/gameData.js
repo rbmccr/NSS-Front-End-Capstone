@@ -178,17 +178,17 @@ const gameData = {
     // this function is responsible for rendering the saved game information in the "Enter Game Data" container.
     // it relies on a function in shotData.js to render the shot buttons
     console.log(game)
+
     // call function in shotData that calls gamaData.provideShotsToShotData()
     // the function will capture the array of saved shots and render the shot buttons
     shotData.renderShotsButtonsFromPreviousGame()
-    // TODO: ((STEP 1)) render game data on page
 
     // overtime
     const sel_overtime = document.getElementById("overtimeInput");
     if (game.overtime) {
-      sel_overtime.value === "Overtime"
+      sel_overtime.value = "Overtime"
     } else {
-      sel_overtime.value === "No Overtime"
+      sel_overtime.value = "No Overtime"
     }
 
     // my team
@@ -211,7 +211,7 @@ const gameData = {
       inpt_blueScore.value = game.score;
     }
 
-    // gam`e type (1v1, 2v2, 3v3)
+    // game type (1v1, 2v2, 3v3)
     const btn_3v3 = document.getElementById("_3v3");
     const btn_2v2 = document.getElementById("_2v2");
     const btn_1v1 = document.getElementById("_1v1");
