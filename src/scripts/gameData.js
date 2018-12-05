@@ -43,11 +43,11 @@ const gameData = {
 
     if (savingEditedGame) {
       // if saving an edited game, the game is PUT, all shots saved previously are PUT, and new shots are POSTED
-      console.log("gameData", gameData)
+
       // use ID of game stored in global var
       API.putItem(`games/${savedGameObject.id}`, gameData)
-        .then(game => game.id)
-        .then(gameId => {
+        .then(gamePUT => {
+          console.log("PUT GAME", gamePUT)
           // post shots with gameId
           const shotArr = shotData.getShotObjectsForSaving();
           const previouslySavedShotsArr = [];
@@ -55,7 +55,6 @@ const gameData = {
 
           // create arrays for POST and PUT
           shotArr.forEach(shot => {
-            console.log("SHOT ID", shot.id)
             if (shot.id !== undefined) {
               previouslySavedShotsArr.push(shot);
             } else {
@@ -63,26 +62,42 @@ const gameData = {
             }
           })
 
-          shotsNotYetPostedArr.forEach(shotObj => {
-            let shotForPost = {};
-            shotForPost.gameId = gameId
-            shotForPost.fieldX = shotObj._fieldX
-            shotForPost.fieldY = shotObj._fieldY
-            shotForPost.goalX = shotObj._goalX
-            shotForPost.goalY = shotObj._goalY
-            shotForPost.ball_speed = Number(shotObj.ball_speed)
-            shotForPost.aerial = shotObj._aerial
-            shotForPost.timeStamp = shotObj._timeStamp
-            API.postItem("shots", shotForPost).then(post => {
-              console.log("POSTED NEW SHOTS MADE DURING EDIT", post);
-              previouslySavedShotsArr.forEach(shot => {
-                API.putItem(`shots/${shot.id}`, shot).then(put => {
-                  console.log("PUT", put)
-                  // call functions that clear gameplay content and reset global shot data variables
-                  gameplay.loadGameplay();
-                  shotData.resetGlobalShotVariables();
+          // PUT first, sicne you can't save a game initially without at least 1 shot
+          previouslySavedShotsArr.forEach(shot => {
+            // even though it's a PUT, we have to reformat the _fieldX syntax to fieldX
+            let shotForPut = {};
+            shotForPut.gameId = savedGameObject.id
+            shotForPut.fieldX = shot._fieldX
+            shotForPut.fieldY = shot._fieldY
+            shotForPut.goalX = shot._goalX
+            shotForPut.goalY = shot._goalY
+            shotForPut.ball_speed = Number(shot.ball_speed)
+            shotForPut.aerial = shot._aerial
+            shotForPut.timeStamp = shot._timeStamp
+            API.putItem(`shots/${shot.id}`, shotForPut).then(put => {
+              console.log("PUT DURING EDIT", put)
+              if (shotsNotYetPostedArr.length === 0) {
+                gameplay.loadGameplay();
+                shotData.resetGlobalShotVariables();
+              } else {
+                shotsNotYetPostedArr.forEach(shotObj => {
+                  let shotForPost = {};
+                  shotForPost.gameId = savedGameObject.id
+                  shotForPost.fieldX = shotObj._fieldX
+                  shotForPost.fieldY = shotObj._fieldY
+                  shotForPost.goalX = shotObj._goalX
+                  shotForPost.goalY = shotObj._goalY
+                  shotForPost.ball_speed = Number(shotObj.ball_speed)
+                  shotForPost.aerial = shotObj._aerial
+                  shotForPost.timeStamp = shotObj._timeStamp
+                  API.postItem("shots", shotForPost).then(post => {
+                    console.log("POSTED DURING EDIT", post);
+                    // call functions that clear gameplay content and reset global shot data variables
+                    gameplay.loadGameplay();
+                    shotData.resetGlobalShotVariables();
+                  })
                 })
-              })
+              }
             })
           })
         });
@@ -152,7 +167,7 @@ const gameData = {
       myTeam = "blue";
     }
 
-    // my score
+    // scores
     let myScore;
     let theirScore;
     const inpt_orangeScore = document.getElementById("orangeScoreInput");
@@ -187,8 +202,8 @@ const gameData = {
 
     // determine whether or not a new game or edited game is being saved. If an edited game is being saved, then there is at least one shot saved already, making the return from the shotData function more than 0
     const savingEditedGame = shotData.getInitialNumOfShots()
-    console.log(savingEditedGame)
     if (savingEditedGame !== undefined) {
+      gameDataObj.timeStamp = savedGameObject.timeStamp
       gameData.saveData(gameDataObj, true);
     } else {
       // time stamp if new game
@@ -243,7 +258,7 @@ const gameData = {
     if (game.overtime) {
       sel_overtime.value = "Overtime"
     } else {
-      sel_overtime.value = "No Overtime"
+      sel_overtime.value = "No overtime"
     }
 
     // my team
