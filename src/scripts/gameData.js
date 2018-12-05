@@ -36,35 +36,84 @@ const gameData = {
 
   },
 
-  saveData(gameData) {
-    // this function determines the user's most recent game played (the game just saved),
+  saveData(gameData, savingEditedGame) {
+    // this function saves the user's most recent game played (the newly created game or game just edited),
     // and then saves all shots to the database with the correct gameId
-    // calls functions to reload container and reset global shot data variables
+    // then calls functions to reload container and reset global shot data variables
 
-    API.postItem("games", gameData)
-      .then(game => game.id)
-      .then(gameId => {
-        // post shots with gameId
-        const shotArr = shotData.getShotObjectsForPost();
-        console.log(shotArr)
-        shotArr.forEach(shotObj => {
-          let shotForPost = {};
-          shotForPost.gameId = gameId
-          shotForPost.fieldX = shotObj._fieldX
-          shotForPost.fieldY = shotObj._fieldY
-          shotForPost.goalX = shotObj._goalX
-          shotForPost.goalY = shotObj._goalY
-          shotForPost.ball_speed = Number(shotObj.ball_speed)
-          shotForPost.aerial = shotObj._aerial
-          shotForPost.timeStamp = shotObj._timeStamp
-          API.postItem("shots", shotForPost).then(post => {
-            console.log(post);
-            // call functions that clear gameplay content and reset global shot data variables
-            gameplay.loadGameplay();
-            shotData.resetGlobalShotVariables();
+    if (savingEditedGame) {
+      // if saving an edited game, the game is PUT, all shots saved previously are PUT, and new shots are POSTED
+      console.log("gameData", gameData)
+      // use ID of game stored in global var
+      API.putItem(`games/${savedGameObject.id}`, gameData)
+        .then(game => game.id)
+        .then(gameId => {
+          // post shots with gameId
+          const shotArr = shotData.getShotObjectsForSaving();
+          const previouslySavedShotsArr = [];
+          const shotsNotYetPostedArr = [];
+
+          // create arrays for POST and PUT
+          shotArr.forEach(shot => {
+            console.log("SHOT ID", shot.id)
+            if (shot.id !== undefined) {
+              previouslySavedShotsArr.push(shot);
+            } else {
+              shotsNotYetPostedArr.push(shot);
+            }
           })
-        })
-      });
+
+          shotsNotYetPostedArr.forEach(shotObj => {
+            let shotForPost = {};
+            shotForPost.gameId = gameId
+            shotForPost.fieldX = shotObj._fieldX
+            shotForPost.fieldY = shotObj._fieldY
+            shotForPost.goalX = shotObj._goalX
+            shotForPost.goalY = shotObj._goalY
+            shotForPost.ball_speed = Number(shotObj.ball_speed)
+            shotForPost.aerial = shotObj._aerial
+            shotForPost.timeStamp = shotObj._timeStamp
+            API.postItem("shots", shotForPost).then(post => {
+              console.log("POSTED NEW SHOTS MADE DURING EDIT", post);
+              previouslySavedShotsArr.forEach(shot => {
+                API.putItem(`shots/${shot.id}`, shot).then(put => {
+                  console.log("PUT", put)
+                  // call functions that clear gameplay content and reset global shot data variables
+                  gameplay.loadGameplay();
+                  shotData.resetGlobalShotVariables();
+                })
+              })
+            })
+          })
+        });
+      // if the game is a new game altogether, then the game is POSTED and all shots are POSTED
+    } else {
+      API.postItem("games", gameData)
+        .then(game => game.id)
+        .then(gameId => {
+          // post shots with gameId
+          const shotArr = shotData.getShotObjectsForSaving();
+          console.log(shotArr)
+          shotArr.forEach(shotObj => {
+            let shotForPost = {};
+            shotForPost.gameId = gameId
+            shotForPost.fieldX = shotObj._fieldX
+            shotForPost.fieldY = shotObj._fieldY
+            shotForPost.goalX = shotObj._goalX
+            shotForPost.goalY = shotObj._goalY
+            shotForPost.ball_speed = Number(shotObj.ball_speed)
+            shotForPost.aerial = shotObj._aerial
+            shotForPost.timeStamp = shotObj._timeStamp
+            API.postItem("shots", shotForPost).then(post => {
+              console.log(post);
+              // call functions that clear gameplay content and reset global shot data variables
+              gameplay.loadGameplay();
+              shotData.resetGlobalShotVariables();
+            })
+          })
+        });
+    }
+
   },
 
   packageGameData() {
@@ -137,22 +186,22 @@ const gameData = {
     };
 
     // determine whether or not a new game or edited game is being saved. If an edited game is being saved, then there is at least one shot saved already, making the return from the shotData function more than 0
-    const savingEditedGame = shotData.determineIfSavingEditedGame()
-    if (savingEditedGame > 0) {
-
+    const savingEditedGame = shotData.getInitialNumOfShots()
+    console.log(savingEditedGame)
+    if (savingEditedGame !== undefined) {
+      gameData.saveData(gameDataObj, true);
     } else {
       // time stamp if new game
       let timeStamp = new Date();
-      gameData.timeStamp = timeStamp
-      gameData.saveData(gameDataObj);
+      gameDataObj.timeStamp = timeStamp
+      gameData.saveData(gameDataObj, false);
     }
-    //FIXME: ((STEP 2)) add intermediary to determine whether data should be PUT from editing or POSTed from new game saved (consider passing event argument to use e.target)
 
   },
 
   savePrevGameEdits() {
     console.log("saving edits...")
-    // gameData.packageGameData();
+    gameData.packageGameData();
     // TODO: ((STEP 3)) PUT edits to database
   },
 

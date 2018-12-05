@@ -287,12 +287,13 @@ const shotData = {
 
   },
 
-  getShotObjectsForPost() {
+  getShotObjectsForSaving() {
     // provides array for use in gameData.js (when saving a new game, not when saving an edited game)
     return shotArray;
   },
 
-  determineIfSavingEditedGame() {
+  getInitialNumOfShots() {
+    // provides initial number of shots that were saved to database to gameData.js to identify an edited game is being saved
     return initialLengthOfShotArray;
   },
 
@@ -312,6 +313,7 @@ const shotData = {
       savedShotObj.aerial = shot.aerial;
       savedShotObj.ball_speed = shot.ball_speed.toString();
       savedShotObj.timeStamp = shot.timeStamp
+      savedShotObj.id = shot.id
       shotArray.push(savedShotObj);
     })
 
@@ -328,9 +330,3 @@ const shotData = {
 }
 
 export default shotData
-
-// TODO: notes on rendering game data and savings edited shots
-// --- may need to create another global var in shotData.js that is assigned an integer representing
-// the initial number of shots. If a user forgot to add a shot, for instance, and they add a new one in editing mode,
-// then that shot needs to be POSTed, not PUT. Need to differentiate the methods
-// fetch.PUT the already saved shots => then fetch.POST any new shots
