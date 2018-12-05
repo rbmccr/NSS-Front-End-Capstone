@@ -126,9 +126,6 @@ const gameData = {
       overtime = false;
     }
 
-    // time stamp
-    let timeStamp = new Date();
-
     let gameDataObj = {
       "userId": activeUserId,
       "mode": gameMode,
@@ -137,16 +134,25 @@ const gameData = {
       "score": myScore,
       "opp_score": theirScore,
       "overtime": overtime,
-      "timeStamp": timeStamp
     };
 
-    gameData.saveData(gameDataObj);
-    //FIXME: ((STEP 2)) add intermediary function to determine whether data should be PUT from editing or POSTed from new game saved (consider passing event argument to use e.target)
+    // determine whether or not a new game or edited game is being saved. If an edited game is being saved, then there is at least one shot saved already, making the return from the shotData function more than 0
+    const savingEditedGame = shotData.determineIfSavingEditedGame()
+    if (savingEditedGame > 0) {
+
+    } else {
+      // time stamp if new game
+      let timeStamp = new Date();
+      gameData.timeStamp = timeStamp
+      gameData.saveData(gameDataObj);
+    }
+    //FIXME: ((STEP 2)) add intermediary to determine whether data should be PUT from editing or POSTed from new game saved (consider passing event argument to use e.target)
 
   },
 
   savePrevGameEdits() {
     console.log("saving edits...")
+    // gameData.packageGameData();
     // TODO: ((STEP 3)) PUT edits to database
   },
 

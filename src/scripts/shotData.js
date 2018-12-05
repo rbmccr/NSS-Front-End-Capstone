@@ -292,6 +292,10 @@ const shotData = {
     return shotArray;
   },
 
+  determineIfSavingEditedGame() {
+    return initialLengthOfShotArray;
+  },
+
   renderShotsButtonsFromPreviousGame() {
     // this function requests the array of shots from the previous saved game, sets it as shotArray, and renders shot buttons
     const shotBtnContainer = document.getElementById("shotControls");
