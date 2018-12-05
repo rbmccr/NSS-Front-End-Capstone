@@ -1,5 +1,5 @@
 import navbar from "./navbar"
-import gameplay from "./gameplay"
+// import gameplay from "./gameplay"
 import heatmaps from "./heatmaps";
 
 // function closeBox(e) {

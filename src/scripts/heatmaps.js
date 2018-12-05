@@ -1,4 +1,5 @@
 import elBuilder from "./elementBuilder"
+import heatmapData from "./heatmapData"
 
 const webpage = document.getElementById("container-master");
 
@@ -7,7 +8,9 @@ const heatmaps = {
   loadHeatmapContainers() {
     webpage.innerHTML = null;
     this.buildFilters();
+    this.buildGenerator(); // builds button to generate heatmap, save heatmap, and view saved heatmaps
     this.buildFieldandGoal();
+    this.heatmapEventManager();
   },
 
   buildFilters() {
@@ -16,7 +19,7 @@ const heatmaps = {
     const resetBtn = elBuilder("button", { "class": "button is-danger" }, "Reset Filters");
 
     // date range button
-    const dateBtnText = elBuilder("span", {}, "Date Range")
+    const dateBtnText = elBuilder("span", {}, "Date Range");
     const dateBtnIcon = elBuilder("i", { "class": "fas fa-calendar" }, null);
     const dateBtnIconSpan = elBuilder("span", { "class": "icon is-small" }, null, dateBtnIcon);
     const dateBtn = elBuilder("a", { "class": "button is-outlined is-dark" }, null, dateBtnIconSpan, dateBtnText);
@@ -54,7 +57,7 @@ const heatmaps = {
     const control4 = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv4);
 
     // game mode
-    const icon3 = elBuilder("i", { "class": "fas fa-handshake" }, null);
+    const icon3 = elBuilder("i", { "class": "fas fa-gamepad" }, null);
     const iconSpan3 = elBuilder("span", { "class": "icon is-left" }, null, icon3);
     const sel3_op1 = elBuilder("option", {}, "Game Mode");
     const sel3_op2 = elBuilder("option", {}, "Competitive");
@@ -90,6 +93,30 @@ const heatmaps = {
     webpage.appendChild(ParentFilterContainer);
   },
 
+  buildGenerator() {
+
+    // const content1 = elBuilder("div", {"style":"margin-left=5px"}, "Test item")
+    // const dropdownContent = elBuilder("div", { "class": "dropdown-content" }, null, content1);
+    // const dropdownMenu = elBuilder("div", { "class": "dropdown-menu", "id": "dropdown-menu", "role": "menu" }, null, dropdownContent);
+    // const dropdownArrowIcon = elBuilder("i", { "class": "fas fa-angle-down", "aria-hidden": "true" }, null);
+    // const dropdownArrowIconSpan = elBuilder("span", { "class": "icon is-small" }, null, dropdownArrowIcon);
+    // const dropdownBtnText = elBuilder("span", {}, "Default Heatmap");
+    // const dropdownBtn = elBuilder("button", { "class": "button" }, null, dropdownBtnText, dropdownArrowIconSpan);
+    // const dropdownTrigger = elBuilder("div", { "class": "dropdown-trigger", "aria-haspopup": "true", "aria-controls": "dropdown-menu" }, null, dropdownBtn);
+    // const dropdownParent = elBuilder("div", { "class": "dropdown" }, null, dropdownTrigger, dropdownMenu);
+    // const dropdownControl = elBuilder("div", { "class": "control" }, null, dropdownParent);
+
+    // dropdownTrigger.addEventListener("click", () => {dropdownParent.classList.toggle("is-active")})
+
+    const generatorButton = elBuilder("button", { "id":"generateHeatmapBtn", "class": "button is-success" }, "Generate Heatmap");
+    const generatorControl = elBuilder("div", { "class": "control" }, null, generatorButton);
+    const generatorField = elBuilder("div", { "class": "field is-grouped is-gruoped-multiline" }, null, generatorControl);
+    const ParentGeneratorContainer = elBuilder("div", { "class": "container box" }, null, generatorField);
+
+    // append filter container to webpage
+    webpage.appendChild(ParentGeneratorContainer);
+  },
+
   buildFieldandGoal() {
     const fieldImage = elBuilder("img", { "id": "field-img", "src": "../images/DFH_stadium_790x540_no_bg_90deg.png", "alt": "DFH Stadium", "style": "height: 100%; width: 100%; object-fit: contain" });
     const fieldImageBackground = elBuilder("img", { "id": "field-img-bg", "src": "../images/DFH_stadium_790x540_no_bg_90deg.png", "alt": "DFH Stadium", "style": "height: 100%; width: 100%; object-fit: contain" });
@@ -105,6 +132,12 @@ const heatmaps = {
 
     // append field and goal to page
     webpage.appendChild(parentShotContainer);
+  },
+
+  heatmapEventManager() {
+    const generateHeatmapBtn = document.getElementById("generateHeatmapBtn");
+
+    generateHeatmapBtn.addEventListener("click", heatmapData.getUsersShots)
   }
 
 }
