@@ -33,6 +33,7 @@ const shotData = {
     const fieldImg = document.getElementById("field-img");
     const goalImg = document.getElementById("goal-img");
     shotObj = new shotOnGoal;
+    shotObj.timeStamp = new Date();
 
     // prevent user from selecting any edit shot buttons
     shotData.disableEditShotbuttons(true);
@@ -303,6 +304,7 @@ const shotData = {
       savedShotObj.goalY = shot.goalY;
       savedShotObj.aerial = shot.aerial;
       savedShotObj.ball_speed = shot.ball_speed.toString();
+      savedShotObj.timeStamp = shot.timeStamp
       shotArray.push(savedShotObj);
     })
 

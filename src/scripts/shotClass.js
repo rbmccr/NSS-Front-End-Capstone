@@ -17,6 +17,9 @@ class shotOnGoal {
   set ballSpeed(ballSpeed) {
     this.ball_speed = ballSpeed
   }
+  set timeStamp(dateObj) {
+    this._timeStamp = dateObj
+  }
 }
 
 export default shotOnGoal

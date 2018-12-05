@@ -56,6 +56,7 @@ const gameData = {
           shotForPost.goalY = shotObj._goalY
           shotForPost.ball_speed = Number(shotObj.ball_speed)
           shotForPost.aerial = shotObj._aerial
+          shotForPost.timeStamp = shotObj._timeStamp
           API.postItem("shots", shotForPost).then(post => {
             console.log(post);
             // call functions that clear gameplay content and reset global shot data variables
@@ -125,6 +126,9 @@ const gameData = {
       overtime = false;
     }
 
+    // time stamp
+    let timeStamp = new Date();
+
     let gameDataObj = {
       "userId": activeUserId,
       "mode": gameMode,
@@ -132,7 +136,8 @@ const gameData = {
       "team": myTeam,
       "score": myScore,
       "opp_score": theirScore,
-      "overtime": overtime
+      "overtime": overtime,
+      "timeStamp": timeStamp
     };
 
     gameData.saveData(gameDataObj);
@@ -177,6 +182,7 @@ const gameData = {
     // the function will capture the array of saved shots and render the shot buttons
     shotData.renderShotsButtonsFromPreviousGame()
     // TODO: ((STEP 1)) render game data on page
+
   },
 
   provideShotsToShotData() {
