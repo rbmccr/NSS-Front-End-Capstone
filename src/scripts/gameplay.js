@@ -90,7 +90,7 @@ const gameplay = {
 
     // team select
     const teamOption1 = elBuilder("option", {}, "Orange team");
-    const teamOption2 = elBuilder("option", {}, "Blue Team");
+    const teamOption2 = elBuilder("option", {}, "Blue team");
     const teamSelect = elBuilder("select", { "id": "teamInput", "class": "select" }, null, teamOption1, teamOption2);
     const teamSelectParent = elBuilder("div", { "class": "select" }, null, teamSelect);
     const teamControl = elBuilder("div", { "class": "control level-item" }, null, teamSelectParent);

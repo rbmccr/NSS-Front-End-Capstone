@@ -183,6 +183,63 @@ const gameData = {
     shotData.renderShotsButtonsFromPreviousGame()
     // TODO: ((STEP 1)) render game data on page
 
+    // overtime
+    const sel_overtime = document.getElementById("overtimeInput");
+    if (game.overtime) {
+      sel_overtime.value === "Overtime"
+    } else {
+      sel_overtime.value === "No Overtime"
+    }
+
+    // my team
+    const sel_teamColor = document.getElementById("teamInput");
+    if (game.team === "orange") {
+      sel_teamColor.value = "Orange team"
+    } else {
+      sel_teamColor.value = "Blue team"
+    }
+
+    // my score
+    const inpt_orangeScore = document.getElementById("orangeScoreInput");
+    const inpt_blueScore = document.getElementById("blueScoreInput");
+
+    if (game.team === "orange") {
+      inpt_orangeScore.value = game.score;
+      inpt_blueScore.value = game.opp_score;
+    } else {
+      inpt_orangeScore.value = game.opp_score;
+      inpt_blueScore.value = game.score;
+    }
+
+    // gam`e type (1v1, 2v2, 3v3)
+    const btn_3v3 = document.getElementById("_3v3");
+    const btn_2v2 = document.getElementById("_2v2");
+    const btn_1v1 = document.getElementById("_1v1");
+
+    if (game.type === "3v3") {
+      btn_3v3.classList.add("is-selected");
+      btn_3v3.classList.add("is-link");
+      // 2v2 is the default
+      btn_2v2.classList.remove("is-selected");
+      btn_2v2.classList.remove("is-link");
+    } else if (game.type === "2v2") {
+      btn_2v2.classList.add("is-selected");
+      btn_2v2.classList.add("is-link");
+    } else {
+      btn_1v1.classList.add("is-selected");
+      btn_1v1.classList.add("is-link");
+      btn_2v2.classList.remove("is-selected");
+      btn_2v2.classList.remove("is-link");
+    }
+
+    // game mode
+    const sel_gameMode = document.getElementById("gameModeInput");
+    if (game.mode = "competitive") {
+      sel_gameMode.value = "Competitive"
+    } else {
+      sel_gameMode.value = "Casual"
+    }
+
   },
 
   provideShotsToShotData() {
