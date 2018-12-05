@@ -7,18 +7,10 @@ const heatmaps = {
   loadHeatmapContainers() {
     webpage.innerHTML = null;
     this.buildFilters();
+    this.buildFieldandGoal();
   },
 
   buildFilters() {
-
-
-    //   <p class="buttons">
-    // <a class="button">
-    //   <span class="icon">
-    //     <i class="fab fa-github"></i>
-    //   </span>
-    //   <span>GitHub</span>
-    // </a>
 
     // reset button
     const resetBtn = elBuilder("button", { "class": "button is-danger" }, "Reset Filters");
@@ -96,6 +88,23 @@ const heatmaps = {
 
     // append filter container to webpage
     webpage.appendChild(ParentFilterContainer);
+  },
+
+  buildFieldandGoal() {
+    const fieldImage = elBuilder("img", { "id": "field-img", "src": "../images/DFH_stadium_790x540_no_bg_90deg.png", "alt": "DFH Stadium", "style": "height: 100%; width: 100%; object-fit: contain" });
+    const fieldImageBackground = elBuilder("img", { "id": "field-img-bg", "src": "../images/DFH_stadium_790x540_no_bg_90deg.png", "alt": "DFH Stadium", "style": "height: 100%; width: 100%; object-fit: contain" });
+    const fieldImageParent = elBuilder("div", { "id": "field-img-parent", "class": "" }, null, fieldImageBackground, fieldImage);
+    const alignField = elBuilder("div", { "class": "level-item" }, null, fieldImageParent);
+    const goalImage = elBuilder("img", { "id": "goal-img", "src": "../images/RL_goal_cropped_no_bg_BW.png", "alt": "DFH Stadium", "style": "height: 100%; width: 100%; object-fit: contain" });
+    const goalImageParent = elBuilder("div", { "id": "goal-img-parent", "class": "level" }, null, goalImage);
+    const alignGoal = elBuilder("div", { "class": "level-item" }, null, goalImageParent);
+    const heatmapImageContainers = elBuilder("div", { "class": "level" }, null, alignField, alignGoal);
+
+    // parent container holding all shot information
+    const parentShotContainer = elBuilder("div", { "class": "container box" }, null, heatmapImageContainers)
+
+    // append field and goal to page
+    webpage.appendChild(parentShotContainer);
   }
 
 }
