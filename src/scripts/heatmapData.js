@@ -7,7 +7,13 @@ import elBuilder from "./elementBuilder.js";
 // global variable to store fetched shots
 let globalShotsArr;
 let joinTableArr = [];
-const activeUserId = sessionStorage.getItem("activeUserId");
+
+//FIXME: user logged in can see all shots on heatmap page, user id not working with search
+//FIXME: examine confirmHeatmapDelete function. may not need for loop. grab ID from option
+// TODO: set interval for container width monitoring
+// TODO: scale ball size with goal
+// TODO: add filter compatibility
+// TODO: if custom heatmap is selected from dropdown, then blur filter container
 
 const heatmapData = {
 
@@ -50,15 +56,20 @@ const heatmapData = {
         return gameIds;
       })
       .then(gameIds => {
-        const shotURLextension = heatmapData.applyShotFilters(gameIds);
-        API.getAll(shotURLextension)
-          .then(shots => {
-            globalShotsArr = shots;
-            heatmapData.buildFieldHeatmap(shots);
-            heatmapData.buildGoalHeatmap(shots);
-            // intervalId = setInterval(heatmapData.getActiveOffsets, 500);
-          })
-      })
+        if (gameIds.length === 0) {
+          alert("No Shots have been saved yet. Visit the Gameplay page to get started.")
+          return
+        } else {
+          const shotURLextension = heatmapData.applyShotFilters(gameIds);
+          API.getAll(shotURLextension)
+            .then(shots => {
+              globalShotsArr = shots;
+              heatmapData.buildFieldHeatmap(shots);
+              heatmapData.buildGoalHeatmap(shots);
+              // intervalId = setInterval(heatmapData.getActiveOffsets, 500);
+            })
+        }
+      });
   },
 
   fetchSavedHeatmapData(heatmapName) {
@@ -286,16 +297,10 @@ const heatmapData = {
   },
 
   deleteHeatmapObjectandJoinTables(heatmapId) {
+    const activeUserId = sessionStorage.getItem("activeUserId");
     return API.deleteItem("heatmaps", `${heatmapId.slice(8)}?userId=${activeUserId}`)
   }
 
 }
 
 export default heatmapData
-
-// TODO: delete heatmap functionality
-// TODO: set interval for container width monitoring
-// TODO: scale ball size with goal
-// TODO: add filter compatibility
-// TODO: if custom heatmap is selected from dropdown, then blur filter container
-// TODO: on page load, render user-saved heatmaps as options in dropdown menu
