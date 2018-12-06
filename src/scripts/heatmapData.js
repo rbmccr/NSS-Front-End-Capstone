@@ -4,7 +4,8 @@ import API from "./API.js";
 // ID of setInterval function used to monitor container width and repaint heatmap if container width changes
 // let intervalId;
 // global variable to store fetched shots
-let globalShotsArr;
+let globalShotsArr = [];
+let joinTableArr = [];
 
 const heatmapData = {
 
@@ -42,7 +43,8 @@ const heatmapData = {
   },
 
   fetchSavedHeatmapData(heatmapName) {
-    console.log("fetching saved heatmap data...")
+    console.log("fetching saved heatmap data...");
+    // fetch heatmaps with name= and userId=
   },
 
   applyGameFilters() { // TODO: add more filters
@@ -177,24 +179,43 @@ const heatmapData = {
   saveHeatmap() {
     // this function is responsible for saving a heatmap object with a name and userId, then making join tables with
     // shot ID and heatmap ID as foreign keys
+    const heatmapDropdown = document.getElementById("heatmapDropdown");
     const saveInput = document.getElementById("saveHeatmapInput");
-    if (saveInput.value.length > 0 && saveInput.value.length <= 20) {
+    const heatmapTitle = saveInput.value;
+
+    if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful!") { //TODO: add requirement for a heatmap to be generated
       console.log("saving heatmap...");
       saveInput.classList.remove("is-danger");
-      heatmapData.saveHeatmapObject()
-        .then(heatmapData.saveJoinTables().then(x => console.log(x)))
+      heatmapData.saveHeatmapObject(heatmapTitle)
+        .then(heatmapObj => heatmapData.saveJoinTables(heatmapObj).then(x => {
+          joinTableArr = [] // empty the temporary global array used with Promise.all
+          // heatmapDropdown.value = heatmapTitle TODO: append child to select dropdown with new heatmap name
+          saveInput.value = "Save successful!";
+        }));
     } else {
-      console.log("Name must be between 1 and 20 characters...");
       saveInput.classList.add("is-danger");
     }
   },
 
-  saveHeatmapObject() {
-
+  saveHeatmapObject(heatmapTitle) {
+    // this function saves a heatmap object with the user-provided name and the userId
+    const activeUserId = Number(sessionStorage.getItem("activeUserId"));
+    const heatmapObj = {
+      name: heatmapTitle,
+      userId: activeUserId
+    }
+    return API.postItem("heatmaps", heatmapObj)
   },
 
-  saveJoinTables() {
-
+  saveJoinTables(heatmapObj) {
+    globalShotsArr.forEach(shot => {
+      let joinTableObj = {
+        shotId: shot.id,
+        heatmapId: heatmapObj.id
+      }
+      joinTableArr.push(API.postItem("shot_heatmap", joinTableObj));
+    });
+    return Promise.all(joinTableArr)
   },
 
   deleteHeatmap() {
@@ -205,9 +226,9 @@ const heatmapData = {
 
 export default heatmapData
 
-// TODO: make heatmap function for goal
-// TODO: save heatmap functionality
 // TODO: delete heatmap functionality
 // TODO: set interval for container width monitoring
 // TODO: scale ball size with goal
 // TODO: add filter compatibility
+// TODO: if custom heatmap is selected from dropdown, then blur filter container
+// TODO: on page load, render user-saved heatmaps as options in dropdown menu
