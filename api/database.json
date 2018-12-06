@@ -40,8 +40,8 @@
     },
     {
       "gameId": 1,
-      "fieldX": 0.24899999999999997,
-      "fieldY": 0.39100000000000007,
+      "fieldX": 0.25,
+      "fieldY": 0.39,
       "goalX": 0.176,
       "goalY": 0.634,
       "ball_speed": 130,
@@ -59,36 +59,35 @@
       "aerial": false,
       "timeStamp": "2018-12-05T19:38:54.441Z",
       "id": 3
-    },
-    {
-      "gameId": 1,
-      "fieldX": 0.305,
-      "fieldY": 0.729,
-      "goalX": 0.842,
-      "goalY": 0.817,
-      "ball_speed": 88,
-      "aerial": false,
-      "timeStamp": "2018-12-05T19:38:59.289Z",
-      "id": 4
     }
   ],
   "heatmaps": [
     {
-      "id": 1,
+      "name": "save 1",
       "userId": 1,
-      "name": "Test map 1"
+      "id": 1
     }
   ],
   "shot_heatmap": [
     {
-      "id": 1,
+      "shotId": 1,
       "heatmapId": 1,
-      "shotId": 1
+      "id": 1
     },
     {
-      "id": 2,
+      "shotId": 2,
       "heatmapId": 1,
-      "shotId": 2
+      "id": 2
+    },
+    {
+      "shotId": 3,
+      "heatmapId": 1,
+      "id": 3
+    },
+    {
+      "shotId": 3,
+      "heatmapId": 1,
+      "id": 4
     }
   ]
 }

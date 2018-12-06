@@ -3,6 +3,7 @@ import loginOrSignup from "./login"
 import profile from "./profile"
 import gameplay from "./gameplay"
 import shotData from "./shotData"
+import heatmaps from "./heatmaps"
 
 const webpageNav = document.getElementById("nav-master");
 
@@ -83,6 +84,7 @@ const navbar = {
     nav.addEventListener("click", this.logoutClicked, event);
     nav.addEventListener("click", this.profileClicked, event);
     nav.addEventListener("click", this.gameplayClicked, event);
+    nav.addEventListener("click", this.heatmapsClicked, event);
   },
 
   loginClicked(e) {
@@ -113,6 +115,12 @@ const navbar = {
     if (e.target.textContent === "Gameplay") {
       gameplay.loadGameplay();
       shotData.resetGlobalShotVariables();
+    }
+  },
+
+  heatmapsClicked(e) {
+    if (e.target.textContent === "Heatmaps") {
+      heatmaps.loadHeatmapContainers();
     }
   }
 

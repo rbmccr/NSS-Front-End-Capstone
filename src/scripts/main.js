@@ -1,5 +1,6 @@
 import navbar from "./navbar"
-import gameplay from "./gameplay"
+// import gameplay from "./gameplay"
+import heatmaps from "./heatmaps";
 
 // function closeBox(e) {
 //   if (e.target.classList.contains("delete")) {
@@ -9,4 +10,4 @@ import gameplay from "./gameplay"
 
 // navbar.generateNavbar()
 navbar.generateNavbar(true)
-gameplay.loadGameplay()
+heatmaps.loadHeatmapContainers();
