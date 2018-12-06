@@ -3,13 +3,23 @@ import API from "./API.js";
 
 // ID of setInterval function used to monitor container width and repaint heatmap if container width changes
 // let intervalId;
+// global variable to store fetched shots
+let globalShotsArr;
 
 const heatmapData = {
 
   getUserShots() {
-    // this function goes to the database and retrieves shots stored
-    // TODO: handle filters
-    // TODO: a game cannot be mapped with fewer than 5 points, inform user
+    const heatmapDropdown = document.getElementById("heatmapDropdown");
+    const heatmapName = heatmapDropdown.value;
+    if (heatmapName === "Basic Heatmap") {
+      heatmapData.fetchBasicHeatmapData();
+    } else {
+      heatmapData.fetchSavedHeatmapData(heatmapName);
+    }
+  },
+
+  fetchBasicHeatmapData() {
+    // this function goes to the database and retrieves shots that meet specific filters (all shots fetched if )
     let gameIds = [];
     const gameURLextension = heatmapData.applyGameFilters();
     API.getAll(gameURLextension)
@@ -23,6 +33,7 @@ const heatmapData = {
         const shotURLextension = heatmapData.applyShotFilters(gameIds);
         API.getAll(shotURLextension)
           .then(shots => {
+            globalShotsArr = shots;
             heatmapData.buildFieldHeatmap(shots);
             heatmapData.buildGoalHeatmap(shots);
             // intervalId = setInterval(heatmapData.getActiveOffsets, 500);
@@ -30,7 +41,11 @@ const heatmapData = {
       })
   },
 
-  applyGameFilters() {
+  fetchSavedHeatmapData(heatmapName) {
+    console.log("fetching saved heatmap data...")
+  },
+
+  applyGameFilters() { // TODO: add more filters
     let URL = "games"
     const activeUserId = sessionStorage.getItem("activeUserId");
     URL += `?userId=${activeUserId}`
@@ -160,7 +175,26 @@ const heatmapData = {
   },*/
 
   saveHeatmap() {
-    console.log("saving heatmap...");
+    // this function is responsible for saving a heatmap object with a name and userId, then making join tables with
+    // shot ID and heatmap ID as foreign keys
+    const saveInput = document.getElementById("saveHeatmapInput");
+    if (saveInput.value.length > 0 && saveInput.value.length <= 20) {
+      console.log("saving heatmap...");
+      saveInput.classList.remove("is-danger");
+      heatmapData.saveHeatmapObject()
+        .then(heatmapData.saveJoinTables().then(x => console.log(x)))
+    } else {
+      console.log("Name must be between 1 and 20 characters...");
+      saveInput.classList.add("is-danger");
+    }
+  },
+
+  saveHeatmapObject() {
+
+  },
+
+  saveJoinTables() {
+
   },
 
   deleteHeatmap() {

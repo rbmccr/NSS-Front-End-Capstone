@@ -112,15 +112,15 @@ const heatmaps = {
     const icon1 = elBuilder("i", { "class": "fas fa-fire" }, null);
     const iconSpan1 = elBuilder("span", { "class": "icon is-left" }, null, icon1);
     const sel1_op1 = elBuilder("option", {}, "Basic Heatmap");
-    const select1 = elBuilder("select", {}, null, sel1_op1);
+    const select1 = elBuilder("select", {"id": "heatmapDropdown"}, null, sel1_op1);
     const selectDiv1 = elBuilder("div", { "class": "select is-dark" }, null, select1, iconSpan1);
     const heatmapControl = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv1);
 
     const deleteBtn = elBuilder("button", { "class": "button is-danger" }, "Delete Heatmap")
     const deleteBtnControl = elBuilder("div", { "class": "control" }, null, deleteBtn)
-    const saveBtn = elBuilder("button", { "class": "button is-success" }, "Save Heatmap")
+    const saveBtn = elBuilder("button", {"id":"saveHeatmapBtn", "class": "button is-success" }, "Save Heatmap")
     const saveBtnControl = elBuilder("div", { "class": "control" }, null, saveBtn)
-    const saveInput = elBuilder("input", { "class": "input", "type": "text", "placeholder": "Name and save this heatmap" }, null)
+    const saveInput = elBuilder("input", {"id":"saveHeatmapInput", "class": "input", "type": "text", "placeholder": "Name and save this heatmap" }, null)
     const saveControl = elBuilder("div", { "class": "control is-expanded" }, null, saveInput)
 
     const generatorButton = elBuilder("button", { "id": "generateHeatmapBtn", "class": "button is-dark" }, "Generate Heatmap");
@@ -151,8 +151,10 @@ const heatmaps = {
 
   heatmapEventManager() {
     const generateHeatmapBtn = document.getElementById("generateHeatmapBtn");
+    const saveHeatmapBtn = document.getElementById("saveHeatmapBtn");
 
     generateHeatmapBtn.addEventListener("click", heatmapData.getUserShots);
+    saveHeatmapBtn.addEventListener("click", heatmapData.saveHeatmap);
   }
 
 }
