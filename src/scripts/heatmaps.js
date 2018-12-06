@@ -1,5 +1,6 @@
 import elBuilder from "./elementBuilder"
 import heatmapData from "./heatmapData"
+import API from "./API";
 
 const webpage = document.getElementById("container-master");
 
@@ -8,9 +9,9 @@ const heatmaps = {
   loadHeatmapContainers() {
     webpage.innerHTML = null;
     this.buildFilters();
-    this.buildGenerator(); // builds button to generate heatmap, save heatmap, and view saved heatmaps
-    this.buildFieldandGoal();
-    this.heatmapEventManager();
+    // builds button to generate heatmap, save heatmap, and view saved heatmaps
+    // the action is async because the user's saved heatmaps have to be rendered as HTML option elements
+    this.buildGenerator();
   },
 
   buildFilters() {
@@ -94,42 +95,47 @@ const heatmaps = {
   },
 
   buildGenerator() {
+    const activeUserId = sessionStorage.getItem("activeUserId");
 
-    // const content1 = elBuilder("div", {"style":"margin-left=5px"}, "Test item")
-    // const dropdownContent = elBuilder("div", { "class": "dropdown-content" }, null, content1);
-    // const dropdownMenu = elBuilder("div", { "class": "dropdown-menu", "id": "dropdown-menu", "role": "menu" }, null, dropdownContent);
-    // const dropdownArrowIcon = elBuilder("i", { "class": "fas fa-angle-down", "aria-hidden": "true" }, null);
-    // const dropdownArrowIconSpan = elBuilder("span", { "class": "icon is-small" }, null, dropdownArrowIcon);
-    // const dropdownBtnText = elBuilder("span", {}, "Default Heatmap");
-    // const dropdownBtn = elBuilder("button", { "class": "button" }, null, dropdownBtnText, dropdownArrowIconSpan);
-    // const dropdownTrigger = elBuilder("div", { "class": "dropdown-trigger", "aria-haspopup": "true", "aria-controls": "dropdown-menu" }, null, dropdownBtn);
-    // const dropdownParent = elBuilder("div", { "class": "dropdown" }, null, dropdownTrigger, dropdownMenu);
-    // const dropdownControl = elBuilder("div", { "class": "control" }, null, dropdownParent);
+    // use fetch to append options to select element if user at least 1 saved heatmap
+    API.getAll(`heatmaps?userId=${activeUserId}`)
+      .then(heatmaps => {
+        console.log("Array of user's saved heatmaps:", heatmaps);
 
-    // dropdownTrigger.addEventListener("click", () => {dropdownParent.classList.toggle("is-active")})
+        const icon = elBuilder("i", { "class": "fas fa-fire" }, null);
+        const iconSpan = elBuilder("span", { "class": "icon is-left" }, null, icon);
+        const sel1_op1 = elBuilder("option", {}, "Basic Heatmap");
+        const heatmapSelect = elBuilder("select", { "id": "heatmapDropdown" }, null, sel1_op1);
+        const heatmapSelectDiv = elBuilder("div", { "class": "select is-dark" }, null, heatmapSelect, iconSpan);
+        const heatmapControl = elBuilder("div", { "class": "control has-icons-left" }, null, heatmapSelectDiv);
 
-    // saved heatmap
-    const icon1 = elBuilder("i", { "class": "fas fa-fire" }, null);
-    const iconSpan1 = elBuilder("span", { "class": "icon is-left" }, null, icon1);
-    const sel1_op1 = elBuilder("option", {}, "Basic Heatmap");
-    const select1 = elBuilder("select", { "id": "heatmapDropdown" }, null, sel1_op1);
-    const selectDiv1 = elBuilder("div", { "class": "select is-dark" }, null, select1, iconSpan1);
-    const heatmapControl = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv1);
+        const deleteBtn = elBuilder("button", { "class": "button is-danger" }, "Delete Heatmap")
+        const deleteBtnControl = elBuilder("div", { "class": "control" }, null, deleteBtn)
+        const saveBtn = elBuilder("button", { "id": "saveHeatmapBtn", "class": "button is-success" }, "Save Heatmap")
+        const saveBtnControl = elBuilder("div", { "class": "control" }, null, saveBtn)
+        const saveInput = elBuilder("input", { "id": "saveHeatmapInput", "class": "input", "type": "text", "placeholder": "Name and save this heatmap", "maxlength": "30" }, null)
+        const saveControl = elBuilder("div", { "class": "control is-expanded" }, null, saveInput)
 
-    const deleteBtn = elBuilder("button", { "class": "button is-danger" }, "Delete Heatmap")
-    const deleteBtnControl = elBuilder("div", { "class": "control" }, null, deleteBtn)
-    const saveBtn = elBuilder("button", { "id": "saveHeatmapBtn", "class": "button is-success" }, "Save Heatmap")
-    const saveBtnControl = elBuilder("div", { "class": "control" }, null, saveBtn)
-    const saveInput = elBuilder("input", { "id": "saveHeatmapInput", "class": "input", "type": "text", "placeholder": "Name and save this heatmap", "maxlength": "30" }, null)
-    const saveControl = elBuilder("div", { "class": "control is-expanded" }, null, saveInput)
+        const generatorButton = elBuilder("button", { "id": "generateHeatmapBtn", "class": "button is-dark" }, "Generate Heatmap");
+        const generatorControl = elBuilder("div", { "class": "control" }, null, generatorButton);
 
-    const generatorButton = elBuilder("button", { "id": "generateHeatmapBtn", "class": "button is-dark" }, "Generate Heatmap");
-    const generatorControl = elBuilder("div", { "class": "control" }, null, generatorButton);
-    const generatorField = elBuilder("div", { "class": "field is-grouped is-grouped-centered is-grouped-multiline" }, null, heatmapControl, generatorControl, saveControl, saveBtnControl, deleteBtnControl);
-    const ParentGeneratorContainer = elBuilder("div", { "class": "container box" }, null, generatorField);
+        // if no heatmaps are saved, generate no extra options in dropdown
+        if (heatmaps.length === 0) {
+          const generatorField = elBuilder("div", { "class": "field is-grouped is-grouped-centered is-grouped-multiline" }, null, heatmapControl, generatorControl, saveControl, saveBtnControl, deleteBtnControl);
+          const ParentGeneratorContainer = elBuilder("div", { "class": "container box" }, null, generatorField);
+          webpage.appendChild(ParentGeneratorContainer);
+        } else { // else, for each heatmap saved, make a new option and append it to the
+          heatmaps.forEach(heatmap => {
+            heatmapSelect.appendChild(elBuilder("option", {}, heatmap.name));
+          })
+          const generatorField = elBuilder("div", { "class": "field is-grouped is-grouped-centered is-grouped-multiline" }, null, heatmapControl, generatorControl, saveControl, saveBtnControl, deleteBtnControl);
+          const ParentGeneratorContainer = elBuilder("div", { "class": "container box" }, null, generatorField);
+          webpage.appendChild(ParentGeneratorContainer);
+        }
+        this.buildFieldandGoal();
+        this.heatmapEventManager();
+      });
 
-    // append filter container to webpage
-    webpage.appendChild(ParentGeneratorContainer);
   },
 
   buildFieldandGoal() {
