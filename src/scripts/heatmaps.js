@@ -137,7 +137,7 @@ const heatmaps = {
   heatmapEventManager() {
     const generateHeatmapBtn = document.getElementById("generateHeatmapBtn");
 
-    generateHeatmapBtn.addEventListener("click", heatmapData.getUsersShots)
+    generateHeatmapBtn.addEventListener("click", heatmapData.getUserShots);
   }
 
 }

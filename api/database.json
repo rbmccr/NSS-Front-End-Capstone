@@ -24,6 +24,28 @@
       "overtime": true,
       "timeStamp": "2018-12-05T19:32:56.695Z",
       "id": 1
+    },
+    {
+      "userId": 2,
+      "mode": "casual",
+      "type": "3v3",
+      "team": "orange",
+      "score": 2,
+      "opp_score": 1,
+      "overtime": false,
+      "timeStamp": "2018-12-05T22:46:39.709Z",
+      "id": 2
+    },
+    {
+      "userId": 1,
+      "mode": "competitive",
+      "type": "2v2",
+      "team": "orange",
+      "score": 2,
+      "opp_score": 1,
+      "overtime": true,
+      "timeStamp": "2018-12-05T23:27:54.540Z",
+      "id": 3
     }
   ],
   "shots": [
@@ -70,6 +92,39 @@
       "aerial": false,
       "timeStamp": "2018-12-05T19:38:59.289Z",
       "id": 4
+    },
+    {
+      "gameId": 2,
+      "fieldX": 0.753,
+      "fieldY": 0.33,
+      "goalX": 0.255,
+      "goalY": 0.416,
+      "ball_speed": 45,
+      "aerial": false,
+      "timeStamp": "2018-12-05T22:46:25.863Z",
+      "id": 5
+    },
+    {
+      "gameId": 3,
+      "fieldX": 0.707,
+      "fieldY": 0.434,
+      "goalX": 0.449,
+      "goalY": 0.698,
+      "ball_speed": 60,
+      "aerial": true,
+      "timeStamp": "2018-12-05T23:27:16.544Z",
+      "id": 6
+    },
+    {
+      "gameId": 3,
+      "fieldX": 0.74,
+      "fieldY": 0.301,
+      "goalX": 0.495,
+      "goalY": 0.505,
+      "ball_speed": 88,
+      "aerial": false,
+      "timeStamp": "2018-12-05T23:28:03.192Z",
+      "id": 7
     }
   ],
   "heatmaps": [
