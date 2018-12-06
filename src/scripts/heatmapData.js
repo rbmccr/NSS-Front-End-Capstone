@@ -70,12 +70,14 @@ const heatmapData = {
     let fieldDataPoints = [];
 
     shots.forEach(shot => {
-      let x_ = shot.fieldX * varWidth;
-      let y_ = shot.fieldY * varHeight;
+      let x_ = Number((shot.fieldX * varWidth).toFixed(0));
+      let y_ = Number((shot.fieldY * varHeight).toFixed(0));
       let value_ = 1;
       let fieldObj = { x: x_, y: y_, value: value_ };
       fieldDataPoints.push(fieldObj);
     });
+
+    console.table(fieldDataPoints)
 
     const fieldData = {
       max: 1,
@@ -100,8 +102,8 @@ const heatmapData = {
     let goalDataPoints = [];
 
     shots.forEach(shot => {
-      let x_ = shot.goalX * varGoalWidth;
-      let y_ = shot.goalY * varGoalHeight;
+      let x_ = Number((shot.goalX * varGoalWidth).toFixed(0));
+      let y_ = Number((shot.goalY * varGoalHeight).toFixed(0));
       let value_ = 1;
       let goalObj = { x: x_, y: y_, value: value_ };
       goalDataPoints.push(goalObj);
