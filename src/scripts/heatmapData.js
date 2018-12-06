@@ -21,7 +21,7 @@ const heatmapData = {
       .then(gameIds => {
         const shotURLextension = heatmapData.applyShotFilters(gameIds);
         API.getAll(shotURLextension)
-          .then(shots => heatmapData.buildHeatmap(shots))
+          .then(shots => heatmapData.buildFieldHeatmap(shots))
       })
 
     //   if (gameIds.length === 0) {
@@ -60,16 +60,15 @@ const heatmapData = {
     return URL;
   },
 
-  buildHeatmap(shots) {
+  buildFieldHeatmap(shots) {
     console.log(shots)
     const mapContainer = document.getElementById("field-img-parent")
     let varWidth = mapContainer.offsetWidth
     let varHeight = mapContainer.offsetHeight
 
-
     let config = {
       container: mapContainer,
-      radius: 60,
+      radius: 50,
       maxOpacity: .5,
       minOpacity: 0,
       blur: .75,
@@ -78,10 +77,7 @@ const heatmapData = {
 
     // create heatmap with configuration
     let heatmapInstance;
-
     heatmapInstance = heatmap.create(config);
-    console.log(heatmapInstance)
-
 
     let dataPoints = [];
 
@@ -93,20 +89,6 @@ const heatmapData = {
       console.log(obj)
       dataPoints.push(obj)
     });
-    // for (let i = 0; i < 100; i++) {
-    //   let x_ = Math.floor(Math.random() * varWidth);
-    //   let y_ = Math.floor(Math.random() * varHeight);
-    //   let value_ = Math.floor(Math.random() * 100);
-
-    //   let obj = { x: x_, y: y_, value: value_ }
-
-    //   if (x_ === 0 || y_ === 0 || value_ === 0) {
-    //     console.log("ZERO", x_, y_, value_)
-    //   }
-
-    //   // console.log(obj.x, obj.y, obj.value)
-    //   dataPoints.push(obj)
-    // }
 
     const data = {
       max: 100,
@@ -140,3 +122,12 @@ const heatmapData = {
 }
 
 export default heatmapData
+
+// TODO: make heatmap function for goal
+// TODO: save heatmap functionality
+// TODO: delete heatmap functionality
+// TODO: set interval for container width monitoring
+// TODO: scale ball size with goal
+// TODO: add filter compatibility
+// TODO:
+// TODO:

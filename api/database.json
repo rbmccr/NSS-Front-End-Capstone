@@ -125,6 +125,28 @@
       "aerial": false,
       "timeStamp": "2018-12-05T23:28:03.192Z",
       "id": 7
+    },
+    {
+      "gameId": 3,
+      "fieldX": 0.665,
+      "fieldY": 0.755,
+      "goalX": 0.502,
+      "goalY": 0.629,
+      "ball_speed": 100,
+      "aerial": false,
+      "timeStamp": "2018-12-06T00:35:04.737Z",
+      "id": 8
+    },
+    {
+      "gameId": 3,
+      "fieldX": 0.707,
+      "fieldY": 0.691,
+      "goalX": 0.689,
+      "goalY": 0.708,
+      "ball_speed": 66,
+      "aerial": false,
+      "timeStamp": "2018-12-06T00:35:11.436Z",
+      "id": 9
     }
   ],
   "heatmaps": [
