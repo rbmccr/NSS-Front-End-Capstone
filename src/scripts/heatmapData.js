@@ -4,7 +4,7 @@ import API from "./API.js";
 // ID of setInterval function used to monitor container width and repaint heatmap if container width changes
 // let intervalId;
 // global variable to store fetched shots
-let globalShotsArr = [];
+let globalShotsArr;
 let joinTableArr = [];
 
 const heatmapData = {
@@ -94,8 +94,6 @@ const heatmapData = {
       fieldDataPoints.push(fieldObj);
     });
 
-    console.table(fieldDataPoints)
-
     const fieldData = {
       max: 1,
       min: 0,
@@ -125,8 +123,6 @@ const heatmapData = {
       let goalObj = { x: x_, y: y_, value: value_ };
       goalDataPoints.push(goalObj);
     });
-
-    console.table(goalDataPoints)
 
     const goalData = {
       max: 1,
@@ -188,6 +184,7 @@ const heatmapData = {
       saveInput.classList.remove("is-danger");
       heatmapData.saveHeatmapObject(heatmapTitle)
         .then(heatmapObj => heatmapData.saveJoinTables(heatmapObj).then(x => {
+          console.log("join tables saved", x)
           joinTableArr = [] // empty the temporary global array used with Promise.all
           // heatmapDropdown.value = heatmapTitle TODO: append child to select dropdown with new heatmap name
           saveInput.value = "Save successful!";
@@ -208,6 +205,7 @@ const heatmapData = {
   },
 
   saveJoinTables(heatmapObj) {
+    console.log("globalshotsarray", globalShotsArr)
     globalShotsArr.forEach(shot => {
       let joinTableObj = {
         shotId: shot.id,

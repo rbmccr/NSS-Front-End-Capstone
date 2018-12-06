@@ -63,10 +63,31 @@
   ],
   "heatmaps": [
     {
-      "name": "new heatmap",
+      "name": "save 1",
       "userId": 1,
       "id": 1
     }
   ],
-  "shot_heatmap": []
+  "shot_heatmap": [
+    {
+      "shotId": 1,
+      "heatmapId": 1,
+      "id": 1
+    },
+    {
+      "shotId": 2,
+      "heatmapId": 1,
+      "id": 2
+    },
+    {
+      "shotId": 3,
+      "heatmapId": 1,
+      "id": 3
+    },
+    {
+      "shotId": 3,
+      "heatmapId": 1,
+      "id": 4
+    }
+  ]
 }
