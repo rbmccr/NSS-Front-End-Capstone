@@ -8,8 +8,8 @@ import elBuilder from "./elementBuilder.js";
 let globalShotsArr;
 let joinTableArr = [];
 
-//FIXME: user logged in can see all shots on heatmap page, user id not working with search
-//FIXME: examine confirmHeatmapDelete function. may not need for loop. grab ID from option
+// FIXME: examine confirmHeatmapDelete function. may not need for loop. grab ID from option
+// FIXME: add condition to getUserShots that clears existing canvas - if there is one
 // TODO: set interval for container width monitoring
 // TODO: scale ball size with goal
 // TODO: add filter compatibility
@@ -76,6 +76,7 @@ const heatmapData = {
     console.log("fetching saved heatmap data...");
     // fetch heatmaps with name= and userId=
     const activeUserId = sessionStorage.getItem("activeUserId");
+
   },
 
   applyGameFilters() { // TODO: add more filters
