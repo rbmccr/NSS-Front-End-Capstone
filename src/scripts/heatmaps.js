@@ -105,11 +105,11 @@ const heatmaps = {
         const icon = elBuilder("i", { "class": "fas fa-fire" }, null);
         const iconSpan = elBuilder("span", { "class": "icon is-left" }, null, icon);
         const sel1_op1 = elBuilder("option", {}, "Basic Heatmap");
-        const heatmapSelect = elBuilder("select", { "id": "heatmapDropdown" }, null, sel1_op1);
-        const heatmapSelectDiv = elBuilder("div", { "class": "select is-dark" }, null, heatmapSelect, iconSpan);
+        const heatmapDropdown = elBuilder("select", { "id": "heatmapDropdown" }, null, sel1_op1);
+        const heatmapSelectDiv = elBuilder("div", { "class": "select is-dark" }, null, heatmapDropdown, iconSpan);
         const heatmapControl = elBuilder("div", { "class": "control has-icons-left" }, null, heatmapSelectDiv);
 
-        const deleteBtn = elBuilder("button", { "class": "button is-danger" }, "Delete Heatmap")
+        const deleteBtn = elBuilder("button", { "id":"deleteHeatmapBtn", "class": "button is-danger" }, "Delete Heatmap")
         const deleteBtnControl = elBuilder("div", { "class": "control" }, null, deleteBtn)
         const saveBtn = elBuilder("button", { "id": "saveHeatmapBtn", "class": "button is-success" }, "Save Heatmap")
         const saveBtnControl = elBuilder("div", { "class": "control" }, null, saveBtn)
@@ -126,7 +126,7 @@ const heatmaps = {
           webpage.appendChild(ParentGeneratorContainer);
         } else { // else, for each heatmap saved, make a new option and append it to the
           heatmaps.forEach(heatmap => {
-            heatmapSelect.appendChild(elBuilder("option", {}, heatmap.name));
+            heatmapDropdown.appendChild(elBuilder("option", {"id":`heatmap-${heatmap.id}`}, heatmap.name));
           })
           const generatorField = elBuilder("div", { "class": "field is-grouped is-grouped-centered is-grouped-multiline" }, null, heatmapControl, generatorControl, saveControl, saveBtnControl, deleteBtnControl);
           const ParentGeneratorContainer = elBuilder("div", { "class": "container box" }, null, generatorField);
@@ -158,9 +158,11 @@ const heatmaps = {
   heatmapEventManager() {
     const generateHeatmapBtn = document.getElementById("generateHeatmapBtn");
     const saveHeatmapBtn = document.getElementById("saveHeatmapBtn");
+    const deleteHeatmapBtn = document.getElementById("deleteHeatmapBtn");
 
     generateHeatmapBtn.addEventListener("click", heatmapData.getUserShots);
     saveHeatmapBtn.addEventListener("click", heatmapData.saveHeatmap);
+    deleteHeatmapBtn.addEventListener("click", heatmapData.deleteHeatmap);
   }
 
 }

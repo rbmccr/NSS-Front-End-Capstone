@@ -15,8 +15,6 @@ const API = {
       method: "DELETE"
     })
       .then(e => e.json())
-      .then(() => fetch(`${URL}/${extension}`))
-      .then(e => e.json())
   },
 
   postItem(extension, obj) {

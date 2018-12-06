@@ -6,17 +6,35 @@ import API from "./API.js";
 // global variable to store fetched shots
 let globalShotsArr;
 let joinTableArr = [];
+const activeUserId = sessionStorage.getItem("activeUserId");
 
 const heatmapData = {
 
   getUserShots() {
+    // const fieldContainer = document.getElementById("field-img-parent");
+    // const goalContainer = document.getElementById("goal-img-parent");
     const heatmapDropdown = document.getElementById("heatmapDropdown");
+
     const heatmapName = heatmapDropdown.value;
+    // const fieldHeatmapCanvas = fieldContainer.childNodes[2]
+    // const goalHeatmapCanvas = goalContainer.childNodes[1]
+
+    // if there's already a heatmap loaded, remove it before continuing
+    // if (fieldHeatmapCanvas.classList.contains("heatmap-canvas")) {
+    //   fieldHeatmapCanvas.remove();
+    //   goalHeatmapCanvas.remove();
+    //   if (heatmapName === "Basic Heatmap") {
+    //     heatmapData.fetchBasicHeatmapData();
+    //   } else {
+    //     heatmapData.fetchSavedHeatmapData(heatmapName);
+    //   }
+    // } else {
     if (heatmapName === "Basic Heatmap") {
       heatmapData.fetchBasicHeatmapData();
     } else {
       heatmapData.fetchSavedHeatmapData(heatmapName);
     }
+    // }
   },
 
   fetchBasicHeatmapData() {
@@ -45,6 +63,7 @@ const heatmapData = {
   fetchSavedHeatmapData(heatmapName) {
     console.log("fetching saved heatmap data...");
     // fetch heatmaps with name= and userId=
+    const activeUserId = sessionStorage.getItem("activeUserId");
   },
 
   applyGameFilters() { // TODO: add more filters
@@ -72,7 +91,7 @@ const heatmapData = {
   },
 
   buildFieldHeatmap(shots) {
-    console.log(shots)
+    console.log("Array of fetched shots", shots)
 
     // create field heatmap with configuration
     const fieldContainer = document.getElementById("field-img-parent");
@@ -131,7 +150,6 @@ const heatmapData = {
     }
 
     GoalHeatmapInstance.setData(goalData);
-    console.log(GoalHeatmapInstance)
   },
 
   getFieldConfig(fieldContainer) {
@@ -174,12 +192,12 @@ const heatmapData = {
 
   saveHeatmap() {
     // this function is responsible for saving a heatmap object with a name and userId, then making join tables with
-    // shot ID and heatmap ID as foreign keys
+    // TODO: require unique heatmap name
     const heatmapDropdown = document.getElementById("heatmapDropdown");
     const saveInput = document.getElementById("saveHeatmapInput");
     const heatmapTitle = saveInput.value;
 
-    if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful!") { //TODO: add requirement for a heatmap to be generated
+    if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful!") { //TODO: add requirement for a heatmap to be loaded at the time save is clicked
       console.log("saving heatmap...");
       saveInput.classList.remove("is-danger");
       heatmapData.saveHeatmapObject(heatmapTitle)
@@ -217,7 +235,27 @@ const heatmapData = {
   },
 
   deleteHeatmap() {
+    // TODO: delete option in dropdown
+    // TODO: delete heatmap object
+    // TODO: delete all join tables associated with that heatmap object
     console.log("deleting heatmap...");
+    const heatmapDropdown = document.getElementById("heatmapDropdown");
+    let currentDropdownValue = heatmapDropdown.value;
+
+    heatmapDropdown.childNodes.forEach(child => {
+      if (child.textContent === currentDropdownValue && child.textContent !== "Basic Heatmap") {
+        child.remove();
+        heatmapData.deleteHeatmapObjectandJoinTables(child.id)
+        .then(x => heatmapDropdown.value = "Basic Heatmap")
+      } else {
+        return
+      }
+    })
+
+  },
+
+  deleteHeatmapObjectandJoinTables(heatmapId) {
+    return API.deleteItem("heatmaps", `${heatmapId.slice(8)}?userId=${activeUserId}`)
   }
 
 }
