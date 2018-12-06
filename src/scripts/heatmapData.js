@@ -1,5 +1,6 @@
 import heatmap from "../lib/node_modules/heatmap.js/build/heatmap.js"
 import API from "./API.js";
+import elBuilder from "./elementBuilder.js";
 
 // ID of setInterval function used to monitor container width and repaint heatmap if container width changes
 // let intervalId;
@@ -235,18 +236,48 @@ const heatmapData = {
   },
 
   deleteHeatmap() {
+    // this function is the logic that prevents the user from deleting a heatmap in one click.
+    // a second delete button and a cancel button are rendered before a delete is confirmed
+    const heatmapDropdown = document.getElementById("heatmapDropdown");
+    let currentDropdownValue = heatmapDropdown.value;
+
+    if (currentDropdownValue === "Basic Heatmap") {
+      return
+    } else {
+      const deleteHeatmapBtn = document.getElementById("deleteHeatmapBtn");
+      const confirmDeleteBtn = elBuilder("button", { "class": "button is-danger" }, "Confirm Delete");
+      const rejectDeleteBtn = elBuilder("button", { "class": "button is-dark" }, "Cancel");
+      const DeleteControl = elBuilder("div", { "id": "deleteControl", "class": "buttons" }, null, confirmDeleteBtn, rejectDeleteBtn);
+      deleteHeatmapBtn.replaceWith(DeleteControl);
+      confirmDeleteBtn.addEventListener("click", heatmapData.confirmHeatmapDeletion);
+      rejectDeleteBtn.addEventListener("click", heatmapData.rejectHeatmapDeletion);
+    }
+
+  },
+
+  rejectHeatmapDeletion() {
+    // this function re-renders the primary delete button
+    const DeleteControl = document.getElementById("deleteControl");
+    const deleteHeatmapBtn = elBuilder("button", { "id": "deleteHeatmapBtn", "class": "button is-danger" }, "Delete Heatmap")
+    DeleteControl.replaceWith(deleteHeatmapBtn)
+    deleteHeatmapBtn.addEventListener("click", heatmapData.deleteHeatmap);
+  },
+
+  confirmHeatmapDeletion() {
     // TODO: delete option in dropdown
     // TODO: delete heatmap object
     // TODO: delete all join tables associated with that heatmap object
-    console.log("deleting heatmap...");
     const heatmapDropdown = document.getElementById("heatmapDropdown");
     let currentDropdownValue = heatmapDropdown.value;
 
     heatmapDropdown.childNodes.forEach(child => {
-      if (child.textContent === currentDropdownValue && child.textContent !== "Basic Heatmap") {
+      if (child.textContent === currentDropdownValue) {
         child.remove();
         heatmapData.deleteHeatmapObjectandJoinTables(child.id)
-        .then(x => heatmapDropdown.value = "Basic Heatmap")
+          .then(() => {
+            heatmapDropdown.value = "Basic Heatmap";
+            heatmapData.rejectHeatmapDeletion();
+          });
       } else {
         return
       }

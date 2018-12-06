@@ -109,8 +109,8 @@ const heatmaps = {
         const heatmapSelectDiv = elBuilder("div", { "class": "select is-dark" }, null, heatmapDropdown, iconSpan);
         const heatmapControl = elBuilder("div", { "class": "control has-icons-left" }, null, heatmapSelectDiv);
 
-        const deleteBtn = elBuilder("button", { "id":"deleteHeatmapBtn", "class": "button is-danger" }, "Delete Heatmap")
-        const deleteBtnControl = elBuilder("div", { "class": "control" }, null, deleteBtn)
+        const deleteHeatmapBtn = elBuilder("button", { "id":"deleteHeatmapBtn", "class": "button is-danger" }, "Delete Heatmap")
+        const deleteBtnControl = elBuilder("div", { "class": "control" }, null, deleteHeatmapBtn)
         const saveBtn = elBuilder("button", { "id": "saveHeatmapBtn", "class": "button is-success" }, "Save Heatmap")
         const saveBtnControl = elBuilder("div", { "class": "control" }, null, saveBtn)
         const saveInput = elBuilder("input", { "id": "saveHeatmapInput", "class": "input", "type": "text", "placeholder": "Name and save this heatmap", "maxlength": "30" }, null)
