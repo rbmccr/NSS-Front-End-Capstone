@@ -1,14 +1,15 @@
 import heatmap from "../lib/node_modules/heatmap.js/build/heatmap.js"
 import API from "./API.js";
 
-// 1. fetch shots from database
-// 2. use filter to append fetch URL
+// ID of setInterval function used to monitor container width and repaint heatmap if container width changes
+// let intervalId;
 
 const heatmapData = {
 
   getUserShots() {
     // this function goes to the database and retrieves shots stored
-    // TODO: call function that handles filters
+    // TODO: handle filters
+    // TODO: a game cannot be mapped with fewer than 5 points, inform user
     let gameIds = [];
     const gameURLextension = heatmapData.applyGameFilters();
     API.getAll(gameURLextension)
@@ -21,19 +22,12 @@ const heatmapData = {
       .then(gameIds => {
         const shotURLextension = heatmapData.applyShotFilters(gameIds);
         API.getAll(shotURLextension)
-          .then(shots => heatmapData.buildFieldHeatmap(shots))
+          .then(shots => {
+            heatmapData.buildFieldHeatmap(shots);
+            heatmapData.buildGoalHeatmap(shots);
+            // intervalId = setInterval(heatmapData.getActiveOffsets, 500);
+          })
       })
-
-    //   if (gameIds.length === 0) {
-    //     alert("No games exist that match the current filters")
-    //   } else {
-    //     gameIds.forEach(gameId => {
-    //       shotArr.push(API.getAll(`shots?gameId=${gameId}`))
-    //     })
-    //     return Promise.all(shotArr);
-    //   }
-    // })
-    // .then(x => console.log)
   },
 
   applyGameFilters() {
@@ -56,68 +50,120 @@ const heatmapData = {
           URL += `&gameId=${id}`
         }
       })
-    }
+    } //TODO: else do not continue (no games were found)
     return URL;
   },
 
   buildFieldHeatmap(shots) {
     console.log(shots)
-    const mapContainer = document.getElementById("field-img-parent")
-    let varWidth = mapContainer.offsetWidth
-    let varHeight = mapContainer.offsetHeight
 
-    let config = {
-      container: mapContainer,
-      radius: 50,
-      maxOpacity: .5,
-      minOpacity: 0,
-      blur: .75,
-      // backgroundColor: "rgba(206,231,255,.95)"
-    };
+    // create field heatmap with configuration
+    const fieldContainer = document.getElementById("field-img-parent");
+    let varWidth = fieldContainer.offsetWidth;
+    let varHeight = fieldContainer.offsetHeight;
 
-    // create heatmap with configuration
-    let heatmapInstance;
-    heatmapInstance = heatmap.create(config);
+    let fieldConfig = heatmapData.getFieldConfig(fieldContainer);
 
-    let dataPoints = [];
+    let FieldHeatmapInstance;
+    FieldHeatmapInstance = heatmap.create(fieldConfig);
+
+    let fieldDataPoints = [];
 
     shots.forEach(shot => {
       let x_ = shot.fieldX * varWidth;
       let y_ = shot.fieldY * varHeight;
-      let value_ = 80;
-      let obj = { x: x_, y: y_, value: value_ }
-      console.log(obj)
-      dataPoints.push(obj)
+      let value_ = 1;
+      let fieldObj = { x: x_, y: y_, value: value_ };
+      fieldDataPoints.push(fieldObj);
     });
 
-    const data = {
-      max: 100,
+    const fieldData = {
+      max: 1,
       min: 0,
-      data: dataPoints
+      data: fieldDataPoints
     }
 
-    heatmapInstance.setData(data);
+    FieldHeatmapInstance.setData(fieldData);
   },
-  /*
-    // determine container dimensions at a certain interval.
-    // if
-    getActiveOffsets() {
-      const captureWidth = mapContainer.offsetWidth
-      // const captureHeight = mapContainer.offsetHeight
-      //evaluate container width after 0.5 seconds vs initial container width
-      if (captureWidth === varWidth) {
-        console.log("unchanged")
-      } else {
-        varWidth = captureWidth
-        console.log("new width", varWidth)
-        //clear heatmap
-        mapContainer.removeChild(mapContainer.childNodes[0])
-        //build heatmap again
-        buildHeatmap()
-      }
-    }*/
 
-  // setInterval(getActiveOffsets, 500)
+  buildGoalHeatmap(shots) {
+    // create goal heatmap with configuration
+    const goalContainer = document.getElementById("goal-img-parent");
+    let varGoalWidth = goalContainer.offsetWidth;
+    let varGoalHeight = goalContainer.offsetHeight;
+
+    let goalConfig = heatmapData.getGoalConfig(goalContainer);
+
+    let GoalHeatmapInstance;
+    GoalHeatmapInstance = heatmap.create(goalConfig);
+
+    let goalDataPoints = [];
+
+    shots.forEach(shot => {
+      let x_ = shot.goalX * varGoalWidth;
+      let y_ = shot.goalY * varGoalHeight;
+      let value_ = 1;
+      let goalObj = { x: x_, y: y_, value: value_ };
+      goalDataPoints.push(goalObj);
+    });
+
+    console.table(goalDataPoints)
+
+    const goalData = {
+      max: 1,
+      min: 0,
+      data: goalDataPoints
+    }
+
+    GoalHeatmapInstance.setData(goalData);
+    console.log(GoalHeatmapInstance)
+  },
+
+  getFieldConfig(fieldContainer) {
+    return {
+      container: fieldContainer,
+      radius: 25,
+      maxOpacity: .5,
+      minOpacity: 0,
+      blur: .75
+    };
+  },
+
+  getGoalConfig(goalContainer) {
+    return {
+      container: goalContainer,
+      radius: 35,
+      maxOpacity: .5,
+      minOpacity: 0,
+      blur: .75
+    };
+  },
+
+  /*getActiveOffsets() {
+    // this function evaluates the width of the heatmap container at 0.5 second intervals. If the width has changed,
+    // then the heatmap canvas is repainted to fit within the container limits
+    const fieldContainer = document.getElementById("field-img-parent")
+    let captureWidth = fieldContainer.offsetWidth
+    //evaluate container width after 0.5 seconds vs initial container width
+    if (captureWidth === varWidth) {
+      console.log("unchanged");
+    } else {
+      varWidth = captureWidth
+      console.log("new width", varWidth);
+      //clear heatmap
+      fieldContainer.removeChild(fieldContainer.childNodes[0]);
+      //build heatmap again
+      heatmapData.buildHeatmap();
+    }
+  },*/
+
+  saveHeatmap() {
+    console.log("saving heatmap...");
+  },
+
+  deleteHeatmap() {
+    console.log("deleting heatmap...");
+  }
 
 }
 
@@ -129,5 +175,3 @@ export default heatmapData
 // TODO: set interval for container width monitoring
 // TODO: scale ball size with goal
 // TODO: add filter compatibility
-// TODO:
-// TODO:
