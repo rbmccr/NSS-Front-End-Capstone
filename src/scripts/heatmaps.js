@@ -108,9 +108,24 @@ const heatmaps = {
 
     // dropdownTrigger.addEventListener("click", () => {dropdownParent.classList.toggle("is-active")})
 
-    const generatorButton = elBuilder("button", { "id":"generateHeatmapBtn", "class": "button is-success" }, "Generate Heatmap");
+    // saved heatmap
+    const icon1 = elBuilder("i", { "class": "fas fa-fire" }, null);
+    const iconSpan1 = elBuilder("span", { "class": "icon is-left" }, null, icon1);
+    const sel1_op1 = elBuilder("option", {}, "Basic Heatmap");
+    const select1 = elBuilder("select", {}, null, sel1_op1);
+    const selectDiv1 = elBuilder("div", { "class": "select is-dark" }, null, select1, iconSpan1);
+    const heatmapControl = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv1);
+
+    const deleteBtn = elBuilder("button", { "class": "button is-danger" }, "Delete Heatmap")
+    const deleteBtnControl = elBuilder("div", { "class": "control" }, null, deleteBtn)
+    const saveBtn = elBuilder("button", { "class": "button is-success" }, "Save Heatmap")
+    const saveBtnControl = elBuilder("div", { "class": "control" }, null, saveBtn)
+    const saveInput = elBuilder("input", { "class": "input", "type": "text", "placeholder": "Name and save this heatmap" }, null)
+    const saveControl = elBuilder("div", { "class": "control is-expanded" }, null, saveInput)
+
+    const generatorButton = elBuilder("button", { "id": "generateHeatmapBtn", "class": "button is-dark" }, "Generate Heatmap");
     const generatorControl = elBuilder("div", { "class": "control" }, null, generatorButton);
-    const generatorField = elBuilder("div", { "class": "field is-grouped is-gruoped-multiline" }, null, generatorControl);
+    const generatorField = elBuilder("div", { "class": "field is-grouped is-grouped-centered is-grouped-multiline" }, null, heatmapControl, generatorControl, saveControl, saveBtnControl, deleteBtnControl);
     const ParentGeneratorContainer = elBuilder("div", { "class": "container box" }, null, generatorField);
 
     // append filter container to webpage
