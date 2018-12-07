@@ -72,8 +72,8 @@ const heatmapData = {
       });
   },
 
-  fetchSavedHeatmapData(heatmapName) {
-    // this function, and its counterpart fetchSavedJoinTables render an already-saved heatmap though these steps:
+  fetchSavedHeatmapData() {
+    // this function, and its counterpart fetchSavedShotsUsingJoinTables render an already-saved heatmap though these steps:
     // 1. getting the heatmap name from the dropdown value
     // 2. using the name to find the childNodes index of the dropdown value (i.e. which HTML <option>) and get its ID
     // 3. fetch all shot_heatmap join tables with matching heatmap ID
@@ -92,7 +92,7 @@ const heatmapData = {
     });
     // step 3: fetch join tables
     API.getAll(`shot_heatmap?heatmapId=${currentHeatmapId}`)
-      .then(joinTables => heatmapData.fetchsavedJointables(joinTables)
+      .then(joinTables => heatmapData.fetchSavedShotsUsingJoinTables(joinTables)
         // step 5: pass shots to buildFieldHeatmap() and buildGoalHeatmap()
         .then(shots => {
           console.log(shots);
@@ -102,7 +102,7 @@ const heatmapData = {
       )
   },
 
-  fetchsavedJointables(joinTables) {
+  fetchSavedShotsUsingJoinTables(joinTables) {
     // see notes on fetchSavedHeatmapData()
     joinTables.forEach(table => {
       // step 4. then fetch using each shotId in the join tables
@@ -237,7 +237,7 @@ const heatmapData = {
 
   saveHeatmap() {
     // this function is responsible for saving a heatmap object with a name and userId, then making join tables with
-    // TODO: require unique heatmap name
+    // TODO: require unique heatmap name (may not need to do this if function below uses ID instead of name)
     const heatmapDropdown = document.getElementById("heatmapDropdown");
     const saveInput = document.getElementById("saveHeatmapInput");
     const heatmapTitle = saveInput.value;
@@ -248,7 +248,10 @@ const heatmapData = {
       heatmapData.saveHeatmapObject(heatmapTitle)
         .then(heatmapObj => heatmapData.saveJoinTables(heatmapObj).then(x => {
           console.log("join tables saved", x)
-          joinTableArr = [] // empty the temporary global array used with Promise.all
+          // empty the temporary global array used with Promise.all
+          joinTableArr = []
+          // append newly created heatmap as option element in select dropdown
+          heatmapDropdown.appendChild(elBuilder("option", { "id": `heatmap-${heatmapObj.id}` }, heatmapObj.name));
           // heatmapDropdown.value = heatmapTitle TODO: append child to select dropdown with new heatmap name
           saveInput.value = "Save successful!";
         }));

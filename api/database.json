@@ -99,11 +99,6 @@
       "name": "Saved Heatmap #1",
       "userId": 1,
       "id": 1
-    },
-    {
-      "name": "Test heatmap 2",
-      "userId": 1,
-      "id": 2
     }
   ],
   "shot_heatmap": [
@@ -121,21 +116,6 @@
       "shotId": 3,
       "heatmapId": 1,
       "id": 3
-    },
-    {
-      "shotId": 1,
-      "heatmapId": 2,
-      "id": 4
-    },
-    {
-      "shotId": 2,
-      "heatmapId": 2,
-      "id": 5
-    },
-    {
-      "shotId": 3,
-      "heatmapId": 2,
-      "id": 6
     }
   ]
 }
