@@ -190,13 +190,13 @@ const gameData = {
     const sel_gameMode = document.getElementById("gameModeInput");
     const gameMode = sel_gameMode.value.toLowerCase();
 
-    // my team (note: did not use boolean in preparation for users to enter the club information)
-    const sel_teamColor = document.getElementById("teamInput");
-    let teamedUporNot;
-    if (sel_teamColor.value === "No team") {
-      teamedUporNot = false;
+    // my team
+    const sel_team = document.getElementById("teamInput");
+    let teamedUp;
+    if (sel_team.value === "No team") {
+      teamedUp = false;
     } else {
-      teamedUporNot = true;
+      teamedUp = true;
     }
 
     // scores
@@ -221,7 +221,7 @@ const gameData = {
       "userId": activeUserId,
       "mode": gameMode,
       "type": gameType,
-      "team": teamedUporNot,
+      "team": teamedUp,
       "score": myScore,
       "opp_score": theirScore,
       "overtime": overtime,
