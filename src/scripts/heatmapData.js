@@ -73,10 +73,42 @@ const heatmapData = {
   },
 
   fetchSavedHeatmapData(heatmapName) {
-    console.log("fetching saved heatmap data...");
-    // fetch heatmaps with name= and userId=
-    const activeUserId = sessionStorage.getItem("activeUserId");
+    // this function, and its counterpart fetchSavedJoinTables render an already-saved heatmap though these steps:
+    // 1. getting the heatmap name from the dropdown value
+    // 2. using the name to find the childNodes index of the dropdown value (i.e. which HTML <option>) and get its ID
+    // 3. fetch all shot_heatmap join tables with matching heatmap ID
+    // 4. fetch shots using shot IDs from join tables
+    // 5. render heatmap by calling build functions
 
+    // step 1: get name of heatmap
+    const heatmapDropdown = document.getElementById("heatmapDropdown");
+    let currentDropdownValue = heatmapDropdown.value;
+    // step 2: use name to get heatmap ID stored in HTML option element
+    let currentHeatmapId;
+    heatmapDropdown.childNodes.forEach(child => {
+      if (child.textContent === currentDropdownValue) {
+        currentHeatmapId = child.id.slice(8);
+      }
+    });
+    // step 3: fetch join tables
+    API.getAll(`shot_heatmap?heatmapId=${currentHeatmapId}`)
+      .then(joinTables => heatmapData.fetchsavedJointables(joinTables)
+        // step 5: pass shots to buildFieldHeatmap() and buildGoalHeatmap()
+        .then(shots => {
+          console.log(shots);
+          heatmapData.buildFieldHeatmap(shots);
+          heatmapData.buildGoalHeatmap(shots);
+        })
+      )
+  },
+
+  fetchsavedJointables(joinTables) {
+    // see notes on fetchSavedHeatmapData()
+    joinTables.forEach(table => {
+      // step 4. then fetch using each shotId in the join tables
+      joinTableArr.push(API.getSingleItem("shots", table.shotId))
+    })
+    return Promise.all(joinTableArr)
   },
 
   applyGameFilters() { // TODO: add more filters
@@ -276,14 +308,12 @@ const heatmapData = {
   },
 
   confirmHeatmapDeletion() {
-    // TODO: delete option in dropdown
-    // TODO: delete heatmap object
-    // TODO: delete all join tables associated with that heatmap object
+    // this function will delete the selected heatmap option in the dropdown list and remove all shot_heatmap join tables
     const heatmapDropdown = document.getElementById("heatmapDropdown");
     let currentDropdownValue = heatmapDropdown.value;
 
     heatmapDropdown.childNodes.forEach(child => {
-      if (child.textContent === currentDropdownValue) {
+      if (child.textContent === currentDropdownValue) { //TODO: check this logic. may be able to use ID instead of requiring unique name
         child.remove();
         heatmapData.deleteHeatmapObjectandJoinTables(child.id)
           .then(() => {
