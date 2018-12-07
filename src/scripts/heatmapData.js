@@ -115,24 +115,33 @@ const heatmapData = {
   applyGameFilters() { // TODO: add more filters
     let URL = "games"
     const activeUserId = sessionStorage.getItem("activeUserId");
-    URL += `?userId=${activeUserId}`
-    return URL
+    URL += `?userId=${activeUserId}`;
+    return URL;
   },
 
   applyShotFilters(gameIds) {
+    const shotTypeFilter = document.getElementById("filter-shotType").value;
     let URL = "shots"
+
+    // game ID
     // for each gameId, append URL. Append & instead of ? once first gameId is added to URL
     if (gameIds.length > 0) {
       let gameIdCount = 0;
       gameIds.forEach(id => {
         if (gameIdCount < 1) {
-          URL += `?gameId=${id}`
+          URL += `?gameId=${id}`;
           gameIdCount++;
         } else {
-          URL += `&gameId=${id}`
+          URL += `&gameId=${id}`;
         }
       })
-    } //TODO: else do not continue (no games were found)
+    } // else statement is handled in fetchBasicHeatmapData()
+    // shot type
+    if (shotTypeFilter === "Aerial") {
+      URL += "&aerial=true";
+    } else if (shotTypeFilter === "Standard") {
+      URL += "&aerial=false"
+    }
     return URL;
   },
 
@@ -243,9 +252,13 @@ const heatmapData = {
     // TODO: require unique heatmap name (may not need to do this if function below uses ID instead of name)
     const heatmapDropdown = document.getElementById("heatmapDropdown");
     const saveInput = document.getElementById("saveHeatmapInput");
-    const heatmapTitle = saveInput.value;
+    const fieldContainer = document.getElementById("field-img-parent");
 
-    if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful!") { //TODO: add requirement for a heatmap to be loaded at the time save is clicked
+    const heatmapTitle = saveInput.value;
+    const fieldHeatmapCanvas = fieldContainer.childNodes[2];
+
+    // heatmap must have a title, the title cannot be "Save successful!", and there must be a heatmap loaded on the page
+    if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful!" && fieldHeatmapCanvas !== undefined) {
       console.log("saving heatmap...");
       saveInput.classList.remove("is-danger");
       heatmapData.saveHeatmapObject(heatmapTitle)
@@ -255,7 +268,6 @@ const heatmapData = {
           joinTableArr = []
           // append newly created heatmap as option element in select dropdown
           heatmapDropdown.appendChild(elBuilder("option", { "id": `heatmap-${heatmapObj.id}` }, heatmapObj.name));
-          // heatmapDropdown.value = heatmapTitle TODO: append child to select dropdown with new heatmap name
           saveInput.value = "Save successful!";
         }));
     } else {

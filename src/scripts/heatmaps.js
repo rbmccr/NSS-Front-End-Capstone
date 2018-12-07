@@ -83,7 +83,7 @@ const heatmaps = {
     const sel1_op1 = elBuilder("option", {}, "Shot Type");
     const sel1_op2 = elBuilder("option", {}, "Aerial");
     const sel1_op3 = elBuilder("option", {}, "Standard");
-    const select1 = elBuilder("select", {}, null, sel1_op1, sel1_op2, sel1_op3);
+    const select1 = elBuilder("select", {"id":"filter-shotType"}, null, sel1_op1, sel1_op2, sel1_op3);
     const selectDiv1 = elBuilder("div", { "class": "select is-dark" }, null, select1, iconSpan1);
     const control1 = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv1);
 
