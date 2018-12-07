@@ -192,26 +192,21 @@ const gameData = {
 
     // my team (note: did not use boolean in preparation for users to enter the club information)
     const sel_teamColor = document.getElementById("teamInput");
-    let myTeam;
-    if (sel_teamColor.value === "Orange team") {
-      myTeam = "orange";
+    let teamedUporNot;
+    if (sel_teamColor.value === "No team") {
+      teamedUporNot = false;
     } else {
-      myTeam = "blue";
+      teamedUporNot = true;
     }
 
     // scores
     let myScore;
     let theirScore;
-    const inpt_orangeScore = document.getElementById("orangeScoreInput");
-    const inpt_blueScore = document.getElementById("blueScoreInput");
+    const inpt_myScore = document.getElementById("myScoreInput");
+    const inpt_theirScore = document.getElementById("theirScoreInput");
 
-    if (myTeam === "orange") {
-      myScore = Number(inpt_orangeScore.value);
-      theirScore = Number(inpt_blueScore.value);
-    } else {
-      myScore = Number(inpt_blueScore.value);
-      theirScore = Number(inpt_orangeScore.value);
-    }
+    myScore = Number(inpt_myScore.value);
+    theirScore = Number(inpt_theirScore.value);
 
     // overtime
     let overtime;
@@ -226,7 +221,7 @@ const gameData = {
       "userId": activeUserId,
       "mode": gameMode,
       "type": gameType,
-      "team": myTeam,
+      "team": teamedUporNot,
       "score": myScore,
       "opp_score": theirScore,
       "overtime": overtime,
@@ -294,24 +289,19 @@ const gameData = {
     }
 
     // my team
-    const sel_teamColor = document.getElementById("teamInput");
-    if (game.team === "orange") {
-      sel_teamColor.value = "Orange team"
+    const sel_team = document.getElementById("teamInput");
+    if (game.team === false) {
+      sel_team.value = "No team"
     } else {
-      sel_teamColor.value = "Blue team"
+      sel_team.value = "Teamed up"
     }
 
-    // my score
-    const inpt_orangeScore = document.getElementById("orangeScoreInput");
-    const inpt_blueScore = document.getElementById("blueScoreInput");
+    // score
+    const inpt_myScore = document.getElementById("myScoreInput");
+    const inpt_theirScore = document.getElementById("theirScoreInput");
 
-    if (game.team === "orange") {
-      inpt_orangeScore.value = game.score;
-      inpt_blueScore.value = game.opp_score;
-    } else {
-      inpt_orangeScore.value = game.opp_score;
-      inpt_blueScore.value = game.score;
-    }
+    inpt_myScore.value = game.score;
+    inpt_theirScore.value = game.opp_score;
 
     // game type (1v1, 2v2, 3v3)
     const btn_3v3 = document.getElementById("_3v3");

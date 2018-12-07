@@ -89,8 +89,8 @@ const gameplay = {
     const modeControl = elBuilder("div", { "class": "control level-item" }, null, modeSelectParent);
 
     // team select
-    const teamOption1 = elBuilder("option", {}, "Orange team");
-    const teamOption2 = elBuilder("option", {}, "Blue team");
+    const teamOption1 = elBuilder("option", {}, "No team");
+    const teamOption2 = elBuilder("option", {}, "Teamed up");
     const teamSelect = elBuilder("select", { "id": "teamInput", "class": "select" }, null, teamOption1, teamOption2);
     const teamSelectParent = elBuilder("div", { "class": "select" }, null, teamSelect);
     const teamControl = elBuilder("div", { "class": "control level-item" }, null, teamSelectParent);
@@ -106,13 +106,13 @@ const gameplay = {
 
     // score inputs
     // ****Note inline styling of input widths
-    const orangeScoreInputTitle = elBuilder("div", { "class": "level-item" }, "Orange team score:");
-    const orangeScoreInput = elBuilder("input", { "id": "orangeScoreInput", "class": "input", "type": "number", "placeholder": "enter orange team score" });
-    const orangeScoreControl = elBuilder("div", { "class": "level-item control" }, null, orangeScoreInput);
-    const blueScoreInputTitle = elBuilder("div", { "class": "level-item" }, "Blue team score:")
-    const blueScoreInput = elBuilder("input", { "id": "blueScoreInput", "class": "input", "type": "number", "placeholder": "enter blue team score" });
-    const blueScoreControl = elBuilder("div", { "class": "level-item control" }, null, blueScoreInput);
-    const scoreInputContainer = elBuilder("div", { "class": "level-left" }, null, orangeScoreInputTitle, orangeScoreControl, blueScoreInputTitle, blueScoreControl);
+    const myScoreInputTitle = elBuilder("div", { "class": "level-item" }, "Score:");
+    const myScoreInput = elBuilder("input", { "id": "myScoreInput", "class": "input", "type": "number", "placeholder": "my team's score" });
+    const myScoreControl = elBuilder("div", { "class": "level-item control" }, null, myScoreInput);
+    const theirScoreInputTitle = elBuilder("div", { "class": "level-item" }, "Opponent's score:")
+    const theirScoreInput = elBuilder("input", { "id": "theirScoreInput", "class": "input", "type": "number", "placeholder": "their team's score" });
+    const theirScoreControl = elBuilder("div", { "class": "level-item control" }, null, theirScoreInput);
+    const scoreInputContainer = elBuilder("div", { "class": "level-left" }, null, myScoreInputTitle, myScoreControl, theirScoreInputTitle, theirScoreControl);
 
     // edit/save game buttons
     const editPreviousGame = elBuilder("button", { "id": "editPrevGame", "class": "button is-danger" }, "Edit Previous Game");
