@@ -143,6 +143,7 @@ const heatmapData = {
     const gameModeFilter = document.getElementById("filter-gameMode").value;
     const gametypeFilter = document.getElementById("filter-gameType").value;
     const overtimeFilter = document.getElementById("filter-overtime").value;
+    const teamStatusFilter = document.getElementById("filter-teamStatus").value;
 
     let URL = "games";
 
@@ -162,10 +163,16 @@ const heatmapData = {
       URL += "&type=1v1"
     }
     // overtime
-    if (overtimeFilter === "Yes") {
+    if (overtimeFilter === "OT") {
       URL += "&overtime=true"
-    } else if (overtimeFilter === "No") {
+    } else if (overtimeFilter === "No OT") {
       URL += "&overtime=false"
+    }
+    // team status
+    if (teamStatusFilter === "No party") {
+      URL += "&party=false"
+    } else if (teamStatusFilter === "Party") {
+      URL += "&party=true"
     }
 
     return URL;
@@ -266,7 +273,7 @@ const heatmapData = {
       radius: 0.045454545 * fieldContainer.offsetWidth,
       maxOpacity: .5,
       minOpacity: 0,
-      blur: .75
+      blur: .85
     };
   },
 
@@ -277,7 +284,7 @@ const heatmapData = {
       radius: .063636363 * goalContainer.offsetWidth,
       maxOpacity: .5,
       minOpacity: 0,
-      blur: .75
+      blur: .85
     };
   },
 
@@ -309,8 +316,8 @@ const heatmapData = {
     const heatmapTitle = saveInput.value;
     const fieldHeatmapCanvas = fieldContainer.childNodes[2];
 
-    // heatmap must have a title, the title cannot be "Save successful!", and there must be a heatmap loaded on the page
-    if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful!" && fieldHeatmapCanvas !== undefined) {
+    // heatmap must have a title, the title cannot be "Save successful!" or "Basic Heatmap", and there must be a heatmap loaded on the page
+    if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful!" && heatmapTitle !== "Basic Heatmap" && fieldHeatmapCanvas !== undefined) {
       console.log("saving heatmap...");
       saveInput.classList.remove("is-danger");
       heatmapData.saveHeatmapObject(heatmapTitle)
