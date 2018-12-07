@@ -166,8 +166,14 @@ const heatmaps = {
     deleteHeatmapBtn.addEventListener("click", heatmapData.deleteHeatmap);
 
     // add listener to heatmap parent that highlights filter buttons red when changed
+    // heatmap buttons return to default color if the default option is selected
     const filterField = document.getElementById("filterField");
-    filterField.addEventListener("change", (e) => { e.target.parentNode.classList.add("is-danger") });
+    filterField.addEventListener("change", (e) => {
+      e.target.parentNode.classList.add("is-danger");
+      if (e.target.value === e.target.childNodes[0].textContent) {
+        e.target.parentNode.classList.remove("is-danger");
+      }
+    });
 
     // add functionality to reset filter button
     const gameModeFilter = document.getElementById("filter-gameMode");

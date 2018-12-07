@@ -143,6 +143,7 @@ const heatmapData = {
     const gameModeFilter = document.getElementById("filter-gameMode").value;
     const gametypeFilter = document.getElementById("filter-gameType").value;
     const overtimeFilter = document.getElementById("filter-overtime").value;
+    const teamStatusFilter = document.getElementById("filter-teamStatus").value;
 
     let URL = "games";
 
@@ -166,6 +167,12 @@ const heatmapData = {
       URL += "&overtime=true"
     } else if (overtimeFilter === "No OT") {
       URL += "&overtime=false"
+    }
+    // team status
+    if (teamStatusFilter === "No party") {
+      URL += "&party=false"
+    } else if (teamStatusFilter === "Party") {
+      URL += "&party=true"
     }
 
     return URL;
@@ -266,7 +273,7 @@ const heatmapData = {
       radius: 0.045454545 * fieldContainer.offsetWidth,
       maxOpacity: .5,
       minOpacity: 0,
-      blur: .75
+      blur: .85
     };
   },
 
@@ -277,7 +284,7 @@ const heatmapData = {
       radius: .063636363 * goalContainer.offsetWidth,
       maxOpacity: .5,
       minOpacity: 0,
-      blur: .75
+      blur: .85
     };
   },
 
