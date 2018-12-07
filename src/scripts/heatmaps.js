@@ -17,7 +17,7 @@ const heatmaps = {
   buildFilters() {
 
     // reset button
-    const resetBtn = elBuilder("button", { "class": "button is-danger" }, "Reset Filters");
+    const resetBtn = elBuilder("button", { "id":"resetFiltersBtn", "class": "button is-danger" }, "Reset Filters");
 
     // date range button
     const dateBtnText = elBuilder("span", {}, "Date Range");
@@ -42,7 +42,7 @@ const heatmaps = {
     const sel5_op1 = elBuilder("option", {}, "Result");
     const sel5_op2 = elBuilder("option", {}, "Victory");
     const sel5_op3 = elBuilder("option", {}, "Defeat");
-    const select5 = elBuilder("select", {}, null, sel5_op1, sel5_op2, sel5_op3);
+    const select5 = elBuilder("select", {"id":"filter-gameResult"}, null, sel5_op1, sel5_op2, sel5_op3);
     const selectDiv5 = elBuilder("div", { "class": "select is-dark" }, null, select5, iconSpan5);
     const control5 = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv5);
 
@@ -159,10 +159,24 @@ const heatmaps = {
     const generateHeatmapBtn = document.getElementById("generateHeatmapBtn");
     const saveHeatmapBtn = document.getElementById("saveHeatmapBtn");
     const deleteHeatmapBtn = document.getElementById("deleteHeatmapBtn");
+    const resetFiltersBtn = document.getElementById("resetFiltersBtn");
 
     generateHeatmapBtn.addEventListener("click", heatmapData.getUserShots);
     saveHeatmapBtn.addEventListener("click", heatmapData.saveHeatmap);
     deleteHeatmapBtn.addEventListener("click", heatmapData.deleteHeatmap);
+
+    const gameModeFilter = document.getElementById("filter-gameMode");
+    const shotTypeFilter = document.getElementById("filter-shotType");
+    const gameResultFilter = document.getElementById("filter-gameResult");
+
+    resetFiltersBtn.addEventListener("click", () => {
+      gameModeFilter.value = "Game Mode";
+      shotTypeFilter.value = "Shot Type";
+      gameResultFilter.value = "Result";
+    })
+
+
+
   }
 
 }

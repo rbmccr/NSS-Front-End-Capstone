@@ -48,11 +48,30 @@ const heatmapData = {
   fetchBasicHeatmapData() {
     // this function goes to the database and retrieves shots that meet specific filters (all shots fetched if )
     let gameIds = [];
+    const gameResultFilter = document.getElementById("filter-gameResult").value;
     const gameURLextension = heatmapData.applyGameFilters();
+
     API.getAll(gameURLextension)
       .then(games => {
         games.forEach(game => {
-          gameIds.push(game.id);
+          // game result filter cannot be applied in gameURLextension, so it is applied here
+          // if victory, then check for game's score vs game's opponent score
+          // if the filter isn't selected at all, push all game IDs to gameIds array
+          if (gameResultFilter === "Victory") {
+            if (game.score > game.opp_score) {
+              gameIds.push(game.id);
+            } else {
+              return
+            }
+          } else if (gameResultFilter === "Defeat") {
+            if (game.score < game.opp_score) {
+              gameIds.push(game.id);
+            } else {
+              return
+            }
+          } else {
+            gameIds.push(game.id);
+          }
         })
         return gameIds;
       })
@@ -119,11 +138,13 @@ const heatmapData = {
   },
 
   applyGameFilters() { // TODO: add more filters
+    // NOTE: game result filter (victory/defeat) cannot be applied in this function and is applied after the fetch
     const activeUserId = sessionStorage.getItem("activeUserId");
     const gameModeFilter = document.getElementById("filter-gameMode").value;
     let URL = "games";
 
     URL += `?userId=${activeUserId}`;
+    // game mode
     if (gameModeFilter === "Competitive") {
       URL += "&mode=competitive"
     } else if (gameModeFilter === "Casual") {
