@@ -9,39 +9,40 @@ let globalShotsArr;
 let joinTableArr = [];
 
 // FIXME: examine confirmHeatmapDelete function. may not need for loop. grab ID from option
-// FIXME: add condition to getUserShots that clears existing canvas - if there is one
 // TODO: set interval for container width monitoring
-// TODO: scale ball size with goal
 // TODO: add filter compatibility
 // TODO: if custom heatmap is selected from dropdown, then blur filter container
 
 const heatmapData = {
 
   getUserShots() {
-    // const fieldContainer = document.getElementById("field-img-parent");
-    // const goalContainer = document.getElementById("goal-img-parent");
+    // this function removes an existing heatmap if necessary and then determines whether
+    // to call the basic heatmap or saved heatmap functions
+
+    const fieldContainer = document.getElementById("field-img-parent");
+    const goalContainer = document.getElementById("goal-img-parent");
     const heatmapDropdown = document.getElementById("heatmapDropdown");
 
     const heatmapName = heatmapDropdown.value;
-    // const fieldHeatmapCanvas = fieldContainer.childNodes[2]
-    // const goalHeatmapCanvas = goalContainer.childNodes[1]
+    const fieldHeatmapCanvas = fieldContainer.childNodes[2]
+    const goalHeatmapCanvas = goalContainer.childNodes[1]
 
     // if there's already a heatmap loaded, remove it before continuing
-    // if (fieldHeatmapCanvas.classList.contains("heatmap-canvas")) {
-    //   fieldHeatmapCanvas.remove();
-    //   goalHeatmapCanvas.remove();
-    //   if (heatmapName === "Basic Heatmap") {
-    //     heatmapData.fetchBasicHeatmapData();
-    //   } else {
-    //     heatmapData.fetchSavedHeatmapData(heatmapName);
-    //   }
-    // } else {
-    if (heatmapName === "Basic Heatmap") {
-      heatmapData.fetchBasicHeatmapData();
+    if (fieldHeatmapCanvas !== undefined) {
+      fieldHeatmapCanvas.remove();
+      goalHeatmapCanvas.remove();
+      if (heatmapName === "Basic Heatmap") {
+        heatmapData.fetchBasicHeatmapData();
+      } else {
+        heatmapData.fetchSavedHeatmapData();
+      }
     } else {
-      heatmapData.fetchSavedHeatmapData(heatmapName);
+      if (heatmapName === "Basic Heatmap") {
+        heatmapData.fetchBasicHeatmapData();
+      } else {
+        heatmapData.fetchSavedHeatmapData();
+      }
     }
-    // }
   },
 
   fetchBasicHeatmapData() {
@@ -198,9 +199,10 @@ const heatmapData = {
   },
 
   getFieldConfig(fieldContainer) {
+    // Ideal radius is about 25px at 550px width, or 4.545%
     return {
       container: fieldContainer,
-      radius: 25,
+      radius: 0.045454545 * fieldContainer.offsetWidth,
       maxOpacity: .5,
       minOpacity: 0,
       blur: .75
@@ -208,9 +210,10 @@ const heatmapData = {
   },
 
   getGoalConfig(goalContainer) {
+    // Ideal radius is about 35px at 550px width, or 6.363%
     return {
       container: goalContainer,
-      radius: 35,
+      radius: .063636363 * goalContainer.offsetWidth,
       maxOpacity: .5,
       minOpacity: 0,
       blur: .75
