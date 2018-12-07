@@ -70,9 +70,9 @@ const heatmaps = {
     // team
     const icon2 = elBuilder("i", { "class": "fas fa-handshake" }, null);
     const iconSpan2 = elBuilder("span", { "class": "icon is-left" }, null, icon2);
-    const sel2_op1 = elBuilder("option", {}, "Team");
-    const sel2_op2 = elBuilder("option", {}, "No team");
-    const sel2_op3 = elBuilder("option", {}, "Teamed up");
+    const sel2_op1 = elBuilder("option", {}, "Team Status");
+    const sel2_op2 = elBuilder("option", {}, "No party");
+    const sel2_op3 = elBuilder("option", {}, "Party");
     const select2 = elBuilder("select", {}, null, sel2_op1, sel2_op2, sel2_op3);
     const selectDiv2 = elBuilder("div", { "class": "select is-dark" }, null, select2, iconSpan2);
     const control2 = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv2);

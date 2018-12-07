@@ -89,8 +89,8 @@ const gameplay = {
     const modeControl = elBuilder("div", { "class": "control level-item" }, null, modeSelectParent);
 
     // team select
-    const teamOption1 = elBuilder("option", {}, "No team");
-    const teamOption2 = elBuilder("option", {}, "Teamed up");
+    const teamOption1 = elBuilder("option", {}, "No party");
+    const teamOption2 = elBuilder("option", {}, "Party");
     const teamSelect = elBuilder("select", { "id": "teamInput", "class": "select" }, null, teamOption1, teamOption2);
     const teamSelectParent = elBuilder("div", { "class": "select" }, null, teamSelect);
     const teamControl = elBuilder("div", { "class": "control level-item" }, null, teamSelectParent);

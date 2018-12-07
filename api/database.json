@@ -18,7 +18,7 @@
       "userId": 1,
       "mode": "competitive",
       "type": "3v3",
-      "team": false,
+      "party": false,
       "score": 3,
       "opp_score": 4,
       "overtime": false,
@@ -29,12 +29,34 @@
       "userId": 1,
       "mode": "competitive",
       "type": "2v2",
-      "team": true,
+      "party": true,
       "score": 3,
       "opp_score": 2,
       "overtime": true,
       "timeStamp": "2018-12-07T19:16:17.971Z",
       "id": 2
+    },
+    {
+      "userId": 1,
+      "mode": "competitive",
+      "type": "3v3",
+      "party": true,
+      "score": 5,
+      "opp_score": 4,
+      "overtime": false,
+      "timeStamp": "2018-12-07T19:22:12.478Z",
+      "id": 3
+    },
+    {
+      "userId": 1,
+      "mode": "competitive",
+      "type": "3v3",
+      "party": true,
+      "score": 3,
+      "opp_score": 2,
+      "overtime": false,
+      "timeStamp": "2018-12-07T19:32:36.180Z",
+      "id": 4
     }
   ],
   "shots": [
@@ -92,6 +114,72 @@
       "aerial": false,
       "timeStamp": "2018-12-07T19:19:34.980Z",
       "id": 5
+    },
+    {
+      "gameId": 3,
+      "fieldX": 0.736,
+      "fieldY": 0.598,
+      "goalX": 0.556,
+      "goalY": 0.495,
+      "ball_speed": 109,
+      "aerial": false,
+      "timeStamp": "2018-12-07T19:21:32.454Z",
+      "id": 6
+    },
+    {
+      "gameId": 3,
+      "fieldX": 0.644,
+      "fieldY": 0.657,
+      "goalX": 0.287,
+      "goalY": 0.406,
+      "ball_speed": 124,
+      "aerial": false,
+      "timeStamp": "2018-12-07T19:21:40.360Z",
+      "id": 7
+    },
+    {
+      "gameId": 3,
+      "fieldX": 0.435,
+      "fieldY": 0.25,
+      "goalX": 0.589,
+      "goalY": 0.609,
+      "ball_speed": 86,
+      "aerial": false,
+      "timeStamp": "2018-12-07T19:21:48.384Z",
+      "id": 8
+    },
+    {
+      "gameId": 3,
+      "fieldX": 0.516,
+      "fieldY": 0.824,
+      "goalX": 0.864,
+      "goalY": 0.322,
+      "ball_speed": 45,
+      "aerial": false,
+      "timeStamp": "2018-12-07T19:21:53.488Z",
+      "id": 9
+    },
+    {
+      "gameId": 4,
+      "fieldX": 0.885,
+      "fieldY": 0.457,
+      "goalX": 0.296,
+      "goalY": 0.728,
+      "ball_speed": 15,
+      "aerial": false,
+      "timeStamp": "2018-12-07T19:31:58.151Z",
+      "id": 10
+    },
+    {
+      "gameId": 4,
+      "fieldX": 0.135,
+      "fieldY": 0.5,
+      "goalX": 0.691,
+      "goalY": 0.767,
+      "ball_speed": 68,
+      "aerial": false,
+      "timeStamp": "2018-12-07T19:32:04.878Z",
+      "id": 11
     }
   ],
   "heatmaps": [
@@ -99,6 +187,11 @@
       "name": "Basic heatmap: 4 shots",
       "userId": 1,
       "id": 1
+    },
+    {
+      "name": "9 shots on this one",
+      "userId": 1,
+      "id": 2
     }
   ],
   "shot_heatmap": [
@@ -121,6 +214,51 @@
       "shotId": 4,
       "heatmapId": 1,
       "id": 4
+    },
+    {
+      "shotId": 1,
+      "heatmapId": 2,
+      "id": 5
+    },
+    {
+      "shotId": 2,
+      "heatmapId": 2,
+      "id": 6
+    },
+    {
+      "shotId": 3,
+      "heatmapId": 2,
+      "id": 7
+    },
+    {
+      "shotId": 4,
+      "heatmapId": 2,
+      "id": 8
+    },
+    {
+      "shotId": 5,
+      "heatmapId": 2,
+      "id": 9
+    },
+    {
+      "shotId": 6,
+      "heatmapId": 2,
+      "id": 10
+    },
+    {
+      "shotId": 7,
+      "heatmapId": 2,
+      "id": 11
+    },
+    {
+      "shotId": 8,
+      "heatmapId": 2,
+      "id": 12
+    },
+    {
+      "shotId": 9,
+      "heatmapId": 2,
+      "id": 13
     }
   ]
 }

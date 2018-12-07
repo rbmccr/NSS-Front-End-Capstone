@@ -193,7 +193,7 @@ const gameData = {
     // my team
     const sel_team = document.getElementById("teamInput");
     let teamedUp;
-    if (sel_team.value === "No team") {
+    if (sel_team.value === "No party") {
       teamedUp = false;
     } else {
       teamedUp = true;
@@ -221,7 +221,7 @@ const gameData = {
       "userId": activeUserId,
       "mode": gameMode,
       "type": gameType,
-      "team": teamedUp,
+      "party": teamedUp,
       "score": myScore,
       "opp_score": theirScore,
       "overtime": overtime,
@@ -290,10 +290,10 @@ const gameData = {
 
     // my team
     const sel_team = document.getElementById("teamInput");
-    if (game.team === false) {
-      sel_team.value = "No team"
+    if (game.party === false) {
+      sel_team.value = "No party"
     } else {
-      sel_team.value = "Teamed up"
+      sel_team.value = "Party"
     }
 
     // score
