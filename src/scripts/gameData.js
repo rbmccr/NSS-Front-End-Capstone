@@ -13,7 +13,7 @@ import elBuilder from "./elementBuilder";
 // this global variable is used to pass saved shots, ball speed, and aerial boolean to shotData.js during the edit process
 let savedGameObject;
 let putPromisesEditMode = [];
-let postPromisesEditMode = []
+let postPromisesEditMode = [];
 let postPromises = [];
 
 const gameData = {
@@ -242,9 +242,7 @@ const gameData = {
   },
 
   savePrevGameEdits() {
-    console.log("saving edits...")
     gameData.packageGameData();
-    // TODO: ((STEP 3)) PUT edits to database
   },
 
   cancelEditingMode() {

@@ -7,6 +7,8 @@ import elBuilder from "./elementBuilder.js";
 // global variable to store fetched shots
 let globalShotsArr;
 let joinTableArr = [];
+// global variable used
+let configHeatmapWithBallspeed = false;
 
 // FIXME: examine confirmHeatmapDelete function. may not need for loop. grab ID from option
 // TODO: set interval for container width monitoring
@@ -223,6 +225,10 @@ const heatmapData = {
       let x_ = Number((shot.fieldX * varWidth).toFixed(0));
       let y_ = Number((shot.fieldY * varHeight).toFixed(0));
       let value_ = 1;
+      // set value as ball speed if speed filter is selected
+      if (configHeatmapWithBallspeed) {
+        value_ = shot.ball_speed;
+      }
       let fieldObj = { x: x_, y: y_, value: value_ };
       fieldDataPoints.push(fieldObj);
     });
@@ -231,6 +237,12 @@ const heatmapData = {
       max: 1,
       min: 0,
       data: fieldDataPoints
+    };
+
+    // set max value as max ball speed in shots, if filter is selected
+    if (configHeatmapWithBallspeed) {
+      let maxBallSpeed = shots.reduce((max, shot) => shot.ball_speed > max ? shot.ball_speed : max, shots[0].ball_speed);
+      fieldData.max = maxBallSpeed;
     }
 
     FieldHeatmapInstance.setData(fieldData);
@@ -253,6 +265,10 @@ const heatmapData = {
       let x_ = Number((shot.goalX * varGoalWidth).toFixed(0));
       let y_ = Number((shot.goalY * varGoalHeight).toFixed(0));
       let value_ = 1;
+      // set value as ball speed if speed filter is selected
+      if (configHeatmapWithBallspeed) {
+        value_ = shot.ball_speed;
+      }
       let goalObj = { x: x_, y: y_, value: value_ };
       goalDataPoints.push(goalObj);
     });
@@ -261,6 +277,12 @@ const heatmapData = {
       max: 1,
       min: 0,
       data: goalDataPoints
+    }
+
+    // set max value as max ball speed in shots, if filter is selected
+    if (configHeatmapWithBallspeed) {
+      let maxBallSpeed = shots.reduce((max, shot) => shot.ball_speed > max ? shot.ball_speed : max, shots[0].ball_speed);
+      goalData.max = maxBallSpeed;
     }
 
     GoalHeatmapInstance.setData(goalData);
@@ -286,6 +308,25 @@ const heatmapData = {
       minOpacity: 0,
       blur: .85
     };
+  },
+
+  ballSpeedMax() {
+    // this button function callback changes a boolean global variable that determines the min and max values
+    // used when rendering the heatmaps (see buildFieldHeatmap() and buildGoalHeatmap())
+    const ballSpeedBtn = document.getElementById("ballSpeedBtn");
+
+    if (configHeatmapWithBallspeed) {
+      configHeatmapWithBallspeed = false;
+      ballSpeedBtn.classList.toggle("is-outlined");
+    } else {
+      configHeatmapWithBallspeed = true;
+      ballSpeedBtn.classList.toggle("is-outlined");
+    }
+  },
+
+  resetGlobalHeatmapVars() {
+    // this function is used by the filter reset button in
+    configHeatmapWithBallspeed = false;
   },
 
   /*getActiveOffsets() {
