@@ -32,7 +32,7 @@ const heatmaps = {
     const sel6_op1 = elBuilder("option", {}, "Overtime");
     const sel6_op2 = elBuilder("option", {}, "Yes");
     const sel6_op3 = elBuilder("option", {}, "No");
-    const select6 = elBuilder("select", {}, null, sel6_op1, sel6_op2, sel6_op3);
+    const select6 = elBuilder("select", {"id":"filter-overtime"}, null, sel6_op1, sel6_op2, sel6_op3);
     const selectDiv6 = elBuilder("div", { "class": "select is-dark" }, null, select6, iconSpan6);
     const control6 = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv6);
 
@@ -53,7 +53,7 @@ const heatmaps = {
     const sel4_op2 = elBuilder("option", {}, "3v3");
     const sel4_op3 = elBuilder("option", {}, "2v2");
     const sel4_op4 = elBuilder("option", {}, "1v1");
-    const select4 = elBuilder("select", {}, null, sel4_op1, sel4_op2, sel4_op3, sel4_op4);
+    const select4 = elBuilder("select", {"id":"filter-gameType"}, null, sel4_op1, sel4_op2, sel4_op3, sel4_op4);
     const selectDiv4 = elBuilder("div", { "class": "select is-dark" }, null, select4, iconSpan4);
     const control4 = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv4);
 
@@ -113,7 +113,7 @@ const heatmaps = {
         const deleteBtnControl = elBuilder("div", { "class": "control" }, null, deleteHeatmapBtn)
         const saveBtn = elBuilder("button", { "id": "saveHeatmapBtn", "class": "button is-success" }, "Save Heatmap")
         const saveBtnControl = elBuilder("div", { "class": "control" }, null, saveBtn)
-        const saveInput = elBuilder("input", { "id": "saveHeatmapInput", "class": "input", "type": "text", "placeholder": "Name and save this heatmap", "maxlength": "30" }, null)
+        const saveInput = elBuilder("input", { "id": "saveHeatmapInput", "class": "input", "type": "text", "placeholder": "Name and save this heatmap", "maxlength": "28" }, null)
         const saveControl = elBuilder("div", { "class": "control is-expanded" }, null, saveInput)
 
         const generatorButton = elBuilder("button", { "id": "generateHeatmapBtn", "class": "button is-dark" }, "Generate Heatmap");
@@ -168,11 +168,15 @@ const heatmaps = {
     const gameModeFilter = document.getElementById("filter-gameMode");
     const shotTypeFilter = document.getElementById("filter-shotType");
     const gameResultFilter = document.getElementById("filter-gameResult");
+    const gametypeFilter = document.getElementById("filter-gameType");
+    const overtimeFilter = document.getElementById("filter-overtime");
 
     resetFiltersBtn.addEventListener("click", () => {
       gameModeFilter.value = "Game Mode";
       shotTypeFilter.value = "Shot Type";
       gameResultFilter.value = "Result";
+      gametypeFilter.value = "Game Type";
+      overtimeFilter.value = "Overtime";
     })
 
 

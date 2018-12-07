@@ -10,8 +10,8 @@ let joinTableArr = [];
 
 // FIXME: examine confirmHeatmapDelete function. may not need for loop. grab ID from option
 // TODO: set interval for container width monitoring
-// TODO: add filter compatibility
 // TODO: if custom heatmap is selected from dropdown, then blur filter container
+// TODO: save heatmap with date timestamp
 
 const heatmapData = {
 
@@ -141,6 +141,9 @@ const heatmapData = {
     // NOTE: game result filter (victory/defeat) cannot be applied in this function and is applied after the fetch
     const activeUserId = sessionStorage.getItem("activeUserId");
     const gameModeFilter = document.getElementById("filter-gameMode").value;
+    const gametypeFilter = document.getElementById("filter-gameType").value;
+    const overtimeFilter = document.getElementById("filter-overtime").value;
+
     let URL = "games";
 
     URL += `?userId=${activeUserId}`;
@@ -149,6 +152,20 @@ const heatmapData = {
       URL += "&mode=competitive"
     } else if (gameModeFilter === "Casual") {
       URL += "&mode=casual"
+    }
+    // game type
+    if (gametypeFilter === "3v3") {
+      URL += "&type=3v3"
+    } else if (gametypeFilter === "2v2") {
+      URL += "&type=2v2"
+    } else if (gametypeFilter === "1v1") {
+      URL += "&type=1v1"
+    }
+    // overtime
+    if (overtimeFilter === "Yes") {
+      URL += "&overtime=true"
+    } else if (overtimeFilter === "No") {
+      URL += "&overtime=false"
     }
 
     return URL;
