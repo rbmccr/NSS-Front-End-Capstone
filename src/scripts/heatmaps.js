@@ -63,7 +63,7 @@ const heatmaps = {
     const sel3_op1 = elBuilder("option", {}, "Game Mode");
     const sel3_op2 = elBuilder("option", {}, "Competitive");
     const sel3_op3 = elBuilder("option", {}, "Casual");
-    const select3 = elBuilder("select", {}, null, sel3_op1, sel3_op2, sel3_op3);
+    const select3 = elBuilder("select", {"id":"filter-gameMode"}, null, sel3_op1, sel3_op2, sel3_op3);
     const selectDiv3 = elBuilder("div", { "class": "select is-dark" }, null, select3, iconSpan3);
     const control3 = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv3);
 

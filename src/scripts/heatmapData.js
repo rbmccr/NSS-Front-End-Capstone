@@ -58,16 +58,21 @@ const heatmapData = {
       })
       .then(gameIds => {
         if (gameIds.length === 0) {
-          alert("No Shots have been saved yet. Visit the Gameplay page to get started.")
+          alert("Sorry! Either no shots have been saved yet or no games match the current filters. Visit the Gameplay page to get started or to add more shots.")
           return
         } else {
           const shotURLextension = heatmapData.applyShotFilters(gameIds);
           API.getAll(shotURLextension)
             .then(shots => {
-              globalShotsArr = shots;
-              heatmapData.buildFieldHeatmap(shots);
-              heatmapData.buildGoalHeatmap(shots);
-              // intervalId = setInterval(heatmapData.getActiveOffsets, 500);
+              if (shots.length === 0) {
+                alert("Sorry! No shots match the current filters. Visit the Gameplay page to get started or add to more shots.")
+                return
+              } else {
+                globalShotsArr = shots;
+                heatmapData.buildFieldHeatmap(shots);
+                heatmapData.buildGoalHeatmap(shots);
+                // intervalId = setInterval(heatmapData.getActiveOffsets, 500);
+              }
             })
         }
       });
@@ -99,6 +104,7 @@ const heatmapData = {
           console.log(shots);
           heatmapData.buildFieldHeatmap(shots);
           heatmapData.buildGoalHeatmap(shots);
+          joinTableArr = [];
         })
       )
   },
@@ -113,9 +119,17 @@ const heatmapData = {
   },
 
   applyGameFilters() { // TODO: add more filters
-    let URL = "games"
     const activeUserId = sessionStorage.getItem("activeUserId");
+    const gameModeFilter = document.getElementById("filter-gameMode").value;
+    let URL = "games";
+
     URL += `?userId=${activeUserId}`;
+    if (gameModeFilter === "Competitive") {
+      URL += "&mode=competitive"
+    } else if (gameModeFilter === "Casual") {
+      URL += "&mode=casual"
+    }
+
     return URL;
   },
 
