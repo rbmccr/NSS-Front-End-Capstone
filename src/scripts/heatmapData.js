@@ -311,7 +311,7 @@ const heatmapData = {
   },
 
   ballSpeedMax() {
-    // this button function callback changes a boolean global variable that determines the min and max values
+    // this button function callback (it's a filter) changes a boolean global variable that determines the min and max values
     // used when rendering the heatmaps (see buildFieldHeatmap() and buildGoalHeatmap())
     const ballSpeedBtn = document.getElementById("ballSpeedBtn");
 
@@ -322,10 +322,21 @@ const heatmapData = {
       configHeatmapWithBallspeed = true;
       ballSpeedBtn.classList.toggle("is-outlined");
     }
+
+    // if there's a heatmap loaded already, convert the config immediately to use the max ball speed
+    // the IF statement is needed so the user can't immediately render a heatmap just by clicking
+    // the speed filter
+    // const fieldContainer = document.getElementById("field-img-parent");
+
+    // const fieldHeatmapCanvas = fieldContainer.childNodes[2]
+    // if (fieldHeatmapCanvas !== undefined) {
+    //   heatmapData.getUserShots();
+    // }
   },
 
   resetGlobalHeatmapVars() {
-    // this function is used by the filter reset button in
+    // this function is used by the filter reset button in heatmaps.js to force the speed filter off when
+    // all filters are reset to default values
     configHeatmapWithBallspeed = false;
   },
 

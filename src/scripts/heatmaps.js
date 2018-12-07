@@ -20,14 +20,14 @@ const heatmaps = {
     const resetBtn = elBuilder("button", { "id": "resetFiltersBtn", "class": "button is-danger" }, "Reset Filters");
 
     // date range button
-    const dateBtnText = elBuilder("span", {}, "Date");
+    const dateBtnText = elBuilder("span", {}, "Date Range");
     const dateBtnIcon = elBuilder("i", { "class": "far fa-calendar" }, null);
     const dateBtnIconSpan = elBuilder("span", { "class": "icon is-small" }, null, dateBtnIcon);
     const dateBtn = elBuilder("a", { "class": "button is-outlined is-dark" }, null, dateBtnIconSpan, dateBtnText);
     const dateBtnParent = elBuilder("div", { "class": "control" }, null, dateBtn);
 
     // ball speed button
-    const ballSpeedBtnText = elBuilder("span", {}, "Speed");
+    const ballSpeedBtnText = elBuilder("span", {}, "Ball Speed");
     const ballSpeedBtnIcon = elBuilder("i", { "class": "fas fa-bolt" }, null);
     const ballSpeedBtnIconSpan = elBuilder("span", { "class": "icon is-small" }, null, ballSpeedBtnIcon);
     const ballSpeedBtn = elBuilder("a", {"id":"ballSpeedBtn", "class": "button is-outlined is-dark" }, null, ballSpeedBtnIconSpan, ballSpeedBtnText);

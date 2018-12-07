@@ -214,11 +214,6 @@
       "name": "9 shots on this one",
       "userId": 1,
       "id": 2
-    },
-    {
-      "name": "does speed save?",
-      "userId": 1,
-      "id": 3
     }
   ],
   "shot_heatmap": [
@@ -286,66 +281,6 @@
       "shotId": 9,
       "heatmapId": 2,
       "id": 13
-    },
-    {
-      "shotId": 1,
-      "heatmapId": 3,
-      "id": 14
-    },
-    {
-      "shotId": 2,
-      "heatmapId": 3,
-      "id": 15
-    },
-    {
-      "shotId": 3,
-      "heatmapId": 3,
-      "id": 16
-    },
-    {
-      "shotId": 4,
-      "heatmapId": 3,
-      "id": 17
-    },
-    {
-      "shotId": 5,
-      "heatmapId": 3,
-      "id": 18
-    },
-    {
-      "shotId": 6,
-      "heatmapId": 3,
-      "id": 19
-    },
-    {
-      "shotId": 7,
-      "heatmapId": 3,
-      "id": 20
-    },
-    {
-      "shotId": 8,
-      "heatmapId": 3,
-      "id": 21
-    },
-    {
-      "shotId": 9,
-      "heatmapId": 3,
-      "id": 22
-    },
-    {
-      "shotId": 10,
-      "heatmapId": 3,
-      "id": 23
-    },
-    {
-      "shotId": 11,
-      "heatmapId": 3,
-      "id": 24
-    },
-    {
-      "shotId": 12,
-      "heatmapId": 3,
-      "id": 25
     }
   ]
 }
