@@ -1,5 +1,6 @@
 import elBuilder from "./elementBuilder"
 import heatmapData from "./heatmapData"
+import API from "./API";
 
 const webpage = document.getElementById("container-master");
 
@@ -8,15 +9,15 @@ const heatmaps = {
   loadHeatmapContainers() {
     webpage.innerHTML = null;
     this.buildFilters();
-    this.buildGenerator(); // builds button to generate heatmap, save heatmap, and view saved heatmaps
-    this.buildFieldandGoal();
-    this.heatmapEventManager();
+    // builds button to generate heatmap, save heatmap, and view saved heatmaps
+    // the action is async because the user's saved heatmaps have to be rendered as HTML option elements
+    this.buildGenerator();
   },
 
   buildFilters() {
 
     // reset button
-    const resetBtn = elBuilder("button", { "class": "button is-danger" }, "Reset Filters");
+    const resetBtn = elBuilder("button", { "id":"resetFiltersBtn", "class": "button is-danger" }, "Reset Filters");
 
     // date range button
     const dateBtnText = elBuilder("span", {}, "Date Range");
@@ -31,7 +32,7 @@ const heatmaps = {
     const sel6_op1 = elBuilder("option", {}, "Overtime");
     const sel6_op2 = elBuilder("option", {}, "Yes");
     const sel6_op3 = elBuilder("option", {}, "No");
-    const select6 = elBuilder("select", {}, null, sel6_op1, sel6_op2, sel6_op3);
+    const select6 = elBuilder("select", {"id":"filter-overtime"}, null, sel6_op1, sel6_op2, sel6_op3);
     const selectDiv6 = elBuilder("div", { "class": "select is-dark" }, null, select6, iconSpan6);
     const control6 = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv6);
 
@@ -41,7 +42,7 @@ const heatmaps = {
     const sel5_op1 = elBuilder("option", {}, "Result");
     const sel5_op2 = elBuilder("option", {}, "Victory");
     const sel5_op3 = elBuilder("option", {}, "Defeat");
-    const select5 = elBuilder("select", {}, null, sel5_op1, sel5_op2, sel5_op3);
+    const select5 = elBuilder("select", {"id":"filter-gameResult"}, null, sel5_op1, sel5_op2, sel5_op3);
     const selectDiv5 = elBuilder("div", { "class": "select is-dark" }, null, select5, iconSpan5);
     const control5 = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv5);
 
@@ -52,7 +53,7 @@ const heatmaps = {
     const sel4_op2 = elBuilder("option", {}, "3v3");
     const sel4_op3 = elBuilder("option", {}, "2v2");
     const sel4_op4 = elBuilder("option", {}, "1v1");
-    const select4 = elBuilder("select", {}, null, sel4_op1, sel4_op2, sel4_op3, sel4_op4);
+    const select4 = elBuilder("select", {"id":"filter-gameType"}, null, sel4_op1, sel4_op2, sel4_op3, sel4_op4);
     const selectDiv4 = elBuilder("div", { "class": "select is-dark" }, null, select4, iconSpan4);
     const control4 = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv4);
 
@@ -62,7 +63,7 @@ const heatmaps = {
     const sel3_op1 = elBuilder("option", {}, "Game Mode");
     const sel3_op2 = elBuilder("option", {}, "Competitive");
     const sel3_op3 = elBuilder("option", {}, "Casual");
-    const select3 = elBuilder("select", {}, null, sel3_op1, sel3_op2, sel3_op3);
+    const select3 = elBuilder("select", {"id":"filter-gameMode"}, null, sel3_op1, sel3_op2, sel3_op3);
     const selectDiv3 = elBuilder("div", { "class": "select is-dark" }, null, select3, iconSpan3);
     const control3 = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv3);
 
@@ -82,7 +83,7 @@ const heatmaps = {
     const sel1_op1 = elBuilder("option", {}, "Shot Type");
     const sel1_op2 = elBuilder("option", {}, "Aerial");
     const sel1_op3 = elBuilder("option", {}, "Standard");
-    const select1 = elBuilder("select", {}, null, sel1_op1, sel1_op2, sel1_op3);
+    const select1 = elBuilder("select", {"id":"filter-shotType"}, null, sel1_op1, sel1_op2, sel1_op3);
     const selectDiv1 = elBuilder("div", { "class": "select is-dark" }, null, select1, iconSpan1);
     const control1 = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv1);
 
@@ -94,42 +95,47 @@ const heatmaps = {
   },
 
   buildGenerator() {
+    const activeUserId = sessionStorage.getItem("activeUserId");
 
-    // const content1 = elBuilder("div", {"style":"margin-left=5px"}, "Test item")
-    // const dropdownContent = elBuilder("div", { "class": "dropdown-content" }, null, content1);
-    // const dropdownMenu = elBuilder("div", { "class": "dropdown-menu", "id": "dropdown-menu", "role": "menu" }, null, dropdownContent);
-    // const dropdownArrowIcon = elBuilder("i", { "class": "fas fa-angle-down", "aria-hidden": "true" }, null);
-    // const dropdownArrowIconSpan = elBuilder("span", { "class": "icon is-small" }, null, dropdownArrowIcon);
-    // const dropdownBtnText = elBuilder("span", {}, "Default Heatmap");
-    // const dropdownBtn = elBuilder("button", { "class": "button" }, null, dropdownBtnText, dropdownArrowIconSpan);
-    // const dropdownTrigger = elBuilder("div", { "class": "dropdown-trigger", "aria-haspopup": "true", "aria-controls": "dropdown-menu" }, null, dropdownBtn);
-    // const dropdownParent = elBuilder("div", { "class": "dropdown" }, null, dropdownTrigger, dropdownMenu);
-    // const dropdownControl = elBuilder("div", { "class": "control" }, null, dropdownParent);
+    // use fetch to append options to select element if user at least 1 saved heatmap
+    API.getAll(`heatmaps?userId=${activeUserId}`)
+      .then(heatmaps => {
+        console.log("Array of user's saved heatmaps:", heatmaps);
 
-    // dropdownTrigger.addEventListener("click", () => {dropdownParent.classList.toggle("is-active")})
+        const icon = elBuilder("i", { "class": "fas fa-fire" }, null);
+        const iconSpan = elBuilder("span", { "class": "icon is-left" }, null, icon);
+        const sel1_op1 = elBuilder("option", {}, "Basic Heatmap");
+        const heatmapDropdown = elBuilder("select", { "id": "heatmapDropdown" }, null, sel1_op1);
+        const heatmapSelectDiv = elBuilder("div", { "class": "select is-dark" }, null, heatmapDropdown, iconSpan);
+        const heatmapControl = elBuilder("div", { "class": "control has-icons-left" }, null, heatmapSelectDiv);
 
-    // saved heatmap
-    const icon1 = elBuilder("i", { "class": "fas fa-fire" }, null);
-    const iconSpan1 = elBuilder("span", { "class": "icon is-left" }, null, icon1);
-    const sel1_op1 = elBuilder("option", {}, "Basic Heatmap");
-    const select1 = elBuilder("select", { "id": "heatmapDropdown" }, null, sel1_op1);
-    const selectDiv1 = elBuilder("div", { "class": "select is-dark" }, null, select1, iconSpan1);
-    const heatmapControl = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv1);
+        const deleteHeatmapBtn = elBuilder("button", { "id":"deleteHeatmapBtn", "class": "button is-danger" }, "Delete Heatmap")
+        const deleteBtnControl = elBuilder("div", { "class": "control" }, null, deleteHeatmapBtn)
+        const saveBtn = elBuilder("button", { "id": "saveHeatmapBtn", "class": "button is-success" }, "Save Heatmap")
+        const saveBtnControl = elBuilder("div", { "class": "control" }, null, saveBtn)
+        const saveInput = elBuilder("input", { "id": "saveHeatmapInput", "class": "input", "type": "text", "placeholder": "Name and save this heatmap", "maxlength": "28" }, null)
+        const saveControl = elBuilder("div", { "class": "control is-expanded" }, null, saveInput)
 
-    const deleteBtn = elBuilder("button", { "class": "button is-danger" }, "Delete Heatmap")
-    const deleteBtnControl = elBuilder("div", { "class": "control" }, null, deleteBtn)
-    const saveBtn = elBuilder("button", { "id": "saveHeatmapBtn", "class": "button is-success" }, "Save Heatmap")
-    const saveBtnControl = elBuilder("div", { "class": "control" }, null, saveBtn)
-    const saveInput = elBuilder("input", { "id": "saveHeatmapInput", "class": "input", "type": "text", "placeholder": "Name and save this heatmap", "maxlength": "30" }, null)
-    const saveControl = elBuilder("div", { "class": "control is-expanded" }, null, saveInput)
+        const generatorButton = elBuilder("button", { "id": "generateHeatmapBtn", "class": "button is-dark" }, "Generate Heatmap");
+        const generatorControl = elBuilder("div", { "class": "control" }, null, generatorButton);
 
-    const generatorButton = elBuilder("button", { "id": "generateHeatmapBtn", "class": "button is-dark" }, "Generate Heatmap");
-    const generatorControl = elBuilder("div", { "class": "control" }, null, generatorButton);
-    const generatorField = elBuilder("div", { "class": "field is-grouped is-grouped-centered is-grouped-multiline" }, null, heatmapControl, generatorControl, saveControl, saveBtnControl, deleteBtnControl);
-    const ParentGeneratorContainer = elBuilder("div", { "class": "container box" }, null, generatorField);
+        // if no heatmaps are saved, generate no extra options in dropdown
+        if (heatmaps.length === 0) {
+          const generatorField = elBuilder("div", { "class": "field is-grouped is-grouped-centered is-grouped-multiline" }, null, heatmapControl, generatorControl, saveControl, saveBtnControl, deleteBtnControl);
+          const ParentGeneratorContainer = elBuilder("div", { "class": "container box" }, null, generatorField);
+          webpage.appendChild(ParentGeneratorContainer);
+        } else { // else, for each heatmap saved, make a new option and append it to the
+          heatmaps.forEach(heatmap => {
+            heatmapDropdown.appendChild(elBuilder("option", {"id":`heatmap-${heatmap.id}`}, heatmap.name));
+          })
+          const generatorField = elBuilder("div", { "class": "field is-grouped is-grouped-centered is-grouped-multiline" }, null, heatmapControl, generatorControl, saveControl, saveBtnControl, deleteBtnControl);
+          const ParentGeneratorContainer = elBuilder("div", { "class": "container box" }, null, generatorField);
+          webpage.appendChild(ParentGeneratorContainer);
+        }
+        this.buildFieldandGoal();
+        this.heatmapEventManager();
+      });
 
-    // append filter container to webpage
-    webpage.appendChild(ParentGeneratorContainer);
   },
 
   buildFieldandGoal() {
@@ -152,9 +158,29 @@ const heatmaps = {
   heatmapEventManager() {
     const generateHeatmapBtn = document.getElementById("generateHeatmapBtn");
     const saveHeatmapBtn = document.getElementById("saveHeatmapBtn");
+    const deleteHeatmapBtn = document.getElementById("deleteHeatmapBtn");
+    const resetFiltersBtn = document.getElementById("resetFiltersBtn");
 
     generateHeatmapBtn.addEventListener("click", heatmapData.getUserShots);
     saveHeatmapBtn.addEventListener("click", heatmapData.saveHeatmap);
+    deleteHeatmapBtn.addEventListener("click", heatmapData.deleteHeatmap);
+
+    const gameModeFilter = document.getElementById("filter-gameMode");
+    const shotTypeFilter = document.getElementById("filter-shotType");
+    const gameResultFilter = document.getElementById("filter-gameResult");
+    const gametypeFilter = document.getElementById("filter-gameType");
+    const overtimeFilter = document.getElementById("filter-overtime");
+
+    resetFiltersBtn.addEventListener("click", () => {
+      gameModeFilter.value = "Game Mode";
+      shotTypeFilter.value = "Shot Type";
+      gameResultFilter.value = "Result";
+      gametypeFilter.value = "Game Type";
+      overtimeFilter.value = "Overtime";
+    })
+
+
+
   }
 
 }

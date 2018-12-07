@@ -1,5 +1,6 @@
 import heatmap from "../lib/node_modules/heatmap.js/build/heatmap.js"
 import API from "./API.js";
+import elBuilder from "./elementBuilder.js";
 
 // ID of setInterval function used to monitor container width and repaint heatmap if container width changes
 // let intervalId;
@@ -7,72 +8,197 @@ import API from "./API.js";
 let globalShotsArr;
 let joinTableArr = [];
 
+// FIXME: examine confirmHeatmapDelete function. may not need for loop. grab ID from option
+// TODO: set interval for container width monitoring
+// TODO: if custom heatmap is selected from dropdown, then blur filter container
+// TODO: save heatmap with date timestamp
+
 const heatmapData = {
 
   getUserShots() {
+    // this function removes an existing heatmap if necessary and then determines whether
+    // to call the basic heatmap or saved heatmap functions
+
+    const fieldContainer = document.getElementById("field-img-parent");
+    const goalContainer = document.getElementById("goal-img-parent");
     const heatmapDropdown = document.getElementById("heatmapDropdown");
+
     const heatmapName = heatmapDropdown.value;
-    if (heatmapName === "Basic Heatmap") {
-      heatmapData.fetchBasicHeatmapData();
+    const fieldHeatmapCanvas = fieldContainer.childNodes[2]
+    const goalHeatmapCanvas = goalContainer.childNodes[1]
+
+    // if there's already a heatmap loaded, remove it before continuing
+    if (fieldHeatmapCanvas !== undefined) {
+      fieldHeatmapCanvas.remove();
+      goalHeatmapCanvas.remove();
+      if (heatmapName === "Basic Heatmap") {
+        heatmapData.fetchBasicHeatmapData();
+      } else {
+        heatmapData.fetchSavedHeatmapData();
+      }
     } else {
-      heatmapData.fetchSavedHeatmapData(heatmapName);
+      if (heatmapName === "Basic Heatmap") {
+        heatmapData.fetchBasicHeatmapData();
+      } else {
+        heatmapData.fetchSavedHeatmapData();
+      }
     }
   },
 
   fetchBasicHeatmapData() {
     // this function goes to the database and retrieves shots that meet specific filters (all shots fetched if )
     let gameIds = [];
+    const gameResultFilter = document.getElementById("filter-gameResult").value;
     const gameURLextension = heatmapData.applyGameFilters();
+
     API.getAll(gameURLextension)
       .then(games => {
         games.forEach(game => {
-          gameIds.push(game.id);
+          // game result filter cannot be applied in gameURLextension, so it is applied here
+          // if victory, then check for game's score vs game's opponent score
+          // if the filter isn't selected at all, push all game IDs to gameIds array
+          if (gameResultFilter === "Victory") {
+            if (game.score > game.opp_score) {
+              gameIds.push(game.id);
+            } else {
+              return
+            }
+          } else if (gameResultFilter === "Defeat") {
+            if (game.score < game.opp_score) {
+              gameIds.push(game.id);
+            } else {
+              return
+            }
+          } else {
+            gameIds.push(game.id);
+          }
         })
         return gameIds;
       })
       .then(gameIds => {
-        const shotURLextension = heatmapData.applyShotFilters(gameIds);
-        API.getAll(shotURLextension)
-          .then(shots => {
-            globalShotsArr = shots;
-            heatmapData.buildFieldHeatmap(shots);
-            heatmapData.buildGoalHeatmap(shots);
-            // intervalId = setInterval(heatmapData.getActiveOffsets, 500);
-          })
-      })
+        if (gameIds.length === 0) {
+          alert("Sorry! Either no shots have been saved yet or no games match the current filters. Visit the Gameplay page to get started or to add more shots.")
+          return
+        } else {
+          const shotURLextension = heatmapData.applyShotFilters(gameIds);
+          API.getAll(shotURLextension)
+            .then(shots => {
+              if (shots.length === 0) {
+                alert("Sorry! No shots match the current filters. Visit the Gameplay page to get started or add to more shots.")
+                return
+              } else {
+                globalShotsArr = shots;
+                heatmapData.buildFieldHeatmap(shots);
+                heatmapData.buildGoalHeatmap(shots);
+                // intervalId = setInterval(heatmapData.getActiveOffsets, 500);
+              }
+            })
+        }
+      });
   },
 
-  fetchSavedHeatmapData(heatmapName) {
-    console.log("fetching saved heatmap data...");
-    // fetch heatmaps with name= and userId=
+  fetchSavedHeatmapData() {
+    // this function, and its counterpart fetchSavedShotsUsingJoinTables render an already-saved heatmap though these steps:
+    // 1. getting the heatmap name from the dropdown value
+    // 2. using the name to find the childNodes index of the dropdown value (i.e. which HTML <option>) and get its ID
+    // 3. fetch all shot_heatmap join tables with matching heatmap ID
+    // 4. fetch shots using shot IDs from join tables
+    // 5. render heatmap by calling build functions
+
+    // step 1: get name of heatmap
+    const heatmapDropdown = document.getElementById("heatmapDropdown");
+    let currentDropdownValue = heatmapDropdown.value;
+    // step 2: use name to get heatmap ID stored in HTML option element
+    let currentHeatmapId;
+    heatmapDropdown.childNodes.forEach(child => {
+      if (child.textContent === currentDropdownValue) {
+        currentHeatmapId = child.id.slice(8);
+      }
+    });
+    // step 3: fetch join tables
+    API.getAll(`shot_heatmap?heatmapId=${currentHeatmapId}`)
+      .then(joinTables => heatmapData.fetchSavedShotsUsingJoinTables(joinTables)
+        // step 5: pass shots to buildFieldHeatmap() and buildGoalHeatmap()
+        .then(shots => {
+          console.log(shots);
+          heatmapData.buildFieldHeatmap(shots);
+          heatmapData.buildGoalHeatmap(shots);
+          joinTableArr = [];
+        })
+      )
+  },
+
+  fetchSavedShotsUsingJoinTables(joinTables) {
+    // see notes on fetchSavedHeatmapData()
+    joinTables.forEach(table => {
+      // step 4. then fetch using each shotId in the join tables
+      joinTableArr.push(API.getSingleItem("shots", table.shotId))
+    })
+    return Promise.all(joinTableArr)
   },
 
   applyGameFilters() { // TODO: add more filters
-    let URL = "games"
+    // NOTE: game result filter (victory/defeat) cannot be applied in this function and is applied after the fetch
     const activeUserId = sessionStorage.getItem("activeUserId");
-    URL += `?userId=${activeUserId}`
-    return URL
+    const gameModeFilter = document.getElementById("filter-gameMode").value;
+    const gametypeFilter = document.getElementById("filter-gameType").value;
+    const overtimeFilter = document.getElementById("filter-overtime").value;
+
+    let URL = "games";
+
+    URL += `?userId=${activeUserId}`;
+    // game mode
+    if (gameModeFilter === "Competitive") {
+      URL += "&mode=competitive"
+    } else if (gameModeFilter === "Casual") {
+      URL += "&mode=casual"
+    }
+    // game type
+    if (gametypeFilter === "3v3") {
+      URL += "&type=3v3"
+    } else if (gametypeFilter === "2v2") {
+      URL += "&type=2v2"
+    } else if (gametypeFilter === "1v1") {
+      URL += "&type=1v1"
+    }
+    // overtime
+    if (overtimeFilter === "Yes") {
+      URL += "&overtime=true"
+    } else if (overtimeFilter === "No") {
+      URL += "&overtime=false"
+    }
+
+    return URL;
   },
 
   applyShotFilters(gameIds) {
+    const shotTypeFilter = document.getElementById("filter-shotType").value;
     let URL = "shots"
+
+    // game ID
     // for each gameId, append URL. Append & instead of ? once first gameId is added to URL
     if (gameIds.length > 0) {
       let gameIdCount = 0;
       gameIds.forEach(id => {
         if (gameIdCount < 1) {
-          URL += `?gameId=${id}`
+          URL += `?gameId=${id}`;
           gameIdCount++;
         } else {
-          URL += `&gameId=${id}`
+          URL += `&gameId=${id}`;
         }
       })
-    } //TODO: else do not continue (no games were found)
+    } // else statement is handled in fetchBasicHeatmapData()
+    // shot type
+    if (shotTypeFilter === "Aerial") {
+      URL += "&aerial=true";
+    } else if (shotTypeFilter === "Standard") {
+      URL += "&aerial=false"
+    }
     return URL;
   },
 
   buildFieldHeatmap(shots) {
-    console.log(shots)
+    console.log("Array of fetched shots", shots)
 
     // create field heatmap with configuration
     const fieldContainer = document.getElementById("field-img-parent");
@@ -131,13 +257,13 @@ const heatmapData = {
     }
 
     GoalHeatmapInstance.setData(goalData);
-    console.log(GoalHeatmapInstance)
   },
 
   getFieldConfig(fieldContainer) {
+    // Ideal radius is about 25px at 550px width, or 4.545%
     return {
       container: fieldContainer,
-      radius: 25,
+      radius: 0.045454545 * fieldContainer.offsetWidth,
       maxOpacity: .5,
       minOpacity: 0,
       blur: .75
@@ -145,9 +271,10 @@ const heatmapData = {
   },
 
   getGoalConfig(goalContainer) {
+    // Ideal radius is about 35px at 550px width, or 6.363%
     return {
       container: goalContainer,
-      radius: 35,
+      radius: .063636363 * goalContainer.offsetWidth,
       maxOpacity: .5,
       minOpacity: 0,
       blur: .75
@@ -174,19 +301,25 @@ const heatmapData = {
 
   saveHeatmap() {
     // this function is responsible for saving a heatmap object with a name and userId, then making join tables with
-    // shot ID and heatmap ID as foreign keys
+    // TODO: require unique heatmap name (may not need to do this if function below uses ID instead of name)
     const heatmapDropdown = document.getElementById("heatmapDropdown");
     const saveInput = document.getElementById("saveHeatmapInput");
-    const heatmapTitle = saveInput.value;
+    const fieldContainer = document.getElementById("field-img-parent");
 
-    if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful!") { //TODO: add requirement for a heatmap to be generated
+    const heatmapTitle = saveInput.value;
+    const fieldHeatmapCanvas = fieldContainer.childNodes[2];
+
+    // heatmap must have a title, the title cannot be "Save successful!", and there must be a heatmap loaded on the page
+    if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful!" && fieldHeatmapCanvas !== undefined) {
       console.log("saving heatmap...");
       saveInput.classList.remove("is-danger");
       heatmapData.saveHeatmapObject(heatmapTitle)
         .then(heatmapObj => heatmapData.saveJoinTables(heatmapObj).then(x => {
           console.log("join tables saved", x)
-          joinTableArr = [] // empty the temporary global array used with Promise.all
-          // heatmapDropdown.value = heatmapTitle TODO: append child to select dropdown with new heatmap name
+          // empty the temporary global array used with Promise.all
+          joinTableArr = []
+          // append newly created heatmap as option element in select dropdown
+          heatmapDropdown.appendChild(elBuilder("option", { "id": `heatmap-${heatmapObj.id}` }, heatmapObj.name));
           saveInput.value = "Save successful!";
         }));
     } else {
@@ -217,16 +350,58 @@ const heatmapData = {
   },
 
   deleteHeatmap() {
-    console.log("deleting heatmap...");
+    // this function is the logic that prevents the user from deleting a heatmap in one click.
+    // a second delete button and a cancel button are rendered before a delete is confirmed
+    const heatmapDropdown = document.getElementById("heatmapDropdown");
+    let currentDropdownValue = heatmapDropdown.value;
+
+    if (currentDropdownValue === "Basic Heatmap") {
+      return
+    } else {
+      const deleteHeatmapBtn = document.getElementById("deleteHeatmapBtn");
+      const confirmDeleteBtn = elBuilder("button", { "class": "button is-danger" }, "Confirm Delete");
+      const rejectDeleteBtn = elBuilder("button", { "class": "button is-dark" }, "Cancel");
+      const DeleteControl = elBuilder("div", { "id": "deleteControl", "class": "buttons" }, null, confirmDeleteBtn, rejectDeleteBtn);
+      deleteHeatmapBtn.replaceWith(DeleteControl);
+      confirmDeleteBtn.addEventListener("click", heatmapData.confirmHeatmapDeletion);
+      rejectDeleteBtn.addEventListener("click", heatmapData.rejectHeatmapDeletion);
+    }
+
+  },
+
+  rejectHeatmapDeletion() {
+    // this function re-renders the primary delete button
+    const DeleteControl = document.getElementById("deleteControl");
+    const deleteHeatmapBtn = elBuilder("button", { "id": "deleteHeatmapBtn", "class": "button is-danger" }, "Delete Heatmap")
+    DeleteControl.replaceWith(deleteHeatmapBtn)
+    deleteHeatmapBtn.addEventListener("click", heatmapData.deleteHeatmap);
+  },
+
+  confirmHeatmapDeletion() {
+    // this function will delete the selected heatmap option in the dropdown list and remove all shot_heatmap join tables
+    const heatmapDropdown = document.getElementById("heatmapDropdown");
+    let currentDropdownValue = heatmapDropdown.value;
+
+    heatmapDropdown.childNodes.forEach(child => {
+      if (child.textContent === currentDropdownValue) { //TODO: check this logic. may be able to use ID instead of requiring unique name
+        child.remove();
+        heatmapData.deleteHeatmapObjectandJoinTables(child.id)
+          .then(() => {
+            heatmapDropdown.value = "Basic Heatmap";
+            heatmapData.rejectHeatmapDeletion();
+          });
+      } else {
+        return
+      }
+    })
+
+  },
+
+  deleteHeatmapObjectandJoinTables(heatmapId) {
+    const activeUserId = sessionStorage.getItem("activeUserId");
+    return API.deleteItem("heatmaps", `${heatmapId.slice(8)}?userId=${activeUserId}`)
   }
 
 }
 
 export default heatmapData
-
-// TODO: delete heatmap functionality
-// TODO: set interval for container width monitoring
-// TODO: scale ball size with goal
-// TODO: add filter compatibility
-// TODO: if custom heatmap is selected from dropdown, then blur filter container
-// TODO: on page load, render user-saved heatmaps as options in dropdown menu

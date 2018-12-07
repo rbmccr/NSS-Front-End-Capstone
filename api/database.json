@@ -24,6 +24,28 @@
       "overtime": true,
       "timeStamp": "2018-12-05T19:32:56.695Z",
       "id": 1
+    },
+    {
+      "userId": 2,
+      "mode": "casual",
+      "type": "2v2",
+      "team": "orange",
+      "score": 1,
+      "opp_score": 2,
+      "overtime": true,
+      "timeStamp": "2018-12-06T21:52:18.606Z",
+      "id": 2
+    },
+    {
+      "userId": 1,
+      "mode": "casual",
+      "type": "2v2",
+      "team": "orange",
+      "score": 3,
+      "opp_score": 1,
+      "overtime": false,
+      "timeStamp": "2018-12-07T16:44:58.828Z",
+      "id": 3
     }
   ],
   "shots": [
@@ -59,11 +81,66 @@
       "aerial": false,
       "timeStamp": "2018-12-05T19:38:54.441Z",
       "id": 3
+    },
+    {
+      "gameId": 2,
+      "fieldX": 0.836,
+      "fieldY": 0.473,
+      "goalX": 0.245,
+      "goalY": 0.748,
+      "ball_speed": 22,
+      "aerial": false,
+      "timeStamp": "2018-12-06T21:52:01.619Z",
+      "id": 4
+    },
+    {
+      "gameId": 2,
+      "fieldX": 0.862,
+      "fieldY": 0.497,
+      "goalX": 0.355,
+      "goalY": 0.683,
+      "ball_speed": 45,
+      "aerial": false,
+      "timeStamp": "2018-12-06T21:52:06.815Z",
+      "id": 5
+    },
+    {
+      "gameId": 3,
+      "fieldX": 0.715,
+      "fieldY": 0.481,
+      "goalX": 0.311,
+      "goalY": 0.629,
+      "ball_speed": 85,
+      "aerial": false,
+      "timeStamp": "2018-12-07T16:44:03.740Z",
+      "id": 6
+    },
+    {
+      "gameId": 3,
+      "fieldX": 0.776,
+      "fieldY": 0.378,
+      "goalX": 0.522,
+      "goalY": 0.52,
+      "ball_speed": 56,
+      "aerial": true,
+      "timeStamp": "2018-12-07T16:44:14.788Z",
+      "id": 7
+    },
+    {
+      "gameId": 3,
+      "fieldX": 0.827,
+      "fieldY": 0.463,
+      "goalX": 0.533,
+      "goalY": 0.624,
+      "ball_speed": 109,
+      "aerial": false,
+      "timeStamp": "2018-12-07T16:44:22.016Z",
+      "id": 8
     }
   ],
   "heatmaps": [
     {
-      "name": "save 1",
+      "name": "Saved Heatmap #1",
       "userId": 1,
       "id": 1
     }
@@ -83,11 +160,6 @@
       "shotId": 3,
       "heatmapId": 1,
       "id": 3
-    },
-    {
-      "shotId": 3,
-      "heatmapId": 1,
-      "id": 4
     }
   ]
 }
