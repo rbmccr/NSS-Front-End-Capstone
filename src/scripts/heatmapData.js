@@ -162,9 +162,9 @@ const heatmapData = {
       URL += "&type=1v1"
     }
     // overtime
-    if (overtimeFilter === "Yes") {
+    if (overtimeFilter === "OT") {
       URL += "&overtime=true"
-    } else if (overtimeFilter === "No") {
+    } else if (overtimeFilter === "No OT") {
       URL += "&overtime=false"
     }
 
@@ -309,8 +309,8 @@ const heatmapData = {
     const heatmapTitle = saveInput.value;
     const fieldHeatmapCanvas = fieldContainer.childNodes[2];
 
-    // heatmap must have a title, the title cannot be "Save successful!", and there must be a heatmap loaded on the page
-    if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful!" && fieldHeatmapCanvas !== undefined) {
+    // heatmap must have a title, the title cannot be "Save successful!" or "Basic Heatmap", and there must be a heatmap loaded on the page
+    if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful!" && heatmapTitle !== "Basic Heatmap" && fieldHeatmapCanvas !== undefined) {
       console.log("saving heatmap...");
       saveInput.classList.remove("is-danger");
       heatmapData.saveHeatmapObject(heatmapTitle)

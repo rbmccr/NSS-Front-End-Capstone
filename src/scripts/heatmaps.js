@@ -17,7 +17,7 @@ const heatmaps = {
   buildFilters() {
 
     // reset button
-    const resetBtn = elBuilder("button", { "id":"resetFiltersBtn", "class": "button is-danger" }, "Reset Filters");
+    const resetBtn = elBuilder("button", { "id": "resetFiltersBtn", "class": "button is-danger" }, "Reset Filters");
 
     // date range button
     const dateBtnText = elBuilder("span", {}, "Date Range");
@@ -30,9 +30,9 @@ const heatmaps = {
     const icon6 = elBuilder("i", { "class": "fas fa-clock" }, null);
     const iconSpan6 = elBuilder("span", { "class": "icon is-left" }, null, icon6);
     const sel6_op1 = elBuilder("option", {}, "Overtime");
-    const sel6_op2 = elBuilder("option", {}, "Yes");
-    const sel6_op3 = elBuilder("option", {}, "No");
-    const select6 = elBuilder("select", {"id":"filter-overtime"}, null, sel6_op1, sel6_op2, sel6_op3);
+    const sel6_op2 = elBuilder("option", {}, "OT");
+    const sel6_op3 = elBuilder("option", {}, "No OT");
+    const select6 = elBuilder("select", { "id": "filter-overtime" }, null, sel6_op1, sel6_op2, sel6_op3);
     const selectDiv6 = elBuilder("div", { "class": "select is-dark" }, null, select6, iconSpan6);
     const control6 = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv6);
 
@@ -42,7 +42,7 @@ const heatmaps = {
     const sel5_op1 = elBuilder("option", {}, "Result");
     const sel5_op2 = elBuilder("option", {}, "Victory");
     const sel5_op3 = elBuilder("option", {}, "Defeat");
-    const select5 = elBuilder("select", {"id":"filter-gameResult"}, null, sel5_op1, sel5_op2, sel5_op3);
+    const select5 = elBuilder("select", { "id": "filter-gameResult" }, null, sel5_op1, sel5_op2, sel5_op3);
     const selectDiv5 = elBuilder("div", { "class": "select is-dark" }, null, select5, iconSpan5);
     const control5 = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv5);
 
@@ -53,7 +53,7 @@ const heatmaps = {
     const sel4_op2 = elBuilder("option", {}, "3v3");
     const sel4_op3 = elBuilder("option", {}, "2v2");
     const sel4_op4 = elBuilder("option", {}, "1v1");
-    const select4 = elBuilder("select", {"id":"filter-gameType"}, null, sel4_op1, sel4_op2, sel4_op3, sel4_op4);
+    const select4 = elBuilder("select", { "id": "filter-gameType" }, null, sel4_op1, sel4_op2, sel4_op3, sel4_op4);
     const selectDiv4 = elBuilder("div", { "class": "select is-dark" }, null, select4, iconSpan4);
     const control4 = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv4);
 
@@ -63,17 +63,17 @@ const heatmaps = {
     const sel3_op1 = elBuilder("option", {}, "Game Mode");
     const sel3_op2 = elBuilder("option", {}, "Competitive");
     const sel3_op3 = elBuilder("option", {}, "Casual");
-    const select3 = elBuilder("select", {"id":"filter-gameMode"}, null, sel3_op1, sel3_op2, sel3_op3);
+    const select3 = elBuilder("select", { "id": "filter-gameMode" }, null, sel3_op1, sel3_op2, sel3_op3);
     const selectDiv3 = elBuilder("div", { "class": "select is-dark" }, null, select3, iconSpan3);
     const control3 = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv3);
 
-    // team
+    // party
     const icon2 = elBuilder("i", { "class": "fas fa-handshake" }, null);
     const iconSpan2 = elBuilder("span", { "class": "icon is-left" }, null, icon2);
     const sel2_op1 = elBuilder("option", {}, "Team Status");
     const sel2_op2 = elBuilder("option", {}, "No party");
     const sel2_op3 = elBuilder("option", {}, "Party");
-    const select2 = elBuilder("select", {}, null, sel2_op1, sel2_op2, sel2_op3);
+    const select2 = elBuilder("select", { "id": "filter-teamStatus" }, null, sel2_op1, sel2_op2, sel2_op3);
     const selectDiv2 = elBuilder("div", { "class": "select is-dark" }, null, select2, iconSpan2);
     const control2 = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv2);
 
@@ -83,11 +83,11 @@ const heatmaps = {
     const sel1_op1 = elBuilder("option", {}, "Shot Type");
     const sel1_op2 = elBuilder("option", {}, "Aerial");
     const sel1_op3 = elBuilder("option", {}, "Standard");
-    const select1 = elBuilder("select", {"id":"filter-shotType"}, null, sel1_op1, sel1_op2, sel1_op3);
+    const select1 = elBuilder("select", { "id": "filter-shotType" }, null, sel1_op1, sel1_op2, sel1_op3);
     const selectDiv1 = elBuilder("div", { "class": "select is-dark" }, null, select1, iconSpan1);
     const control1 = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv1);
 
-    const filterField = elBuilder("div", { "class": "field is-grouped is-grouped-centered is-grouped-multiline" }, null, control1, control2, control3, control4, control5, control6, dateBtnParent, resetBtn);
+    const filterField = elBuilder("div", { "id": "filterField", "class": "field is-grouped is-grouped-centered is-grouped-multiline" }, null, control1, control2, control3, control4, control5, control6, dateBtnParent, resetBtn);
     const ParentFilterContainer = elBuilder("div", { "class": "container box" }, null, filterField);
 
     // append filter container to webpage
@@ -109,7 +109,7 @@ const heatmaps = {
         const heatmapSelectDiv = elBuilder("div", { "class": "select is-dark" }, null, heatmapDropdown, iconSpan);
         const heatmapControl = elBuilder("div", { "class": "control has-icons-left" }, null, heatmapSelectDiv);
 
-        const deleteHeatmapBtn = elBuilder("button", { "id":"deleteHeatmapBtn", "class": "button is-danger" }, "Delete Heatmap")
+        const deleteHeatmapBtn = elBuilder("button", { "id": "deleteHeatmapBtn", "class": "button is-danger" }, "Delete Heatmap")
         const deleteBtnControl = elBuilder("div", { "class": "control" }, null, deleteHeatmapBtn)
         const saveBtn = elBuilder("button", { "id": "saveHeatmapBtn", "class": "button is-success" }, "Save Heatmap")
         const saveBtnControl = elBuilder("div", { "class": "control" }, null, saveBtn)
@@ -126,7 +126,7 @@ const heatmaps = {
           webpage.appendChild(ParentGeneratorContainer);
         } else { // else, for each heatmap saved, make a new option and append it to the
           heatmaps.forEach(heatmap => {
-            heatmapDropdown.appendChild(elBuilder("option", {"id":`heatmap-${heatmap.id}`}, heatmap.name));
+            heatmapDropdown.appendChild(elBuilder("option", { "id": `heatmap-${heatmap.id}` }, heatmap.name));
           })
           const generatorField = elBuilder("div", { "class": "field is-grouped is-grouped-centered is-grouped-multiline" }, null, heatmapControl, generatorControl, saveControl, saveBtnControl, deleteBtnControl);
           const ParentGeneratorContainer = elBuilder("div", { "class": "container box" }, null, generatorField);
@@ -165,21 +165,38 @@ const heatmaps = {
     saveHeatmapBtn.addEventListener("click", heatmapData.saveHeatmap);
     deleteHeatmapBtn.addEventListener("click", heatmapData.deleteHeatmap);
 
+    // add listener to heatmap parent that highlights filter buttons red when changed
+    const filterField = document.getElementById("filterField");
+    filterField.addEventListener("change", (e) => { e.target.parentNode.classList.add("is-danger") });
+
+    // add functionality to reset filter button
     const gameModeFilter = document.getElementById("filter-gameMode");
     const shotTypeFilter = document.getElementById("filter-shotType");
     const gameResultFilter = document.getElementById("filter-gameResult");
     const gametypeFilter = document.getElementById("filter-gameType");
     const overtimeFilter = document.getElementById("filter-overtime");
+    const teamStatusFilter = document.getElementById("filter-teamStatus");
 
     resetFiltersBtn.addEventListener("click", () => {
       gameModeFilter.value = "Game Mode";
+      gameModeFilter.parentNode.classList.remove("is-danger");
+
       shotTypeFilter.value = "Shot Type";
+      shotTypeFilter.parentNode.classList.remove("is-danger");
+
       gameResultFilter.value = "Result";
+      gameResultFilter.parentNode.classList.remove("is-danger");
+
       gametypeFilter.value = "Game Type";
+      gametypeFilter.parentNode.classList.remove("is-danger");
+
       overtimeFilter.value = "Overtime";
+      overtimeFilter.parentNode.classList.remove("is-danger");
+
+      teamStatusFilter.value = "Team Status";
+      teamStatusFilter.parentNode.classList.remove("is-danger");
+
     })
-
-
 
   }
 
