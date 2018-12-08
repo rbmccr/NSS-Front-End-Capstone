@@ -20,7 +20,7 @@ const heatmaps = {
     const resetBtn = elBuilder("button", { "id": "resetFiltersBtn", "class": "button is-danger" }, "Reset Filters");
 
     // date range button
-    const dateBtnText = elBuilder("span", {}, "Range");
+    const dateBtnText = elBuilder("span", {}, "Dates");
     const dateBtnIcon = elBuilder("i", { "class": "far fa-calendar" }, null);
     const dateBtnIconSpan = elBuilder("span", { "class": "icon is-small" }, null, dateBtnIcon);
     const dateBtn = elBuilder("a", { "class": "button is-outlined is-dark" }, null, dateBtnIconSpan, dateBtnText);

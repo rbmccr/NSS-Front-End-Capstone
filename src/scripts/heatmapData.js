@@ -293,7 +293,7 @@ const heatmapData = {
     return {
       container: fieldContainer,
       radius: 0.045454545 * fieldContainer.offsetWidth,
-      maxOpacity: .5,
+      maxOpacity: .6,
       minOpacity: 0,
       blur: .85
     };
@@ -304,7 +304,7 @@ const heatmapData = {
     return {
       container: goalContainer,
       radius: .063636363 * goalContainer.offsetWidth,
-      maxOpacity: .5,
+      maxOpacity: .6,
       minOpacity: 0,
       blur: .85
     };
