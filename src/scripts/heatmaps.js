@@ -20,7 +20,7 @@ const heatmaps = {
     const resetBtn = elBuilder("button", { "id": "resetFiltersBtn", "class": "button is-danger" }, "Reset Filters");
 
     // date range button
-    const dateBtnText = elBuilder("span", {}, "Date Range");
+    const dateBtnText = elBuilder("span", {}, "Range");
     const dateBtnIcon = elBuilder("i", { "class": "far fa-calendar" }, null);
     const dateBtnIconSpan = elBuilder("span", { "class": "icon is-small" }, null, dateBtnIcon);
     const dateBtn = elBuilder("a", { "class": "button is-outlined is-dark" }, null, dateBtnIconSpan, dateBtnText);
@@ -56,7 +56,7 @@ const heatmaps = {
     // game type
     const icon4 = elBuilder("i", { "class": "fas fa-sitemap" }, null);
     const iconSpan4 = elBuilder("span", { "class": "icon is-left" }, null, icon4);
-    const sel4_op1 = elBuilder("option", {}, "Type");
+    const sel4_op1 = elBuilder("option", {}, "Game Type");
     const sel4_op2 = elBuilder("option", {}, "3v3");
     const sel4_op3 = elBuilder("option", {}, "2v2");
     const sel4_op4 = elBuilder("option", {}, "1v1");
@@ -201,7 +201,7 @@ const heatmaps = {
       gameResultFilter.value = "Result";
       gameResultFilter.parentNode.classList.remove("is-danger");
 
-      gametypeFilter.value = "Type";
+      gametypeFilter.value = "Game Type";
       gametypeFilter.parentNode.classList.remove("is-danger");
 
       overtimeFilter.value = "Overtime";
