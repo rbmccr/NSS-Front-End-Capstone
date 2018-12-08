@@ -4,6 +4,7 @@ import profile from "./profile"
 import gameplay from "./gameplay"
 import shotData from "./shotData"
 import heatmaps from "./heatmaps"
+import heatmapData from "./heatmapData"
 
 const webpageNav = document.getElementById("nav-master");
 
@@ -121,6 +122,7 @@ const navbar = {
   heatmapsClicked(e) {
     if (e.target.textContent === "Heatmaps") {
       heatmaps.loadHeatmapContainers();
+      heatmapData.resetGlobalHeatmapVars();
     }
   }
 
