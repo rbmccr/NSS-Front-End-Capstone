@@ -125,7 +125,6 @@ const heatmapData = {
       .then(joinTables => heatmapData.fetchSavedShotsUsingJoinTables(joinTables)
         // step 5: pass shots to buildFieldHeatmap() and buildGoalHeatmap()
         .then(shots => {
-          console.log(shots);
           heatmapData.buildFieldHeatmap(shots);
           heatmapData.buildGoalHeatmap(shots);
           joinTableArr = [];
@@ -142,7 +141,7 @@ const heatmapData = {
     return Promise.all(joinTableArr)
   },
 
-  applyGameFilters() { // TODO: add more filters
+  applyGameFilters() {
     // NOTE: game result filter (victory/defeat) cannot be applied in this function and is applied after the fetch
     const activeUserId = sessionStorage.getItem("activeUserId");
     const gameModeFilter = document.getElementById("filter-gameMode").value;
@@ -225,6 +224,7 @@ const heatmapData = {
     let fieldDataPoints = [];
 
     shots.forEach(shot => {
+      console.log(shot.timeStamp)
       let x_ = Number((shot.fieldX * varWidth).toFixed(0));
       let y_ = Number((shot.fieldY * varHeight).toFixed(0));
       let value_ = 1;
@@ -463,21 +463,28 @@ const heatmapData = {
     configHeatmapWithBallspeed = false;
   },
 
-  handleDateFilterGlobalVariables(startDateInput, endDateInput) {
+  handleDateFilterGlobalVariables(returnBoolean, startDateInput, endDateInput) {
     // this function is used to SET the date filter global variables on this page or RESET them
     // if the page is reloaded or the reset filters button is clicked
+    // this function also returns a global var to modal.js so the cancel button functions appropriately
 
-    console.log("start date", startDateInput, "end date", endDateInput)
+    console.log("start date var", startDate, "end date var", endDate)
     // if no input values are provided, that means the variables need to be reset and the date
     // filter button should be outlined - else set global vars for filter
+    if (returnBoolean) {
+      return startDate
+    }
+
     if (startDateInput === undefined) {
       startDate = undefined;
       endDate = undefined;
       console.log("start date", startDateInput, "end date", endDateInput)
     } else {
       startDate = startDateInput;
-      endDate = endDate;
+      endDate = endDateInput;
     }
+
+
   }
 
 }

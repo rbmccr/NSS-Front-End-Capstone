@@ -1,7 +1,7 @@
 import elBuilder from "./elementBuilder";
 import heatmapData from "./heatmapData";
 import API from "./API";
-import modals from "./modals";
+import dateFilter from "./dateFilter";
 
 const webpage = document.getElementById("container-master");
 
@@ -141,7 +141,7 @@ const heatmaps = {
           webpage.appendChild(ParentGeneratorContainer);
         }
         this.buildFieldandGoal();
-        modals.buildDateFilter();
+        dateFilter.buildDateFilter();
         this.heatmapEventManager();
       });
 
@@ -218,16 +218,16 @@ const heatmaps = {
       heatmapData.handleBallSpeedGlobalVariables();
       ballSpeedBtn.classList.add("is-outlined");
 
-      // reset date filter global variables
-      heatmapData.handleDateFilterGlobalVariables();
-      dateRangeBtn.classList.add("is-outlined");
+      // reset date filter and associated global variables
+      dateFilter.clearDateFilter();
+
     })
 
     // add functionality to ball speed button
     ballSpeedBtn.addEventListener("click", heatmapData.ballSpeedMax);
 
     // add functionality to date range button
-    dateRangeBtn.addEventListener("click", modals.openDateFilter);
+    dateRangeBtn.addEventListener("click", dateFilter.openDateFilter);
   }
 
 }
