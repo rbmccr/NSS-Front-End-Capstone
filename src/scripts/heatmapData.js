@@ -337,12 +337,6 @@ const heatmapData = {
     // }
   },
 
-  resetGlobalHeatmapVars() {
-    // this function is used by the filter reset button in heatmaps.js to force the speed filter off when
-    // all filters are reset to default values
-    configHeatmapWithBallspeed = false;
-  },
-
   /*getActiveOffsets() {
     // this function evaluates the width of the heatmap container at 0.5 second intervals. If the width has changed,
     // then the heatmap canvas is repainted to fit within the container limits
@@ -462,6 +456,28 @@ const heatmapData = {
   deleteHeatmapObjectandJoinTables(heatmapId) {
     const activeUserId = sessionStorage.getItem("activeUserId");
     return API.deleteItem("heatmaps", `${heatmapId.slice(8)}?userId=${activeUserId}`)
+  },
+
+  handleBallSpeedGlobalVariables() {
+    // this function is used by the reset filters button and navbar heatmaps tab to force the ball speed filter off
+    configHeatmapWithBallspeed = false;
+  },
+
+  handleDateFilterGlobalVariables(startDateInput, endDateInput) {
+    // this function is used to SET the date filter global variables on this page or RESET them
+    // if the page is reloaded or the reset filters button is clicked
+
+    console.log("start date", startDateInput, "end date", endDateInput)
+    // if no input values are provided, that means the variables need to be reset and the date
+    // filter button should be outlined - else set global vars for filter
+    if (startDateInput === undefined) {
+      startDate = undefined;
+      endDate = undefined;
+      console.log("start date", startDateInput, "end date", endDateInput)
+    } else {
+      startDate = startDateInput;
+      endDate = endDate;
+    }
   }
 
 }

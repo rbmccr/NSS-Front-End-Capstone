@@ -192,6 +192,8 @@ const heatmaps = {
     const gametypeFilter = document.getElementById("filter-gameType");
     const overtimeFilter = document.getElementById("filter-overtime");
     const teamStatusFilter = document.getElementById("filter-teamStatus");
+    const dateRangeBtn = document.getElementById("dateRangeBtn");
+    const ballSpeedBtn = document.getElementById("ballSpeedBtn");
 
     resetFiltersBtn.addEventListener("click", () => {
       gameModeFilter.value = "Game Mode";
@@ -212,16 +214,19 @@ const heatmaps = {
       teamStatusFilter.value = "Team";
       teamStatusFilter.parentNode.classList.remove("is-danger");
 
-      heatmapData.resetGlobalHeatmapVars();
+      // reset ball speed global variables
+      heatmapData.handleBallSpeedGlobalVariables();
       ballSpeedBtn.classList.add("is-outlined");
+
+      // reset date filter global variables
+      heatmapData.handleDateFilterGlobalVariables();
+      dateRangeBtn.classList.add("is-outlined");
     })
 
     // add functionality to ball speed button
-    const ballSpeedBtn = document.getElementById("ballSpeedBtn");
     ballSpeedBtn.addEventListener("click", heatmapData.ballSpeedMax);
 
     // add functionality to date range button
-    const dateRangeBtn = document.getElementById("dateRangeBtn");
     dateRangeBtn.addEventListener("click", modals.openDateFilter);
   }
 
