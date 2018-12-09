@@ -1,6 +1,7 @@
-import elBuilder from "./elementBuilder"
-import heatmapData from "./heatmapData"
+import elBuilder from "./elementBuilder";
+import heatmapData from "./heatmapData";
 import API from "./API";
+import modals from "./modals";
 
 const webpage = document.getElementById("container-master");
 
@@ -23,14 +24,14 @@ const heatmaps = {
     const dateBtnText = elBuilder("span", {}, "Dates");
     const dateBtnIcon = elBuilder("i", { "class": "far fa-calendar" }, null);
     const dateBtnIconSpan = elBuilder("span", { "class": "icon is-small" }, null, dateBtnIcon);
-    const dateBtn = elBuilder("a", { "class": "button is-outlined is-dark" }, null, dateBtnIconSpan, dateBtnText);
+    const dateBtn = elBuilder("a", {"id":"dateRangeBtn", "class": "button is-outlined is-dark" }, null, dateBtnIconSpan, dateBtnText);
     const dateBtnParent = elBuilder("div", { "class": "control" }, null, dateBtn);
 
     // ball speed button
     const ballSpeedBtnText = elBuilder("span", {}, "Ball Speed");
     const ballSpeedBtnIcon = elBuilder("i", { "class": "fas fa-bolt" }, null);
     const ballSpeedBtnIconSpan = elBuilder("span", { "class": "icon is-small" }, null, ballSpeedBtnIcon);
-    const ballSpeedBtn = elBuilder("a", {"id":"ballSpeedBtn", "class": "button is-outlined is-dark" }, null, ballSpeedBtnIconSpan, ballSpeedBtnText);
+    const ballSpeedBtn = elBuilder("a", { "id": "ballSpeedBtn", "class": "button is-outlined is-dark" }, null, ballSpeedBtnIconSpan, ballSpeedBtnText);
     const ballSpeedBtnParent = elBuilder("div", { "class": "control" }, null, ballSpeedBtn);
 
     // overtime
@@ -140,6 +141,7 @@ const heatmaps = {
           webpage.appendChild(ParentGeneratorContainer);
         }
         this.buildFieldandGoal();
+        modals.buildDateFilter();
         this.heatmapEventManager();
       });
 
@@ -216,7 +218,11 @@ const heatmaps = {
 
     // add functionality to ball speed button
     const ballSpeedBtn = document.getElementById("ballSpeedBtn");
-    ballSpeedBtn.addEventListener("click", heatmapData.ballSpeedMax)
+    ballSpeedBtn.addEventListener("click", heatmapData.ballSpeedMax);
+
+    // add functionality to date range button
+    const dateRangeBtn = document.getElementById("dateRangeBtn");
+    dateRangeBtn.addEventListener("click", modals.openDateFilter);
   }
 
 }

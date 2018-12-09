@@ -7,8 +7,11 @@ import elBuilder from "./elementBuilder.js";
 // global variable to store fetched shots
 let globalShotsArr;
 let joinTableArr = [];
-// global variable used
+// global variable used with ball speed filter on heatmaps
 let configHeatmapWithBallspeed = false;
+// global variables used with date range filter
+let startDate;
+let endDate;
 
 // FIXME: examine confirmHeatmapDelete function. may not need for loop. grab ID from option
 // TODO: set interval for container width monitoring
