@@ -18,13 +18,13 @@ const dateFilter = {
     const startDateLabel = elBuilder("label", { "class": "label" }, "Date 1:\xa0");
     const startDateInputField = elBuilder("div", { "class": "field is-grouped is-grouped-centered is-grouped-multiline" }, null, startDateLabel, startDateControl);
 
-    const clearFilterBtn = elBuilder("button", { "class": "button is-danger" }, "Clear Filter");
+    const clearFilterBtn = elBuilder("button", {"id":"clearDateFilter", "class": "button is-danger" }, "Clear Filter");
     const clearFilterButtonControl = elBuilder("div", { "class": "control" }, null, clearFilterBtn);
     const dateSaveBtn = elBuilder("button", { "class": "button is-success" }, "Set Filter");
     const saveButtonControl = elBuilder("div", { "class": "control" }, null, dateSaveBtn);
     const cancelBtn = elBuilder("button", { "class": "button is-danger" }, "Cancel");
     const cancelButtonControl = elBuilder("div", { "class": "control" }, null, cancelBtn);
-    const buttonField = elBuilder("div", { "class": "field is-grouped is-grouped-centered is-grouped-multiline" }, null, saveButtonControl, cancelButtonControl, clearFilterButtonControl);
+    const buttonField = elBuilder("div", { "class": "field is-grouped is-grouped-centered is-grouped-multiline" }, null, saveButtonControl, clearFilterButtonControl, cancelButtonControl);
 
     const modalContent = elBuilder("div", { "class": "modal-content box" }, null, startDateInputField, endDateInputField, buttonField);
     const modalBackground = elBuilder("div", { "class": "modal-background" }, null);
@@ -50,15 +50,20 @@ const dateFilter = {
   },
 
   clearDateFilter() {
+    // this function resets global date filter variables in heatmapData.js and replaces date inputs with blank date inputs
     let startDateInput = document.getElementById("startDateInput");
     let endDateInput = document.getElementById("endDateInput");
+    const dateFilterModal = document.getElementById("modal-dateFilter");
 
     heatmapData.handleDateFilterGlobalVariables();
     dateRangeBtn.classList.add("is-outlined");
-    console.log("val", startDateInput.value)
-    startDateInput.innerHTML = null;
-    console.log("val2", startDateInput.value)
-    endDateInput = "";
+    startDateInput.replaceWith(elBuilder("input", { "id": "startDateInput", "class": "input", "type": "date" }, null));
+    endDateInput.replaceWith(elBuilder("input", { "id": "endDateInput", "class": "input", "type": "date" }, null));
+
+    if (dateFilterModal.classList.contains("is-active")) {
+      dateFilterModal.classList.remove("is-active");
+    }
+
   },
 
   modalsEventManager() {
@@ -67,9 +72,10 @@ const dateFilter = {
     const dateFilterModal = document.getElementById("modal-dateFilter");
     const startDateInput = document.getElementById("startDateInput");
     const endDateInput = document.getElementById("endDateInput");
+    const clearDateFilterBtn = document.getElementById("clearDateFilter");
 
     dateFilterModal.addEventListener("click", (e) => {
-      // set filter button
+      // add functionality to set filter button
       if (e.target.textContent === "Set Filter") {
 
         startDateInput.classList.remove("is-danger");
@@ -85,7 +91,7 @@ const dateFilter = {
           heatmapData.handleDateFilterGlobalVariables(false, startDateInput.value, endDateInput.value);
           dateFilterModal.classList.toggle("is-active");
         }
-        // cancel button
+        // add functionality to cancel button
       } else if (e.target.textContent === "Cancel") {
         // if global variables are defined already, cancel should not change the class on the date range button
         const dateSet = heatmapData.handleDateFilterGlobalVariables(true);
@@ -98,7 +104,8 @@ const dateFilter = {
       }
     });
 
-    // TODO: add listener for clear filter btn
+    // add functionality to clear date button
+    clearDateFilterBtn.addEventListener("click", dateFilter.clearDateFilter);
 
   }
 
