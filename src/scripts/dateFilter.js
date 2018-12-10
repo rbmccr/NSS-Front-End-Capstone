@@ -112,6 +112,10 @@ const dateFilter = {
       dateRangeBtn.classList.toggle("is-outlined");
       dateFilterModal.classList.toggle("is-active");
     }
+  },
+
+  applydateFilter(startDate, endDate, GamesArray) {
+
   }
 
 }

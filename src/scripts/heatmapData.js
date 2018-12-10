@@ -1,12 +1,14 @@
 import heatmap from "../lib/node_modules/heatmap.js/build/heatmap.js"
 import API from "./API.js";
 import elBuilder from "./elementBuilder.js";
+import dateFilter from "./dateFilter.js";
 
 // ID of setInterval function used to monitor container width and repaint heatmap if container width changes
 // let intervalId;
 // global variable to store fetched shots
 let globalShotsArr;
 let joinTableArr = [];
+let gamesMatchingDateFilter = [];
 // global variable used with ball speed filter on heatmaps
 let configHeatmapWithBallspeed = false;
 // global variables used with date range filter
@@ -60,23 +62,11 @@ const heatmapData = {
       .then(games => {
         games.forEach(game => {
           // game result filter cannot be applied in gameURLextension, so it is applied here
-          // if victory, then check for game's score vs game's opponent score
-          // if the filter isn't selected at all, push all game IDs to gameIds array
-          if (gameResultFilter === "Victory") {
-            if (game.score > game.opp_score) {
-              gameIds.push(game.id);
-            } else {
-              return
-            }
-          } else if (gameResultFilter === "Defeat") {
-            if (game.score < game.opp_score) {
-              gameIds.push(game.id);
-            } else {
-              return
-            }
-          } else {
-            gameIds.push(game.id);
-          }
+          heatmapData.applyGameResultFilter(gameResultFilter, gameIds, game);
+          // apply date filter to games if the date filter has been set
+          // if (startDate !== undefined) {
+          //   dateFilter.compareDates(startDate, endDate, )
+          // }
         })
         return gameIds;
       })
@@ -182,6 +172,26 @@ const heatmapData = {
     return URL;
   },
 
+  applyGameResultFilter(gameResultFilter, gameIds, game) {
+    // if victory, then check for game's score vs game's opponent score
+    // if the filter isn't selected at all, push all game IDs to gameIds array
+    if (gameResultFilter === "Victory") {
+      if (game.score > game.opp_score) {
+        gameIds.push(game.id);
+      } else {
+        return
+      }
+    } else if (gameResultFilter === "Defeat") {
+      if (game.score < game.opp_score) {
+        gameIds.push(game.id);
+      } else {
+        return
+      }
+    } else {
+      gameIds.push(game.id);
+    }
+  },
+
   applyShotFilters(gameIds) {
     const shotTypeFilter = document.getElementById("filter-shotType").value;
     let URL = "shots"
@@ -224,7 +234,6 @@ const heatmapData = {
     let fieldDataPoints = [];
 
     shots.forEach(shot => {
-      console.log(shot.timeStamp)
       let x_ = Number((shot.fieldX * varWidth).toFixed(0));
       let y_ = Number((shot.fieldY * varHeight).toFixed(0));
       let value_ = 1;
@@ -464,17 +473,16 @@ const heatmapData = {
   },
 
   handleDateFilterGlobalVariables(returnBoolean, startDateInput, endDateInput) {
-    // this function is used to SET the date filter global variables on this page or RESET them
-    // if the page is reloaded or the reset filters button is clicked
-    // this function also returns a global var to modal.js so the cancel button functions appropriately
+    // this function is used to SET the date filter global variables on this page or CLEAR them
+    // if the 1. page is reloaded or 2. the "reset filters" button is clicked
 
-    console.log("current start and end dates", startDate, endDate)
-    // if no input values are provided, that means the variables need to be reset and the date
-    // filter button should be outlined - else set global vars for filter
+    // the dateFilter.js cancel button requests a global var to determine how to handle button color
     if (returnBoolean) {
       return startDate
     }
 
+    // if no input values are provided, that means the variables need to be reset and the date
+    // filter button should be outlined - else set global vars for filter
     if (startDateInput === undefined) {
       startDate = undefined;
       endDate = undefined;
