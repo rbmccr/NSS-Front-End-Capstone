@@ -397,7 +397,6 @@ const heatmapData = {
 
     // heatmap must have a title, the title cannot be "Save successful!" or "Basic Heatmap", and there must be a heatmap loaded on the page
     if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful!" && heatmapTitle !== "Basic Heatmap" && fieldHeatmapCanvas !== undefined) {
-      console.log("saving heatmap...");
       saveInput.classList.remove("is-danger");
       heatmapData.saveHeatmapObject(heatmapTitle)
         .then(heatmapObj => heatmapData.saveJoinTables(heatmapObj).then(x => {
@@ -509,7 +508,6 @@ const heatmapData = {
     if (startDateInput === undefined) {
       startDate = undefined;
       endDate = undefined;
-      console.log("SET start date", startDateInput, "SET end date", endDateInput)
     } else {
       startDate = startDateInput;
       endDate = endDateInput;
