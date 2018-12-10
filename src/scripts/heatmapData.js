@@ -468,7 +468,7 @@ const heatmapData = {
     // if the page is reloaded or the reset filters button is clicked
     // this function also returns a global var to modal.js so the cancel button functions appropriately
 
-    console.log("start date var", startDate, "end date var", endDate)
+    console.log("current start and end dates", startDate, endDate)
     // if no input values are provided, that means the variables need to be reset and the date
     // filter button should be outlined - else set global vars for filter
     if (returnBoolean) {
@@ -478,7 +478,7 @@ const heatmapData = {
     if (startDateInput === undefined) {
       startDate = undefined;
       endDate = undefined;
-      console.log("start date", startDateInput, "end date", endDateInput)
+      console.log("SET start date", startDateInput, "SET end date", endDateInput)
     } else {
       startDate = startDateInput;
       endDate = endDateInput;
