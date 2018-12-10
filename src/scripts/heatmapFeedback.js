@@ -9,7 +9,7 @@ const feedback = {
     let gameIds = [];
 
     shots.forEach(shot => {
-      gameIds.push(shot.gameId);
+      gameIds.push(shot.gameId); //FIXME: narrow down ids to one of each (since there will be multiples)
     })
 
     this.fetchGames(gameIds)
@@ -72,12 +72,10 @@ const feedback = {
       fieldPosition = "Right Halfback"
     } else if (0.45 <= avgX && avgX <= 0.60) {
       fieldPosition = "Center Halfback"
-    } else if (0.60 <= avgX && avgX < 0.75 && avgY <= 0.40) {
+    } else if (0.60 <= avgX && avgX < 0.75 && avgY <= 0.50) {
       fieldPosition = "Left Forward"
-    } else if (0.60 <= avgX && avgX < 0.75 && 0.60 <= avgY) {
+    } else if (0.60 <= avgX && avgX < 0.75 && 0.50 < avgY) {
       fieldPosition = "Right Forward"
-    } else if (0.60 <= avgX && avgX <= 0.75) {
-      fieldPosition = "Center Forward"
     } else if (0.75 <= avgX) {
       fieldPosition = "Striker"
     }
@@ -85,19 +83,46 @@ const feedback = {
     feedbackResults.fieldPosition = fieldPosition
 
     // determine players that compliment the player's style
-    let complimentA;
-    let complimentB;
+    let complementA;
+    let complementB;
 
     if (fieldPosition === "Keeper") {
-      complimentA = "Left Forward";
-      complimentB = "Right Forward";
-    } else if (fieldPosition === "Center Forward") {
-      complimentA = "Left/Right Forward";
-      complimentB = "Center Fullback";
+      complementA = "Left Forward";
+      complementB = "Right Forward";
+    } else if (fieldPosition === "Sweeper") {
+      complementA = "Center Halfback";
+      complementB = "Left/Right Forward";
+    } else if (fieldPosition === "Left Fullback") {
+      complementA = "Right Forward";
+      complementB = "Striker";
+    } else if (fieldPosition === "Right FullBack") {
+      complementA = "Left Forward";
+      complementB = "Striker";
+    } else if (fieldPosition === "Center Fullback") {
+      complementA = "Left/Right Forward";
+      complementB = "Striker";
+    } else if (fieldPosition === "Left Halfback") {
+      complementA = "Right Forward";
+      complementB = "Striker";
+    } else if (fieldPosition === "Right Halfback") {
+      complementA = "Left Forward";
+      complementB = "Striker";
+    } else if (fieldPosition === "Center Halfback") {
+      complementA = "Striker";
+      complementB = "Left/Right Forward";
+    } else if (fieldPosition === "Left Forward") {
+      complementA = "Right Forward";
+      complementB = "Center Halfback";
+    } else if (fieldPosition === "Right Forward") {
+      complementA = "Left Forward";
+      complementB = "Center Halfback";
+    } else if (fieldPosition === "Striker") {
+      complementA = "Left/Right Forward";
+      complementB = "Center Halfback";
     }
 
-    feedbackResults.complimentA = complimentA;
-    feedbackResults.complimentB = complimentB;
+    feedbackResults.complementA = complementA;
+    feedbackResults.complementB = complementB;
 
 
     console.log(feedbackResults)
@@ -127,12 +152,12 @@ const feedback = {
     const item1 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item1_wrapper);
     const level1_heatmapDetails = elBuilder("div", { "id": "feedback-1", "class": "columns" }, null, item1, item2, item3)
 
-    const item6_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.complimentB}`);
-    const item6_child = elBuilder("p", { "class": "heading" }, "Complimenting player 2");
+    const item6_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.complementB}`);
+    const item6_child = elBuilder("p", { "class": "heading" }, "Complementing player 2");
     const item6_wrapper = elBuilder("div", {}, null, item6_child, item6_child2)
     const item6 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item6_wrapper);
-    const item5_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.complimentA}`);
-    const item5_child = elBuilder("p", { "class": "heading" }, "Complimenting player 1");
+    const item5_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.complementA}`);
+    const item5_child = elBuilder("p", { "class": "heading" }, "Complementing player 1");
     const item5_wrapper = elBuilder("div", {}, null, item5_child, item5_child2)
     const item5 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item5_wrapper);
     const item4_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.fieldPosition}`);

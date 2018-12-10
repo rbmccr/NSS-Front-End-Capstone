@@ -18,7 +18,8 @@ let endDate;
 // FIXME: examine confirmHeatmapDelete function. may not need for loop. grab ID from option
 // TODO: set interval for container width monitoring
 // TODO: if custom heatmap is selected from dropdown, then blur filter container
-// TODO: save heatmap with date timestamp
+// FIXME: rendering a saved heatmap with date filter sometimes bugs out
+// TODO: saving heatmap needs to append date with name of heatmap in dropdown menu
 
 const heatmapData = {
 
@@ -138,6 +139,7 @@ const heatmapData = {
             heatmapData.buildFieldHeatmap(shots);
             heatmapData.buildGoalHeatmap(shots);
             globalShotsArr = shots // IMPORTANT! prevents error in heatmap save when rendering saved map after rendering basic heatmap
+            feedback.loadFeedback(shots);
           }
           //FIXME:
           joinTableArr = [];
