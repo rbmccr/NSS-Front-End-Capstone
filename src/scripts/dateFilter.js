@@ -114,7 +114,16 @@ const dateFilter = {
     }
   },
 
-  applydateFilter(startDate, endDate, GamesArray) {
+  applydateFilter(startDate, endDate, gameIds, game) {
+    // this function examines the game object argument compared to the user-defined start and end dates
+    // if the game date is within the two dates specified, then the game ID is pushed to the gameIds array
+
+    // split timestamp and recall only date
+    let gameDate = game.timeStamp.split("T")[0];
+
+    if (startDate <= gameDate && gameDate <= endDate) {
+      gameIds.push(game.id);
+    }
 
   }
 

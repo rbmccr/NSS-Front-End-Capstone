@@ -8,7 +8,6 @@ import dateFilter from "./dateFilter.js";
 // global variable to store fetched shots
 let globalShotsArr;
 let joinTableArr = [];
-let gamesMatchingDateFilter = [];
 // global variable used with ball speed filter on heatmaps
 let configHeatmapWithBallspeed = false;
 // global variables used with date range filter
@@ -54,20 +53,32 @@ const heatmapData = {
 
   fetchBasicHeatmapData() {
     // this function goes to the database and retrieves shots that meet specific filters (all shots fetched if )
-    let gameIds = [];
+    let gameIds_date = [];
+    let gameIds_result = [];
+    let gameIds = []; // array that contains game ID values passing both the date and game result filters
     const gameResultFilter = document.getElementById("filter-gameResult").value;
     const gameURLextension = heatmapData.applyGameFilters();
 
     API.getAll(gameURLextension)
       .then(games => {
         games.forEach(game => {
-          // game result filter cannot be applied in gameURLextension, so it is applied here
-          heatmapData.applyGameResultFilter(gameResultFilter, gameIds, game);
-          // apply date filter to games if the date filter has been set
-          // if (startDate !== undefined) {
-          //   dateFilter.compareDates(startDate, endDate, )
-          // }
+          // the date filter and game results filters cannot be applied in the JSON server URL, so the filters are
+          // called here. Each function populates an array with game IDs that match the filter requirements.
+          // a filter method is then used to collect all matching game IDs from the two arrays (i.e. a game that passed
+          // the requirements of both filters)
+          // NOTE: if start date is not defined, the result filter is the only function called, and it is passed the third array
+          if (startDate !== undefined) {
+            dateFilter.applydateFilter(startDate, endDate, gameIds_date, game);
+            heatmapData.applyGameResultFilter(gameResultFilter, gameIds_result, game);
+          } else {
+            heatmapData.applyGameResultFilter(gameResultFilter, gameIds, game);
+          }
         })
+        if (startDate !== undefined) {
+          gameIds = gameIds_date.filter(id => gameIds_result.includes(id))
+          console.log("date", gameIds_date, "result", gameIds_result, "return this:", gameIds)
+          return gameIds;
+        }
         return gameIds;
       })
       .then(gameIds => {
