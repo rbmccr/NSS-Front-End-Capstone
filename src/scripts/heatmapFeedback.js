@@ -37,6 +37,8 @@ const feedback = {
     console.log(feedbackResults.now)
 
     // get range of dates on games
+    feedbackResults.firstGame = games.reduce((max, game) => game.timeStamp.split("T")[0] > max ? game.timeStamp.split("T")[0] : max, games[0].timeStamp.split("T")[0]);
+    feedbackResults.lastGame = games.reduce((min, game) => game.timeStamp.split("T")[0] < min ? game.timeStamp.split("T")[0] : min, games[0].timeStamp.split("T")[0]);
 
 
 
@@ -50,15 +52,13 @@ const feedback = {
 
   buildLevels(feedbackResults) {
 
-
-
     const feedbackContainer = document.getElementById("heatmapAndFeedbackContainer");
 
-    const item3_child2 = elBuilder("p", { "class": "title is-5" }, "date here");
+    const item3_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.firstGame}`);
     const item3_child = elBuilder("p", { "class": "heading" }, "Last game");
     const item3_wrapper = elBuilder("div", {}, null, item3_child, item3_child2)
     const item3 = elBuilder("div", { "class": "level-item has-text-centered" }, null, item3_wrapper);
-    const item2_child2 = elBuilder("p", { "class": "title is-5" }, "date here");
+    const item2_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.lastGame}`);
     const item2_child = elBuilder("p", { "class": "heading" }, "First game");
     const item2_wrapper = elBuilder("div", {}, null, item2_child, item2_child2)
     const item2 = elBuilder("div", { "class": "level-item has-text-centered" }, null, item2_wrapper);
@@ -93,7 +93,7 @@ const feedback = {
 
     const feedback1 = document.getElementById("feedback-1");
 
-    if (feedback1 === undefined) {
+    if (feedback1 !== null) {
       feedback1.replaceWith(level1_heatmapDetails);
     } else {
       feedbackContainer.appendChild(level1_heatmapDetails);
