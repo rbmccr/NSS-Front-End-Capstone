@@ -41,7 +41,52 @@ const feedback = {
     feedbackResults.lastGame = games.reduce((min, game) => game.timeStamp.split("T")[0] < min ? game.timeStamp.split("T")[0] : min, games[0].timeStamp.split("T")[0]);
 
 
+    // get average field x,y coordinate of player based on shots and give player feedback
+    let sumX = 0;
+    let sumY = 0;
+    let avgX;
+    let avgY;
 
+    shots.forEach(shot => {
+      sumX += shot.fieldX;
+      sumY += shot.fieldY;
+    })
+
+    avgX = sumX / shots.length;
+    avgY = sumY / shots.length;
+    let fieldPosition;
+
+    if (avgX < 0.15) {
+      fieldPosition = "Keeper"
+    } else if (0.15 <= avgX && avgX <= 0.30) {
+      fieldPosition = "Sweeper"
+    } else if (0.30 <= avgX && avgX < 0.45 && avgY <= 0.40) {
+      fieldPosition = "Left Fullback"
+    } else if (0.30 <= avgX && avgX < 0.45 && 0.60 <= avgY) {
+      fieldPosition = "Right Fullback"
+    } else if (0.30 <= avgX && avgX <= 0.45) {
+      fieldPosition = "Center Fullback"
+    } else if (0.45 <= avgX && avgX < 0.60 && avgY <= 0.40) {
+      fieldPosition = "Left Halfback"
+    } else if (0.45 <= avgX && avgX < 0.60 && 0.60 <= avgY) {
+      fieldPosition = "Right Halfback"
+    } else if (0.45 <= avgX && avgX <= 0.60) {
+      fieldPosition = "Center Halfback"
+    } else if (0.60 <= avgX && avgX < 0.75 && avgY <= 0.40) {
+      fieldPosition = "Left Forward"
+    } else if (0.60 <= avgX && avgX < 0.75 && 0.60 <= avgY) {
+      fieldPosition = "Right Forward"
+    } else if (0.60 <= avgX && avgX <= 0.75) {
+      fieldPosition = "Center Forward"
+    } else if (0.75 <= avgX) {
+      fieldPosition = "Striker"
+    }
+
+    feedbackResults.fieldPosition = fieldPosition
+
+    // determine players that compliment the player's style
+
+    console.log(feedbackResults)
 
     return this.buildLevels(feedbackResults);
 
@@ -66,9 +111,22 @@ const feedback = {
     const item1_child = elBuilder("p", { "class": "heading" }, "Heatmap generated on");
     const item1_wrapper = elBuilder("div", {}, null, item1_child, item1_child2)
     const item1 = elBuilder("div", { "class": "level-item has-text-centered" }, null, item1_wrapper);
-    const level1_heatmapDetails = elBuilder("div", {"id":"feedback-1", "class": "level" }, null, item1, item2, item3)
+    const level1_heatmapDetails = elBuilder("div", { "id": "feedback-1", "class": "level" }, null, item1, item2, item3)
 
 
+    const item6_child2 = elBuilder("p", { "class": "title is-5" }, "type2");
+    const item6_child = elBuilder("p", { "class": "heading" }, "Complimenting player 2");
+    const item6_wrapper = elBuilder("div", {}, null, item6_child, item6_child2)
+    const item6 = elBuilder("div", { "class": "level-item has-text-centered" }, null, item6_wrapper);
+    const item5_child2 = elBuilder("p", { "class": "title is-5" }, "type1");
+    const item5_child = elBuilder("p", { "class": "heading" }, "Complimenting player 1");
+    const item5_wrapper = elBuilder("div", {}, null, item5_child, item5_child2)
+    const item5 = elBuilder("div", { "class": "level-item has-text-centered" }, null, item5_wrapper);
+    const item4_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.fieldPosition}`);
+    const item4_child = elBuilder("p", { "class": "heading" }, "Your playstyle");
+    const item4_wrapper = elBuilder("div", {}, null, item4_child, item4_child2)
+    const item4 = elBuilder("div", { "class": "level-item has-text-centered" }, null, item4_wrapper);
+    const level2_playerType = elBuilder("div", {"id": "feedback-2", "class": "level" }, null, item4, item5, item6)
 
     // const item4_child2 = elBuilder("p", { "class": "title is-5" }, "date here");
     // const item4_child = elBuilder("p", { "class": "heading" }, "End date");
@@ -92,11 +150,14 @@ const feedback = {
     // remove old content if it's already on page
 
     const feedback1 = document.getElementById("feedback-1");
+    const feedback2 = document.getElementById("feedback-2");
 
     if (feedback1 !== null) {
       feedback1.replaceWith(level1_heatmapDetails);
+      feedback2.replaceWith(level2_playerType);
     } else {
       feedbackContainer.appendChild(level1_heatmapDetails);
+      feedbackContainer.appendChild(level2_playerType);
     }
 
   }
@@ -133,13 +194,18 @@ export default feedback
 - shots scored left of midfield
 - shots scored right of midfield
 - shots scored as redirects beside own goal (Defensive redirects)
---------------
-- # of wins
-- # of losses
+-------------
+- total games played
+- total shots scored
+- win / loss
+- win %
+-------------
+- comp games played
+- casual games played
 - comp win ratio
 - casual win ratio
 --------------
-- game in OT
+- games in OT
 - games with no OT
 - OT win %
 - OT loss %
