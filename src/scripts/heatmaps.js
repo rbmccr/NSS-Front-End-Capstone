@@ -1,6 +1,8 @@
-import elBuilder from "./elementBuilder"
-import heatmapData from "./heatmapData"
+import elBuilder from "./elementBuilder";
+import heatmapData from "./heatmapData";
 import API from "./API";
+import dateFilter from "./dateFilter";
+import feedback from "./heatmapFeedback";
 
 const webpage = document.getElementById("container-master");
 
@@ -20,11 +22,18 @@ const heatmaps = {
     const resetBtn = elBuilder("button", { "id": "resetFiltersBtn", "class": "button is-danger" }, "Reset Filters");
 
     // date range button
-    const dateBtnText = elBuilder("span", {}, "Date Range");
-    const dateBtnIcon = elBuilder("i", { "class": "fas fa-calendar" }, null);
+    const dateBtnText = elBuilder("span", {}, "Dates");
+    const dateBtnIcon = elBuilder("i", { "class": "far fa-calendar" }, null);
     const dateBtnIconSpan = elBuilder("span", { "class": "icon is-small" }, null, dateBtnIcon);
-    const dateBtn = elBuilder("a", { "class": "button is-outlined is-dark" }, null, dateBtnIconSpan, dateBtnText);
+    const dateBtn = elBuilder("a", {"id":"dateRangeBtn", "class": "button is-outlined is-dark" }, null, dateBtnIconSpan, dateBtnText);
     const dateBtnParent = elBuilder("div", { "class": "control" }, null, dateBtn);
+
+    // ball speed button
+    const ballSpeedBtnText = elBuilder("span", {}, "Ball Speed");
+    const ballSpeedBtnIcon = elBuilder("i", { "class": "fas fa-bolt" }, null);
+    const ballSpeedBtnIconSpan = elBuilder("span", { "class": "icon is-small" }, null, ballSpeedBtnIcon);
+    const ballSpeedBtn = elBuilder("a", { "id": "ballSpeedBtn", "class": "button is-outlined is-dark" }, null, ballSpeedBtnIconSpan, ballSpeedBtnText);
+    const ballSpeedBtnParent = elBuilder("div", { "class": "control" }, null, ballSpeedBtn);
 
     // overtime
     const icon6 = elBuilder("i", { "class": "fas fa-clock" }, null);
@@ -70,7 +79,7 @@ const heatmaps = {
     // party
     const icon2 = elBuilder("i", { "class": "fas fa-handshake" }, null);
     const iconSpan2 = elBuilder("span", { "class": "icon is-left" }, null, icon2);
-    const sel2_op1 = elBuilder("option", {}, "Team Status");
+    const sel2_op1 = elBuilder("option", {}, "Team");
     const sel2_op2 = elBuilder("option", {}, "No party");
     const sel2_op3 = elBuilder("option", {}, "Party");
     const select2 = elBuilder("select", { "id": "filter-teamStatus" }, null, sel2_op1, sel2_op2, sel2_op3);
@@ -87,7 +96,7 @@ const heatmaps = {
     const selectDiv1 = elBuilder("div", { "class": "select is-dark" }, null, select1, iconSpan1);
     const control1 = elBuilder("div", { "class": "control has-icons-left" }, null, selectDiv1);
 
-    const filterField = elBuilder("div", { "id": "filterField", "class": "field is-grouped is-grouped-centered is-grouped-multiline" }, null, control1, control2, control3, control4, control5, control6, dateBtnParent, resetBtn);
+    const filterField = elBuilder("div", { "id": "filterField", "class": "field is-grouped is-grouped-centered is-grouped-multiline" }, null, control1, control2, control3, control4, control5, control6, ballSpeedBtnParent, dateBtnParent, resetBtn);
     const ParentFilterContainer = elBuilder("div", { "class": "container box" }, null, filterField);
 
     // append filter container to webpage
@@ -113,7 +122,7 @@ const heatmaps = {
         const deleteBtnControl = elBuilder("div", { "class": "control" }, null, deleteHeatmapBtn)
         const saveBtn = elBuilder("button", { "id": "saveHeatmapBtn", "class": "button is-success" }, "Save Heatmap")
         const saveBtnControl = elBuilder("div", { "class": "control" }, null, saveBtn)
-        const saveInput = elBuilder("input", { "id": "saveHeatmapInput", "class": "input", "type": "text", "placeholder": "Name and save this heatmap", "maxlength": "28" }, null)
+        const saveInput = elBuilder("input", { "id": "saveHeatmapInput", "class": "input", "type": "text", "placeholder": "Name and save this heatmap", "maxlength": "25" }, null)
         const saveControl = elBuilder("div", { "class": "control is-expanded" }, null, saveInput)
 
         const generatorButton = elBuilder("button", { "id": "generateHeatmapBtn", "class": "button is-dark" }, "Generate Heatmap");
@@ -126,13 +135,14 @@ const heatmaps = {
           webpage.appendChild(ParentGeneratorContainer);
         } else { // else, for each heatmap saved, make a new option and append it to the
           heatmaps.forEach(heatmap => {
-            heatmapDropdown.appendChild(elBuilder("option", { "id": `heatmap-${heatmap.id}` }, heatmap.name));
+            heatmapDropdown.appendChild(elBuilder("option", { "id": `heatmap-${heatmap.id}` }, `${heatmap.timeStamp.split("T")[0]}: ${heatmap.name}`));
           })
           const generatorField = elBuilder("div", { "class": "field is-grouped is-grouped-centered is-grouped-multiline" }, null, heatmapControl, generatorControl, saveControl, saveBtnControl, deleteBtnControl);
           const ParentGeneratorContainer = elBuilder("div", { "class": "container box" }, null, generatorField);
           webpage.appendChild(ParentGeneratorContainer);
         }
         this.buildFieldandGoal();
+        dateFilter.buildDateFilter();
         this.heatmapEventManager();
       });
 
@@ -156,6 +166,7 @@ const heatmaps = {
   },
 
   heatmapEventManager() {
+    // add functionality to primary buttons on heatmap page
     const generateHeatmapBtn = document.getElementById("generateHeatmapBtn");
     const saveHeatmapBtn = document.getElementById("saveHeatmapBtn");
     const deleteHeatmapBtn = document.getElementById("deleteHeatmapBtn");
@@ -182,6 +193,8 @@ const heatmaps = {
     const gametypeFilter = document.getElementById("filter-gameType");
     const overtimeFilter = document.getElementById("filter-overtime");
     const teamStatusFilter = document.getElementById("filter-teamStatus");
+    const dateRangeBtn = document.getElementById("dateRangeBtn");
+    const ballSpeedBtn = document.getElementById("ballSpeedBtn");
 
     resetFiltersBtn.addEventListener("click", () => {
       gameModeFilter.value = "Game Mode";
@@ -199,11 +212,23 @@ const heatmaps = {
       overtimeFilter.value = "Overtime";
       overtimeFilter.parentNode.classList.remove("is-danger");
 
-      teamStatusFilter.value = "Team Status";
+      teamStatusFilter.value = "Team";
       teamStatusFilter.parentNode.classList.remove("is-danger");
+
+      // reset ball speed global variables
+      heatmapData.handleBallSpeedGlobalVariables();
+      ballSpeedBtn.classList.add("is-outlined");
+
+      // reset date filter and associated global variables
+      dateFilter.clearDateFilter();
 
     })
 
+    // add functionality to ball speed button
+    ballSpeedBtn.addEventListener("click", heatmapData.ballSpeedMax);
+
+    // add functionality to date range button
+    dateRangeBtn.addEventListener("click", dateFilter.openDateFilter);
   }
 
 }

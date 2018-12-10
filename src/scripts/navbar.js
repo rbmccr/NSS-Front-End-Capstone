@@ -4,25 +4,9 @@ import profile from "./profile"
 import gameplay from "./gameplay"
 import shotData from "./shotData"
 import heatmaps from "./heatmaps"
+import heatmapData from "./heatmapData"
 
 const webpageNav = document.getElementById("nav-master");
-
-/*
-  Bulma navbar structure:
-  <nav>
-    <navbar-brand>
-      <navbar-burger> (optional)
-    </navbar-brand>
-    <navbar-menu>
-      <navbar-start>
-      </navbar-start>
-      <navbar-end>
-      </navbar-end>
-    </navbar-menu>
-  </nav>
-
-  The functions below build the navbar from the inside out
-*/
 
 const navbar = {
 
@@ -121,9 +105,26 @@ const navbar = {
   heatmapsClicked(e) {
     if (e.target.textContent === "Heatmaps") {
       heatmaps.loadHeatmapContainers();
+      heatmapData.handleBallSpeedGlobalVariables();
+      heatmapData.handleDateFilterGlobalVariables();
     }
   }
 
 }
 
 export default navbar
+
+/*
+  Bulma navbar structure:
+  <nav>
+    <navbar-brand>
+      <navbar-burger> (optional)
+    </navbar-brand>
+    <navbar-menu>
+      <navbar-start>
+      </navbar-start>
+      <navbar-end>
+      </navbar-end>
+    </navbar-menu>
+  </nav>
+*/

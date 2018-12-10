@@ -1,12 +1,18 @@
 import heatmap from "../lib/node_modules/heatmap.js/build/heatmap.js"
 import API from "./API.js";
 import elBuilder from "./elementBuilder.js";
+import dateFilter from "./dateFilter.js";
 
 // ID of setInterval function used to monitor container width and repaint heatmap if container width changes
 // let intervalId;
 // global variable to store fetched shots
 let globalShotsArr;
 let joinTableArr = [];
+// global variable used with ball speed filter on heatmaps
+let configHeatmapWithBallspeed = false;
+// global variables used with date range filter
+let startDate;
+let endDate;
 
 // FIXME: examine confirmHeatmapDelete function. may not need for loop. grab ID from option
 // TODO: set interval for container width monitoring
@@ -47,32 +53,31 @@ const heatmapData = {
 
   fetchBasicHeatmapData() {
     // this function goes to the database and retrieves shots that meet specific filters (all shots fetched if )
-    let gameIds = [];
+    let gameIds_date = [];
+    let gameIds_result = [];
+    let gameIds = []; // array that contains game ID values passing both the date and game result filters
     const gameResultFilter = document.getElementById("filter-gameResult").value;
     const gameURLextension = heatmapData.applyGameFilters();
 
     API.getAll(gameURLextension)
       .then(games => {
         games.forEach(game => {
-          // game result filter cannot be applied in gameURLextension, so it is applied here
-          // if victory, then check for game's score vs game's opponent score
-          // if the filter isn't selected at all, push all game IDs to gameIds array
-          if (gameResultFilter === "Victory") {
-            if (game.score > game.opp_score) {
-              gameIds.push(game.id);
-            } else {
-              return
-            }
-          } else if (gameResultFilter === "Defeat") {
-            if (game.score < game.opp_score) {
-              gameIds.push(game.id);
-            } else {
-              return
-            }
+          // the date filter and game results filters cannot be applied in the JSON server URL, so the filters are
+          // called here. Each function populates an array with game IDs that match the filter requirements.
+          // a filter method is then used to collect all matching game IDs from the two arrays (i.e. a game that passed
+          // the requirements of both filters)
+          // NOTE: if start date is not defined, the result filter is the only function called, and it is passed the third array
+          if (startDate !== undefined) {
+            dateFilter.applydateFilter(startDate, endDate, gameIds_date, game);
+            heatmapData.applyGameResultFilter(gameResultFilter, gameIds_result, game);
           } else {
-            gameIds.push(game.id);
+            heatmapData.applyGameResultFilter(gameResultFilter, gameIds, game);
           }
         })
+        if (startDate !== undefined) {
+          gameIds = gameIds_date.filter(id => gameIds_result.includes(id))
+          return gameIds;
+        }
         return gameIds;
       })
       .then(gameIds => {
@@ -120,9 +125,19 @@ const heatmapData = {
       .then(joinTables => heatmapData.fetchSavedShotsUsingJoinTables(joinTables)
         // step 5: pass shots to buildFieldHeatmap() and buildGoalHeatmap()
         .then(shots => {
-          console.log(shots);
-          heatmapData.buildFieldHeatmap(shots);
-          heatmapData.buildGoalHeatmap(shots);
+          // apply date filter if filter has been set
+          if (startDate !== undefined) {
+            let shotsMatchingFilter = [];
+            dateFilter.applydateFilterToSavedHeatmap(startDate, endDate, shots, shotsMatchingFilter);
+            heatmapData.buildFieldHeatmap(shotsMatchingFilter);
+            heatmapData.buildGoalHeatmap(shotsMatchingFilter);
+            globalShotsArr = shotsMatchingFilter // IMPORTANT! prevents error in heatmap save when rendering saved map after rendering basic heatmap
+          } else {
+            heatmapData.buildFieldHeatmap(shots);
+            heatmapData.buildGoalHeatmap(shots);
+            globalShotsArr = shots // IMPORTANT! prevents error in heatmap save when rendering saved map after rendering basic heatmap
+          }
+          //FIXME:
           joinTableArr = [];
         })
       )
@@ -137,7 +152,7 @@ const heatmapData = {
     return Promise.all(joinTableArr)
   },
 
-  applyGameFilters() { // TODO: add more filters
+  applyGameFilters() {
     // NOTE: game result filter (victory/defeat) cannot be applied in this function and is applied after the fetch
     const activeUserId = sessionStorage.getItem("activeUserId");
     const gameModeFilter = document.getElementById("filter-gameMode").value;
@@ -176,6 +191,26 @@ const heatmapData = {
     }
 
     return URL;
+  },
+
+  applyGameResultFilter(gameResultFilter, gameIds, game) {
+    // if victory, then check for game's score vs game's opponent score
+    // if the filter isn't selected at all, push all game IDs to gameIds array
+    if (gameResultFilter === "Victory") {
+      if (game.score > game.opp_score) {
+        gameIds.push(game.id);
+      } else {
+        return
+      }
+    } else if (gameResultFilter === "Defeat") {
+      if (game.score < game.opp_score) {
+        gameIds.push(game.id);
+      } else {
+        return
+      }
+    } else {
+      gameIds.push(game.id);
+    }
   },
 
   applyShotFilters(gameIds) {
@@ -223,6 +258,10 @@ const heatmapData = {
       let x_ = Number((shot.fieldX * varWidth).toFixed(0));
       let y_ = Number((shot.fieldY * varHeight).toFixed(0));
       let value_ = 1;
+      // set value as ball speed if speed filter is selected
+      if (configHeatmapWithBallspeed) {
+        value_ = shot.ball_speed;
+      }
       let fieldObj = { x: x_, y: y_, value: value_ };
       fieldDataPoints.push(fieldObj);
     });
@@ -231,6 +270,12 @@ const heatmapData = {
       max: 1,
       min: 0,
       data: fieldDataPoints
+    };
+
+    // set max value as max ball speed in shots, if filter is selected
+    if (configHeatmapWithBallspeed) {
+      let maxBallSpeed = shots.reduce((max, shot) => shot.ball_speed > max ? shot.ball_speed : max, shots[0].ball_speed);
+      fieldData.max = maxBallSpeed;
     }
 
     FieldHeatmapInstance.setData(fieldData);
@@ -253,6 +298,10 @@ const heatmapData = {
       let x_ = Number((shot.goalX * varGoalWidth).toFixed(0));
       let y_ = Number((shot.goalY * varGoalHeight).toFixed(0));
       let value_ = 1;
+      // set value as ball speed if speed filter is selected
+      if (configHeatmapWithBallspeed) {
+        value_ = shot.ball_speed;
+      }
       let goalObj = { x: x_, y: y_, value: value_ };
       goalDataPoints.push(goalObj);
     });
@@ -263,6 +312,12 @@ const heatmapData = {
       data: goalDataPoints
     }
 
+    // set max value as max ball speed in shots, if filter is selected
+    if (configHeatmapWithBallspeed) {
+      let maxBallSpeed = shots.reduce((max, shot) => shot.ball_speed > max ? shot.ball_speed : max, shots[0].ball_speed);
+      goalData.max = maxBallSpeed;
+    }
+
     GoalHeatmapInstance.setData(goalData);
   },
 
@@ -271,7 +326,7 @@ const heatmapData = {
     return {
       container: fieldContainer,
       radius: 0.045454545 * fieldContainer.offsetWidth,
-      maxOpacity: .5,
+      maxOpacity: .6,
       minOpacity: 0,
       blur: .85
     };
@@ -282,10 +337,34 @@ const heatmapData = {
     return {
       container: goalContainer,
       radius: .063636363 * goalContainer.offsetWidth,
-      maxOpacity: .5,
+      maxOpacity: .6,
       minOpacity: 0,
       blur: .85
     };
+  },
+
+  ballSpeedMax() {
+    // this button function callback (it's a filter) changes a boolean global variable that determines the min and max values
+    // used when rendering the heatmaps (see buildFieldHeatmap() and buildGoalHeatmap())
+    const ballSpeedBtn = document.getElementById("ballSpeedBtn");
+
+    if (configHeatmapWithBallspeed) {
+      configHeatmapWithBallspeed = false;
+      ballSpeedBtn.classList.toggle("is-outlined");
+    } else {
+      configHeatmapWithBallspeed = true;
+      ballSpeedBtn.classList.toggle("is-outlined");
+    }
+
+    // if there's a heatmap loaded already, convert the config immediately to use the max ball speed
+    // the IF statement is needed so the user can't immediately render a heatmap just by clicking
+    // the speed filter
+    // const fieldContainer = document.getElementById("field-img-parent");
+
+    // const fieldHeatmapCanvas = fieldContainer.childNodes[2]
+    // if (fieldHeatmapCanvas !== undefined) {
+    //   heatmapData.getUserShots();
+    // }
   },
 
   /*getActiveOffsets() {
@@ -335,11 +414,13 @@ const heatmapData = {
   },
 
   saveHeatmapObject(heatmapTitle) {
-    // this function saves a heatmap object with the user-provided name and the userId
+    // this function saves a heatmap object with the user-provided name, the userId, and the current date/time
     const activeUserId = Number(sessionStorage.getItem("activeUserId"));
+    let timeStamp = new Date();
     const heatmapObj = {
       name: heatmapTitle,
-      userId: activeUserId
+      userId: activeUserId,
+      timeStamp: timeStamp
     }
     return API.postItem("heatmaps", heatmapObj)
   },
@@ -407,6 +488,34 @@ const heatmapData = {
   deleteHeatmapObjectandJoinTables(heatmapId) {
     const activeUserId = sessionStorage.getItem("activeUserId");
     return API.deleteItem("heatmaps", `${heatmapId.slice(8)}?userId=${activeUserId}`)
+  },
+
+  handleBallSpeedGlobalVariables() {
+    // this function is used by the reset filters button and navbar heatmaps tab to force the ball speed filter off
+    configHeatmapWithBallspeed = false;
+  },
+
+  handleDateFilterGlobalVariables(returnBoolean, startDateInput, endDateInput) {
+    // this function is used to SET the date filter global variables on this page or CLEAR them
+    // if the 1. page is reloaded or 2. the "reset filters" button is clicked
+
+    // the dateFilter.js cancel button requests a global var to determine how to handle button color
+    if (returnBoolean) {
+      return startDate
+    }
+
+    // if no input values are provided, that means the variables need to be reset and the date
+    // filter button should be outlined - else set global vars for filter
+    if (startDateInput === undefined) {
+      startDate = undefined;
+      endDate = undefined;
+      console.log("SET start date", startDateInput, "SET end date", endDateInput)
+    } else {
+      startDate = startDateInput;
+      endDate = endDateInput;
+    }
+
+
   }
 
 }
