@@ -85,6 +85,20 @@ const feedback = {
     feedbackResults.fieldPosition = fieldPosition
 
     // determine players that compliment the player's style
+    let complimentA;
+    let complimentB;
+
+    if (fieldPosition === "Keeper") {
+      complimentA = "Left Forward";
+      complimentB = "Right Forward";
+    } else if (fieldPosition === "Center Forward") {
+      complimentA = "Left/Right Forward";
+      complimentB = "Center Fullback";
+    }
+
+    feedbackResults.complimentA = complimentA;
+    feedbackResults.complimentB = complimentB;
+
 
     console.log(feedbackResults)
 
@@ -102,31 +116,30 @@ const feedback = {
     const item3_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.firstGame}`);
     const item3_child = elBuilder("p", { "class": "heading" }, "Last game");
     const item3_wrapper = elBuilder("div", {}, null, item3_child, item3_child2)
-    const item3 = elBuilder("div", { "class": "level-item has-text-centered" }, null, item3_wrapper);
+    const item3 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item3_wrapper);
     const item2_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.lastGame}`);
     const item2_child = elBuilder("p", { "class": "heading" }, "First game");
     const item2_wrapper = elBuilder("div", {}, null, item2_child, item2_child2)
-    const item2 = elBuilder("div", { "class": "level-item has-text-centered" }, null, item2_wrapper);
+    const item2 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item2_wrapper);
     const item1_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.now}`);
     const item1_child = elBuilder("p", { "class": "heading" }, "Heatmap generated on");
     const item1_wrapper = elBuilder("div", {}, null, item1_child, item1_child2)
-    const item1 = elBuilder("div", { "class": "level-item has-text-centered" }, null, item1_wrapper);
-    const level1_heatmapDetails = elBuilder("div", { "id": "feedback-1", "class": "level" }, null, item1, item2, item3)
+    const item1 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item1_wrapper);
+    const level1_heatmapDetails = elBuilder("div", { "id": "feedback-1", "class": "columns" }, null, item1, item2, item3)
 
-
-    const item6_child2 = elBuilder("p", { "class": "title is-5" }, "type2");
+    const item6_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.complimentB}`);
     const item6_child = elBuilder("p", { "class": "heading" }, "Complimenting player 2");
     const item6_wrapper = elBuilder("div", {}, null, item6_child, item6_child2)
-    const item6 = elBuilder("div", { "class": "level-item has-text-centered" }, null, item6_wrapper);
-    const item5_child2 = elBuilder("p", { "class": "title is-5" }, "type1");
+    const item6 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item6_wrapper);
+    const item5_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.complimentA}`);
     const item5_child = elBuilder("p", { "class": "heading" }, "Complimenting player 1");
     const item5_wrapper = elBuilder("div", {}, null, item5_child, item5_child2)
-    const item5 = elBuilder("div", { "class": "level-item has-text-centered" }, null, item5_wrapper);
+    const item5 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item5_wrapper);
     const item4_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.fieldPosition}`);
     const item4_child = elBuilder("p", { "class": "heading" }, "Your playstyle");
     const item4_wrapper = elBuilder("div", {}, null, item4_child, item4_child2)
-    const item4 = elBuilder("div", { "class": "level-item has-text-centered" }, null, item4_wrapper);
-    const level2_playerType = elBuilder("div", {"id": "feedback-2", "class": "level" }, null, item4, item5, item6)
+    const item4 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item4_wrapper);
+    const level2_playerType = elBuilder("div", { "id": "feedback-2", "class": "columns" }, null, item4, item5, item6)
 
     // const item4_child2 = elBuilder("p", { "class": "title is-5" }, "date here");
     // const item4_child = elBuilder("p", { "class": "heading" }, "End date");
@@ -172,8 +185,7 @@ export default feedback
 - start date
 - end date
 -------------
-- avg user position on field
-- relevant soccer position
+- relevant soccer position based on avg score position
 - paired best with 1
 - paired best with 2
 -------------
