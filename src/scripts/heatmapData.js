@@ -131,10 +131,13 @@ const heatmapData = {
             dateFilter.applydateFilterToSavedHeatmap(startDate, endDate, shots, shotsMatchingFilter);
             heatmapData.buildFieldHeatmap(shotsMatchingFilter);
             heatmapData.buildGoalHeatmap(shotsMatchingFilter);
+            globalShotsArr = shotsMatchingFilter // IMPORTANT! prevents error in heatmap save when rendering saved map after rendering basic heatmap
           } else {
             heatmapData.buildFieldHeatmap(shots);
             heatmapData.buildGoalHeatmap(shots);
+            globalShotsArr = shots // IMPORTANT! prevents error in heatmap save when rendering saved map after rendering basic heatmap
           }
+          //FIXME:
           joinTableArr = [];
         })
       )
