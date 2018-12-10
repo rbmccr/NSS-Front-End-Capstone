@@ -111,11 +111,11 @@ const feedback = {
       complementA = "Striker";
       complementB = "Left/Right Forward";
     } else if (fieldPosition === "Left Forward") {
-      complementA = "Right Forward";
-      complementB = "Center Halfback";
+      complementA = "Center Halfback";
+      complementB = "Right Forward";
     } else if (fieldPosition === "Right Forward") {
-      complementA = "Left Forward";
-      complementB = "Center Halfback";
+      complementA = "Center Halfback";
+      complementB = "Left Forward";
     } else if (fieldPosition === "Striker") {
       complementA = "Left/Right Forward";
       complementB = "Center Halfback";
@@ -124,8 +124,42 @@ const feedback = {
     feedbackResults.complementA = complementA;
     feedbackResults.complementB = complementB;
 
+    // shots scored on team side and opponent side of field, & defensive redirects (i.e. within keeper range of goal)
+    let teamSide = 0;
+    let oppSide = 0;
+    let defensiveRedirect = 0;
 
-    console.log(feedbackResults)
+    shots.forEach(shot => {
+      if (shot.fieldX > 0.50) {
+        oppSide++;
+      } else {
+        teamSide++;
+      }
+
+      if (shot.fieldX < 0.15) {
+        defensiveRedirect++;
+      }
+    })
+
+    feedbackResults.teamSideGoals = teamSide;
+    feedbackResults.opponentSideGoals = oppSide;
+    feedbackResults.defensiveRedirect = defensiveRedirect;
+
+    // aerial count & percentage of all shots
+    let aerial = 0;
+
+    shots.forEach(shot => {
+      if (shot.aerial === true) {
+        aerial++;
+      }
+    })
+
+    let aerialPercentage = Number((aerial / shots.length * 100).toFixed(0));
+
+    feedbackResults.aerial = aerial;
+    feedbackResults.aerialPercentage = aerialPercentage;
+
+    console.log(feedbackResults);
 
     return this.buildLevels(feedbackResults);
 
@@ -150,7 +184,7 @@ const feedback = {
     const item1_child = elBuilder("p", { "class": "heading" }, "Heatmap generated on");
     const item1_wrapper = elBuilder("div", {}, null, item1_child, item1_child2)
     const item1 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item1_wrapper);
-    const level1_heatmapDetails = elBuilder("div", { "id": "feedback-1", "class": "columns" }, null, item1, item2, item3)
+    const columns1_HeatmapDetails = elBuilder("div", { "id": "feedback-1", "class": "columns" }, null, item1, item2, item3)
 
     const item6_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.complementB}`);
     const item6_child = elBuilder("p", { "class": "heading" }, "Complementing player 2");
@@ -164,38 +198,38 @@ const feedback = {
     const item4_child = elBuilder("p", { "class": "heading" }, "Your playstyle");
     const item4_wrapper = elBuilder("div", {}, null, item4_child, item4_child2)
     const item4 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item4_wrapper);
-    const level2_playerType = elBuilder("div", { "id": "feedback-2", "class": "columns" }, null, item4, item5, item6)
+    const columns2_playerType = elBuilder("div", { "id": "feedback-2", "class": "columns" }, null, item4, item5, item6)
 
-    // const item4_child2 = elBuilder("p", { "class": "title is-5" }, "date here");
-    // const item4_child = elBuilder("p", { "class": "heading" }, "End date");
-    // const item4_wrapper = elBuilder("div",{}, null, item4_child, item4_child2)
-    // const item4 = elBuilder("div", { "class": "level-item has-text-centered" }, null, item4_wrapper);
-    // const item3_child2 = elBuilder("p", { "class": "title is-5" }, "date here");
-    // const item3_child = elBuilder("p", { "class": "heading" }, "Start date");
-    // const item3_wrapper = elBuilder("div",{}, null, item3_child, item3_child2)
-    // const item3 = elBuilder("div", { "class": "level-item has-text-centered" }, null, item3_wrapper);
-    // const item2_child2 = elBuilder("p", { "class": "title is-5" }, "date here");
-    // const item2_child = elBuilder("p", { "class": "heading" }, "Heatmap saved on");
-    // const item2_wrapper = elBuilder("div",{}, null, item2_child, item2_child2)
-    // const item2 = elBuilder("div", { "class": "level-item has-text-centered" }, null, item2_wrapper);
-    // const item1_child2 = elBuilder("p", { "class": "title is-5" }, "date here");
-    // const item1_child = elBuilder("p", { "class": "heading" }, "Heatmap generated on");
-    // const item1_wrapper = elBuilder("div",{}, null, item1_child, item1_child2)
-    // const item1 = elBuilder("div", { "class": "level-item has-text-centered" }, null, item1_wrapper);
-    // const level1_heatmapDetails = elBuilder("div", { "class": "level" }, null, item1, item2, item3, item4)
+    // shots on team/opponent sides of field, defensive redirects, and aerial shots / %
+    const item9_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.aerial} : ${feedbackResults.aerialPercentage}%`);
+    const item9_child = elBuilder("p", { "class": "heading" }, "Aerial Shot Total & Percentage");
+    const item9_wrapper = elBuilder("div", {}, null, item9_child, item9_child2)
+    const item9 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item9_wrapper);
+    const item8_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.defensiveRedirect}`);
+    const item8_child = elBuilder("p", { "class": "heading" }, "Redirects from Own Goal");
+    const item8_wrapper = elBuilder("div", {}, null, item8_child, item8_child2)
+    const item8 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item8_wrapper);
+    const item7_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.teamSideGoals} : ${feedbackResults.opponentSideGoals}`);
+    const item7_child = elBuilder("p", { "class": "heading" }, "Goals from Behind & Beyond Midfield");
+    const item7_wrapper = elBuilder("div", {}, null, item7_child, item7_child2)
+    const item7 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item7_wrapper);
+    const columns3_shotDetails = elBuilder("div", { "id": "feedback-3", "class": "columns" }, null, item7, item8, item9)
 
 
     // remove old content if it's already on page
 
     const feedback1 = document.getElementById("feedback-1");
     const feedback2 = document.getElementById("feedback-2");
+    const feedback3 = document.getElementById("feedback-3");
 
     if (feedback1 !== null) {
-      feedback1.replaceWith(level1_heatmapDetails);
-      feedback2.replaceWith(level2_playerType);
+      feedback1.replaceWith(columns1_HeatmapDetails);
+      feedback2.replaceWith(columns2_playerType);
+      feedback3.replaceWith(columns3_shotDetails);
     } else {
-      feedbackContainer.appendChild(level1_heatmapDetails);
-      feedbackContainer.appendChild(level2_playerType);
+      feedbackContainer.appendChild(columns1_HeatmapDetails);
+      feedbackContainer.appendChild(columns2_playerType);
+      feedbackContainer.appendChild(columns3_shotDetails);
     }
 
   }
@@ -213,42 +247,26 @@ export default feedback
 - relevant soccer position based on avg score position
 - paired best with 1
 - paired best with 2
--------------
-- avg position in party
-- relevant soccer position
-- avg position without party
-- relevant soccer position
+--------------
+- shots scored left / right of midfield
+- shots scored as redirects beside own goal (Defensive redirects)
+- aerial count & shot %
 --------------
 - max ball speed
 - avg ball speed
-- aerial count
-- aerial %
+- shots over 70mph (~ 110 kph)
 --------------
 - 3v3 games played
 - 2v2 games played
 - 1v1 games played
---------------
-- shots scored left of midfield
-- shots scored right of midfield
-- shots scored as redirects beside own goal (Defensive redirects)
 -------------
 - total games played
 - total shots scored
-- win / loss
-- win %
+- win / loss / win%
 -------------
-- comp games played
-- casual games played
-- comp win ratio
-- casual win ratio
---------------
+- comp games / win %
+- casual games / win %
 - games in OT
-- games with no OT
-- OT win %
-- OT loss %
---------------
-- overall evaluation
-
-
+-------------
 
 */
