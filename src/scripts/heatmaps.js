@@ -121,7 +121,7 @@ const heatmaps = {
         const deleteBtnControl = elBuilder("div", { "class": "control" }, null, deleteHeatmapBtn)
         const saveBtn = elBuilder("button", { "id": "saveHeatmapBtn", "class": "button is-success" }, "Save Heatmap")
         const saveBtnControl = elBuilder("div", { "class": "control" }, null, saveBtn)
-        const saveInput = elBuilder("input", { "id": "saveHeatmapInput", "class": "input", "type": "text", "placeholder": "Name and save this heatmap", "maxlength": "28" }, null)
+        const saveInput = elBuilder("input", { "id": "saveHeatmapInput", "class": "input", "type": "text", "placeholder": "Name and save this heatmap", "maxlength": "22" }, null)
         const saveControl = elBuilder("div", { "class": "control is-expanded" }, null, saveInput)
 
         const generatorButton = elBuilder("button", { "id": "generateHeatmapBtn", "class": "button is-dark" }, "Generate Heatmap");
@@ -134,7 +134,7 @@ const heatmaps = {
           webpage.appendChild(ParentGeneratorContainer);
         } else { // else, for each heatmap saved, make a new option and append it to the
           heatmaps.forEach(heatmap => {
-            heatmapDropdown.appendChild(elBuilder("option", { "id": `heatmap-${heatmap.id}` }, heatmap.name));
+            heatmapDropdown.appendChild(elBuilder("option", { "id": `heatmap-${heatmap.id}` }, `${heatmap.timeStamp.split("T")[0]}: ${heatmap.name}`));
           })
           const generatorField = elBuilder("div", { "class": "field is-grouped is-grouped-centered is-grouped-multiline" }, null, heatmapControl, generatorControl, saveControl, saveBtnControl, deleteBtnControl);
           const ParentGeneratorContainer = elBuilder("div", { "class": "container box" }, null, generatorField);

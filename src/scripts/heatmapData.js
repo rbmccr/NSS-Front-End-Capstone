@@ -411,11 +411,13 @@ const heatmapData = {
   },
 
   saveHeatmapObject(heatmapTitle) {
-    // this function saves a heatmap object with the user-provided name and the userId
+    // this function saves a heatmap object with the user-provided name, the userId, and the current date/time
     const activeUserId = Number(sessionStorage.getItem("activeUserId"));
+    let timeStamp = new Date();
     const heatmapObj = {
       name: heatmapTitle,
-      userId: activeUserId
+      userId: activeUserId,
+      timeStamp: timeStamp
     }
     return API.postItem("heatmaps", heatmapObj)
   },
