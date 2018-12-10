@@ -2,6 +2,7 @@ import heatmap from "../lib/node_modules/heatmap.js/build/heatmap.js"
 import API from "./API.js";
 import elBuilder from "./elementBuilder.js";
 import dateFilter from "./dateFilter.js";
+import feedback from "./heatmapFeedback";
 
 // ID of setInterval function used to monitor container width and repaint heatmap if container width changes
 // let intervalId;
@@ -95,6 +96,7 @@ const heatmapData = {
                 globalShotsArr = shots;
                 heatmapData.buildFieldHeatmap(shots);
                 heatmapData.buildGoalHeatmap(shots);
+                feedback.loadFeedback(shots);
                 // intervalId = setInterval(heatmapData.getActiveOffsets, 500);
               }
             })

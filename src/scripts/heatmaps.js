@@ -159,7 +159,7 @@ const heatmaps = {
     const heatmapImageContainers = elBuilder("div", { "class": "level" }, null, alignField, alignGoal);
 
     // parent container holding all shot information
-    const parentShotContainer = elBuilder("div", { "class": "container box" }, null, heatmapImageContainers)
+    const parentShotContainer = elBuilder("div", {"id":"heatmapAndFeedbackContainer", "class": "container box" }, null, heatmapImageContainers)
 
     // append field and goal to page
     webpage.appendChild(parentShotContainer);
