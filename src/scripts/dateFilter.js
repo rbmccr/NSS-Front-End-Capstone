@@ -124,7 +124,16 @@ const dateFilter = {
     if (startDate <= gameDate && gameDate <= endDate) {
       gameIds.push(game.id);
     }
+  },
 
+  applydateFilterToSavedHeatmap(startDate, endDate, shots, shotsMatchingFilter) {
+    shots.forEach(shot => {
+      let shotDate = shot.timeStamp.split("T")[0];
+
+      if (startDate <= shotDate && shotDate <= endDate) {
+        shotsMatchingFilter.push(shot);
+      }
+    })
   }
 
 }

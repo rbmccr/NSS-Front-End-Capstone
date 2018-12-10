@@ -22,7 +22,7 @@
       "score": 3,
       "opp_score": 4,
       "overtime": false,
-      "timeStamp": "2018-12-07T19:13:34.775Z",
+      "timeStamp": "2018-12-04T19:13:34.775Z",
       "id": 1
     },
     {
@@ -33,7 +33,7 @@
       "score": 3,
       "opp_score": 2,
       "overtime": true,
-      "timeStamp": "2018-12-04T19:16:17.971Z",
+      "timeStamp": "2018-12-07T19:16:17.971Z",
       "id": 2
     },
     {
@@ -90,7 +90,7 @@
       "goalY": 0.485,
       "ball_speed": 90,
       "aerial": false,
-      "timeStamp": "2018-12-07T19:12:42.629Z",
+      "timeStamp": "2018-12-04T19:12:42.629Z",
       "id": 1
     },
     {
@@ -101,7 +101,7 @@
       "goalY": 0.609,
       "ball_speed": 45,
       "aerial": true,
-      "timeStamp": "2018-12-07T19:12:48.570Z",
+      "timeStamp": "2018-12-04T19:12:48.570Z",
       "id": 2
     },
     {

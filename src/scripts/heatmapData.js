@@ -76,7 +76,6 @@ const heatmapData = {
         })
         if (startDate !== undefined) {
           gameIds = gameIds_date.filter(id => gameIds_result.includes(id))
-          console.log("date", gameIds_date, "result", gameIds_result, "return this:", gameIds)
           return gameIds;
         }
         return gameIds;
@@ -126,8 +125,16 @@ const heatmapData = {
       .then(joinTables => heatmapData.fetchSavedShotsUsingJoinTables(joinTables)
         // step 5: pass shots to buildFieldHeatmap() and buildGoalHeatmap()
         .then(shots => {
-          heatmapData.buildFieldHeatmap(shots);
-          heatmapData.buildGoalHeatmap(shots);
+          // apply date filter if filter has been set
+          if (startDate !== undefined) {
+            let shotsMatchingFilter = [];
+            dateFilter.applydateFilterToSavedHeatmap(startDate, endDate, shots, shotsMatchingFilter);
+            heatmapData.buildFieldHeatmap(shotsMatchingFilter);
+            heatmapData.buildGoalHeatmap(shotsMatchingFilter);
+          } else {
+            heatmapData.buildFieldHeatmap(shots);
+            heatmapData.buildGoalHeatmap(shots);
+          }
           joinTableArr = [];
         })
       )
