@@ -2,6 +2,7 @@ import heatmap from "../lib/node_modules/heatmap.js/build/heatmap.js"
 import API from "./API.js";
 import elBuilder from "./elementBuilder.js";
 import dateFilter from "./dateFilter.js";
+import feedback from "./heatmapFeedback";
 
 // ID of setInterval function used to monitor container width and repaint heatmap if container width changes
 // let intervalId;
@@ -17,7 +18,8 @@ let endDate;
 // FIXME: examine confirmHeatmapDelete function. may not need for loop. grab ID from option
 // TODO: set interval for container width monitoring
 // TODO: if custom heatmap is selected from dropdown, then blur filter container
-// TODO: save heatmap with date timestamp
+// FIXME: rendering a saved heatmap with date filter sometimes bugs out
+// TODO: saving heatmap needs to append date with name of heatmap in dropdown menu
 
 const heatmapData = {
 
@@ -95,6 +97,7 @@ const heatmapData = {
                 globalShotsArr = shots;
                 heatmapData.buildFieldHeatmap(shots);
                 heatmapData.buildGoalHeatmap(shots);
+                feedback.loadFeedback(shots);
                 // intervalId = setInterval(heatmapData.getActiveOffsets, 500);
               }
             })
@@ -136,6 +139,7 @@ const heatmapData = {
             heatmapData.buildFieldHeatmap(shots);
             heatmapData.buildGoalHeatmap(shots);
             globalShotsArr = shots // IMPORTANT! prevents error in heatmap save when rendering saved map after rendering basic heatmap
+            feedback.loadFeedback(shots);
           }
           //FIXME:
           joinTableArr = [];
@@ -397,7 +401,6 @@ const heatmapData = {
 
     // heatmap must have a title, the title cannot be "Save successful!" or "Basic Heatmap", and there must be a heatmap loaded on the page
     if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful!" && heatmapTitle !== "Basic Heatmap" && fieldHeatmapCanvas !== undefined) {
-      console.log("saving heatmap...");
       saveInput.classList.remove("is-danger");
       heatmapData.saveHeatmapObject(heatmapTitle)
         .then(heatmapObj => heatmapData.saveJoinTables(heatmapObj).then(x => {
@@ -509,7 +512,6 @@ const heatmapData = {
     if (startDateInput === undefined) {
       startDate = undefined;
       endDate = undefined;
-      console.log("SET start date", startDateInput, "SET end date", endDateInput)
     } else {
       startDate = startDateInput;
       endDate = endDateInput;
