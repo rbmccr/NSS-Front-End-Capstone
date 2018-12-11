@@ -31,15 +31,12 @@ const feedback = {
   },
 
   calculateFeedback(shots, games) {
-    console.log("shots", shots)
-    console.log("games", games)
 
     let feedbackResults = {};
 
     // get heatmap date generated
     let now = new Date().toLocaleString();
     feedbackResults.now = now;
-    console.log(feedbackResults.now)
 
     // get range of dates on games (max and min)
     feedbackResults.lastGame = games.reduce((max, game) => game.timeStamp.split("T")[0] > max ? game.timeStamp.split("T")[0] : max, games[0].timeStamp.split("T")[0]);
@@ -264,8 +261,6 @@ const feedback = {
     feedbackResults.compWinPct = compWinPct;
     feedbackResults.casualWinPct = casualWinPct;
     feedbackResults.overtimeGames = overtimeGames;
-
-    console.log(feedbackResults)
 
     return this.buildLevels(feedbackResults);
   },

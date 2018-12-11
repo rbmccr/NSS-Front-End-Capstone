@@ -5,7 +5,7 @@ import dateFilter from "./dateFilter.js";
 import feedback from "./heatmapFeedback";
 
 // ID of setInterval function used to monitor container width and repaint heatmap if container width changes
-// let intervalId;
+let intervalId;
 // global variable to store fetched shots
 let globalShotsArr;
 let joinTableArr = [];
@@ -15,11 +15,7 @@ let configHeatmapWithBallspeed = false;
 let startDate;
 let endDate;
 
-// FIXME: examine confirmHeatmapDelete function. may not need for loop. grab ID from option
-// TODO: set interval for container width monitoring
-// TODO: if custom heatmap is selected from dropdown, then blur filter container
 // FIXME: rendering a saved heatmap with date filter sometimes bugs out
-// TODO: saving heatmap needs to append date with name of heatmap in dropdown menu
 
 const heatmapData = {
 
@@ -243,7 +239,7 @@ const heatmapData = {
   },
 
   buildFieldHeatmap(shots) {
-    console.log("Array of fetched shots", shots)
+    console.log("Array of shots", shots)
 
     // create field heatmap with configuration
     const fieldContainer = document.getElementById("field-img-parent");
@@ -252,8 +248,8 @@ const heatmapData = {
 
     let fieldConfig = heatmapData.getFieldConfig(fieldContainer);
 
-    let FieldHeatmapInstance;
-    FieldHeatmapInstance = heatmap.create(fieldConfig);
+    let fieldHeatmapInstance;
+    fieldHeatmapInstance = heatmap.create(fieldConfig);
 
     let fieldDataPoints = [];
 
@@ -281,7 +277,39 @@ const heatmapData = {
       fieldData.max = maxBallSpeed;
     }
 
-    FieldHeatmapInstance.setData(fieldData);
+    fieldHeatmapInstance.setData(fieldData);
+
+    let initialWidth = varWidth;
+
+    if (intervalId !== undefined) {
+      clearInterval(intervalId);
+      intervalId = setInterval(function () { heatmapData.getActiveOffsets(fieldContainer, initialWidth, shots); }, 500);
+    } else {
+      intervalId = setInterval(function () { heatmapData.getActiveOffsets(fieldContainer, initialWidth, shots); }, 500);
+    }
+
+  },
+
+  getActiveOffsets(fieldContainer, initialWidth, shots) {
+    // this function evaluates the width of the heatmap container at 0.5 second intervals. If the width has changed,
+    // then the heatmap canvas is repainted to fit within the container limits
+    let width = initialWidth;
+
+    let captureWidth = fieldContainer.offsetWidth
+    //evaluate container width after 0.5 seconds vs initial container width
+    if (captureWidth === width) {
+      console.log("unchanged");
+    } else {
+      width = captureWidth;
+      console.log("new width", width);
+      // remove current heatmaps
+      const heatmapCanvasArr = document.querySelectorAll(".heatmap-canvas");
+      heatmapCanvasArr[0].remove();
+      heatmapCanvasArr[1].remove();
+      // repaint same heatmap instance
+      heatmapData.buildFieldHeatmap(shots);
+      heatmapData.buildGoalHeatmap(shots);
+    }
   },
 
   buildGoalHeatmap(shots) {
@@ -358,35 +386,7 @@ const heatmapData = {
       configHeatmapWithBallspeed = true;
       ballSpeedBtn.classList.toggle("is-outlined");
     }
-
-    // if there's a heatmap loaded already, convert the config immediately to use the max ball speed
-    // the IF statement is needed so the user can't immediately render a heatmap just by clicking
-    // the speed filter
-    // const fieldContainer = document.getElementById("field-img-parent");
-
-    // const fieldHeatmapCanvas = fieldContainer.childNodes[2]
-    // if (fieldHeatmapCanvas !== undefined) {
-    //   heatmapData.getUserShots();
-    // }
   },
-
-  /*getActiveOffsets() {
-    // this function evaluates the width of the heatmap container at 0.5 second intervals. If the width has changed,
-    // then the heatmap canvas is repainted to fit within the container limits
-    const fieldContainer = document.getElementById("field-img-parent")
-    let captureWidth = fieldContainer.offsetWidth
-    //evaluate container width after 0.5 seconds vs initial container width
-    if (captureWidth === varWidth) {
-      console.log("unchanged");
-    } else {
-      varWidth = captureWidth
-      console.log("new width", varWidth);
-      //clear heatmap
-      fieldContainer.removeChild(fieldContainer.childNodes[0]);
-      //build heatmap again
-      heatmapData.buildHeatmap();
-    }
-  },*/
 
   saveHeatmap() {
     // this function is responsible for saving a heatmap object with a name, userId, and date - then making join tables with heatmapId and each shotId
@@ -414,7 +414,6 @@ const heatmapData = {
         // check for unique heatmap name - if it's unique then save the heatmap and join tables
         API.getAll(`heatmaps?userId=${activeUserId}`)
           .then(heatmaps => {
-            console.log(heatmaps)
             heatmaps.forEach(heatmap => {
               if (heatmap.name.toLowerCase() === heatmapTitle.toLowerCase()) {
                 heatmapNameIsUnique = false // if any names match, variable becomes false
@@ -495,7 +494,6 @@ const heatmapData = {
       confirmDeleteBtn.addEventListener("click", heatmapData.confirmHeatmapDeletion);
       rejectDeleteBtn.addEventListener("click", heatmapData.rejectHeatmapDeletion);
     }
-
   },
 
   rejectHeatmapDeletion() {
@@ -512,7 +510,7 @@ const heatmapData = {
     let currentDropdownValue = heatmapDropdown.value;
 
     heatmapDropdown.childNodes.forEach(child => {
-      if (child.textContent === currentDropdownValue) { //TODO: check this logic. may be able to use ID instead of requiring unique name
+      if (child.textContent === currentDropdownValue) {
         child.remove();
         heatmapData.deleteHeatmapObjectandJoinTables(child.id)
           .then(() => {
@@ -523,7 +521,6 @@ const heatmapData = {
         return
       }
     })
-
   },
 
   deleteHeatmapObjectandJoinTables(heatmapId) {
@@ -544,7 +541,6 @@ const heatmapData = {
     if (returnBoolean) {
       return startDate
     }
-
     // if no input values are provided, that means the variables need to be reset and the date
     // filter button should be outlined - else set global vars for filter
     if (startDateInput === undefined) {
@@ -554,8 +550,14 @@ const heatmapData = {
       startDate = startDateInput;
       endDate = endDateInput;
     }
+  },
 
-
+  clearHeatmapRepaintInterval() {
+    // this function is used when navigating between pages so that the webpage doesn't continue running the heatmap container width tracker
+    if (intervalId !== undefined) {
+      clearInterval(intervalId);
+      intervalId = undefined;
+    }
   }
 
 }

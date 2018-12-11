@@ -16,442 +16,84 @@
   "games": [
     {
       "userId": 1,
-      "mode": "competitive",
-      "type": "3v3",
-      "party": false,
-      "score": 3,
-      "opp_score": 4,
-      "overtime": false,
-      "timeStamp": "2018-12-04T19:13:34.775Z",
-      "id": 1
-    },
-    {
-      "userId": 1,
-      "mode": "competitive",
-      "type": "2v2",
-      "party": true,
-      "score": 3,
-      "opp_score": 2,
-      "overtime": true,
-      "timeStamp": "2018-12-07T19:16:17.971Z",
-      "id": 2
-    },
-    {
-      "userId": 1,
-      "mode": "competitive",
-      "type": "3v3",
-      "party": true,
-      "score": 5,
-      "opp_score": 4,
-      "overtime": false,
-      "timeStamp": "2018-12-07T19:22:12.478Z",
-      "id": 3
-    },
-    {
-      "userId": 1,
-      "mode": "competitive",
-      "type": "3v3",
-      "party": true,
-      "score": 3,
-      "opp_score": 2,
-      "overtime": false,
-      "timeStamp": "2018-12-07T19:32:36.180Z",
-      "id": 4
-    },
-    {
-      "userId": 1,
-      "mode": "casual",
-      "type": "1v1",
-      "party": true,
-      "score": 3,
-      "opp_score": 2,
-      "overtime": true,
-      "timeStamp": "2018-12-07T20:06:16.313Z",
-      "id": 5
-    },
-    {
-      "userId": 1,
-      "mode": "competitive",
-      "type": "2v2",
-      "party": false,
-      "score": 4,
-      "opp_score": 2,
-      "overtime": false,
-      "timeStamp": "2018-12-08T19:48:25.226Z",
-      "id": 6
-    },
-    {
-      "userId": 1,
       "mode": "casual",
       "type": "2v2",
       "party": false,
-      "score": 3,
-      "opp_score": 2,
-      "overtime": false,
-      "timeStamp": "2018-12-10T16:33:07.490Z",
-      "id": 7
-    },
-    {
-      "userId": 1,
-      "mode": "competitive",
-      "type": "2v2",
-      "party": true,
-      "score": 2,
+      "score": 7,
       "opp_score": 3,
-      "overtime": true,
-      "timeStamp": "2018-12-11T17:26:09.314Z",
-      "id": 8
+      "overtime": false,
+      "timeStamp": "2018-12-04T21:51:20.683Z",
+      "id": 1
     }
   ],
   "shots": [
     {
       "gameId": 1,
-      "fieldX": 0.787,
-      "fieldY": 0.46,
-      "goalX": 0.249,
-      "goalY": 0.485,
-      "ball_speed": 90,
+      "fieldX": 0.416,
+      "fieldY": 0.7420000000000001,
+      "goalX": 0.447,
+      "goalY": 0.733,
+      "ball_speed": 54,
       "aerial": false,
-      "timeStamp": "2018-12-04T19:12:42.629Z",
+      "timeStamp": "2018-12-11T21:48:03.509Z",
       "id": 1
     },
     {
       "gameId": 1,
-      "fieldX": 0.787,
-      "fieldY": 0.367,
-      "goalX": 0.44,
-      "goalY": 0.609,
-      "ball_speed": 45,
-      "aerial": true,
-      "timeStamp": "2018-12-04T19:12:48.570Z",
+      "fieldX": 0.536,
+      "fieldY": 0.689,
+      "goalX": 0.813,
+      "goalY": 0.812,
+      "ball_speed": 53,
+      "aerial": false,
+      "timeStamp": "2018-12-11T21:48:20.933Z",
       "id": 2
     },
     {
-      "gameId": 2,
-      "fieldX": 0.771,
-      "fieldY": 0.553,
-      "goalX": 0.436,
-      "goalY": 0.634,
-      "ball_speed": 75,
-      "aerial": true,
-      "timeStamp": "2018-12-07T19:15:49.275Z",
+      "gameId": 1,
+      "fieldX": 0.816,
+      "fieldY": 0.327,
+      "goalX": 0.156,
+      "goalY": 0.287,
+      "ball_speed": 78,
+      "aerial": false,
+      "timeStamp": "2018-12-11T21:48:43.269Z",
       "id": 3
     },
     {
-      "gameId": 2,
-      "fieldX": 0.773,
-      "fieldY": 0.729,
-      "goalX": 0.262,
-      "goalY": 0.842,
-      "ball_speed": 45,
+      "gameId": 1,
+      "fieldX": 0.735,
+      "fieldY": 0.678,
+      "goalX": 0.558,
+      "goalY": 0.777,
+      "ball_speed": 52,
       "aerial": false,
-      "timeStamp": "2018-12-07T19:16:03.257Z",
+      "timeStamp": "2018-12-11T21:49:53.863Z",
       "id": 4
     },
     {
-      "gameId": 2,
-      "fieldX": 0.753,
-      "fieldY": 0.487,
-      "goalX": 0.384,
-      "goalY": 0.574,
-      "ball_speed": 56,
+      "gameId": 1,
+      "fieldX": 0.653,
+      "fieldY": 0.718,
+      "goalX": 0.867,
+      "goalY": 0.426,
+      "ball_speed": 64,
       "aerial": false,
-      "timeStamp": "2018-12-07T19:19:34.980Z",
+      "timeStamp": "2018-12-11T21:50:16.831Z",
       "id": 5
     },
     {
-      "gameId": 3,
-      "fieldX": 0.736,
-      "fieldY": 0.598,
-      "goalX": 0.556,
-      "goalY": 0.495,
-      "ball_speed": 109,
+      "gameId": 1,
+      "fieldX": 0.889,
+      "fieldY": 0.54,
+      "goalX": 0.504,
+      "goalY": 0.797,
+      "ball_speed": 32,
       "aerial": false,
-      "timeStamp": "2018-12-07T19:21:32.454Z",
+      "timeStamp": "2018-12-11T21:50:46.577Z",
       "id": 6
-    },
-    {
-      "gameId": 3,
-      "fieldX": 0.644,
-      "fieldY": 0.657,
-      "goalX": 0.287,
-      "goalY": 0.406,
-      "ball_speed": 124,
-      "aerial": false,
-      "timeStamp": "2018-12-07T19:21:40.360Z",
-      "id": 7
-    },
-    {
-      "gameId": 3,
-      "fieldX": 0.435,
-      "fieldY": 0.25,
-      "goalX": 0.589,
-      "goalY": 0.609,
-      "ball_speed": 86,
-      "aerial": false,
-      "timeStamp": "2018-12-07T19:21:48.384Z",
-      "id": 8
-    },
-    {
-      "gameId": 3,
-      "fieldX": 0.516,
-      "fieldY": 0.824,
-      "goalX": 0.864,
-      "goalY": 0.322,
-      "ball_speed": 45,
-      "aerial": false,
-      "timeStamp": "2018-12-07T19:21:53.488Z",
-      "id": 9
-    },
-    {
-      "gameId": 4,
-      "fieldX": 0.885,
-      "fieldY": 0.457,
-      "goalX": 0.296,
-      "goalY": 0.728,
-      "ball_speed": 15,
-      "aerial": false,
-      "timeStamp": "2018-12-07T19:31:58.151Z",
-      "id": 10
-    },
-    {
-      "gameId": 4,
-      "fieldX": 0.135,
-      "fieldY": 0.5,
-      "goalX": 0.691,
-      "goalY": 0.767,
-      "ball_speed": 68,
-      "aerial": false,
-      "timeStamp": "2018-12-07T19:32:04.878Z",
-      "id": 11
-    },
-    {
-      "gameId": 5,
-      "fieldX": 0.784,
-      "fieldY": 0.399,
-      "goalX": 0.335,
-      "goalY": 0.525,
-      "ball_speed": 57,
-      "aerial": true,
-      "timeStamp": "2018-12-07T20:06:20.317Z",
-      "id": 12
-    },
-    {
-      "gameId": 6,
-      "fieldX": 0.733,
-      "fieldY": 0.402,
-      "goalX": 0.625,
-      "goalY": 0.5,
-      "ball_speed": 60,
-      "aerial": false,
-      "timeStamp": "2018-12-08T19:47:37.409Z",
-      "id": 13
-    },
-    {
-      "gameId": 6,
-      "fieldX": 0.729,
-      "fieldY": 0.641,
-      "goalX": 0.358,
-      "goalY": 0.703,
-      "ball_speed": 120,
-      "aerial": false,
-      "timeStamp": "2018-12-08T19:47:54.180Z",
-      "id": 14
-    },
-    {
-      "gameId": 7,
-      "fieldX": 0.678,
-      "fieldY": 0.441,
-      "goalX": 0.547,
-      "goalY": 0.579,
-      "ball_speed": 111,
-      "aerial": false,
-      "timeStamp": "2018-12-10T16:32:47.628Z",
-      "id": 15
-    },
-    {
-      "gameId": 7,
-      "fieldX": 0.715,
-      "fieldY": 0.383,
-      "goalX": 0.258,
-      "goalY": 0.505,
-      "ball_speed": 80,
-      "aerial": true,
-      "timeStamp": "2018-12-10T16:32:55.267Z",
-      "id": 16
-    },
-    {
-      "gameId": 8,
-      "fieldX": 0.735,
-      "fieldY": 0.388,
-      "goalX": 0.551,
-      "goalY": 0.599,
-      "ball_speed": 102,
-      "aerial": false,
-      "timeStamp": "2018-12-11T17:24:56.138Z",
-      "id": 17
-    },
-    {
-      "gameId": 8,
-      "fieldX": 0.756,
-      "fieldY": 0.596,
-      "goalX": 0.653,
-      "goalY": 0.698,
-      "ball_speed": 69,
-      "aerial": true,
-      "timeStamp": "2018-12-11T17:25:46.527Z",
-      "id": 18
     }
   ],
-  "heatmaps": [
-    {
-      "name": "9 shots on this one",
-      "userId": 1,
-      "timeStamp": "2018-12-7T16:36:17.155Z",
-      "id": 2
-    },
-    {
-      "name": "does date append?",
-      "userId": 1,
-      "timeStamp": "2018-12-11T20:35:39.745Z",
-      "id": 3
-    }
-  ],
-  "shot_heatmap": [
-    {
-      "shotId": 1,
-      "heatmapId": 2,
-      "id": 5
-    },
-    {
-      "shotId": 2,
-      "heatmapId": 2,
-      "id": 6
-    },
-    {
-      "shotId": 3,
-      "heatmapId": 2,
-      "id": 7
-    },
-    {
-      "shotId": 4,
-      "heatmapId": 2,
-      "id": 8
-    },
-    {
-      "shotId": 5,
-      "heatmapId": 2,
-      "id": 9
-    },
-    {
-      "shotId": 6,
-      "heatmapId": 2,
-      "id": 10
-    },
-    {
-      "shotId": 7,
-      "heatmapId": 2,
-      "id": 11
-    },
-    {
-      "shotId": 8,
-      "heatmapId": 2,
-      "id": 12
-    },
-    {
-      "shotId": 9,
-      "heatmapId": 2,
-      "id": 13
-    },
-    {
-      "shotId": 1,
-      "heatmapId": 3,
-      "id": 14
-    },
-    {
-      "shotId": 2,
-      "heatmapId": 3,
-      "id": 15
-    },
-    {
-      "shotId": 3,
-      "heatmapId": 3,
-      "id": 16
-    },
-    {
-      "shotId": 4,
-      "heatmapId": 3,
-      "id": 17
-    },
-    {
-      "shotId": 5,
-      "heatmapId": 3,
-      "id": 18
-    },
-    {
-      "shotId": 6,
-      "heatmapId": 3,
-      "id": 19
-    },
-    {
-      "shotId": 7,
-      "heatmapId": 3,
-      "id": 20
-    },
-    {
-      "shotId": 8,
-      "heatmapId": 3,
-      "id": 21
-    },
-    {
-      "shotId": 9,
-      "heatmapId": 3,
-      "id": 22
-    },
-    {
-      "shotId": 10,
-      "heatmapId": 3,
-      "id": 23
-    },
-    {
-      "shotId": 11,
-      "heatmapId": 3,
-      "id": 24
-    },
-    {
-      "shotId": 12,
-      "heatmapId": 3,
-      "id": 25
-    },
-    {
-      "shotId": 13,
-      "heatmapId": 3,
-      "id": 26
-    },
-    {
-      "shotId": 14,
-      "heatmapId": 3,
-      "id": 27
-    },
-    {
-      "shotId": 15,
-      "heatmapId": 3,
-      "id": 28
-    },
-    {
-      "shotId": 16,
-      "heatmapId": 3,
-      "id": 29
-    },
-    {
-      "shotId": 17,
-      "heatmapId": 3,
-      "id": 30
-    },
-    {
-      "shotId": 18,
-      "heatmapId": 3,
-      "id": 31
-    }
-  ]
+  "heatmaps": [],
+  "shot_heatmap": []
 }

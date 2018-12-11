@@ -85,18 +85,21 @@ const navbar = {
 
   logoutClicked(e) {
     if (e.target.textContent === "Logout") {
+      heatmapData.clearHeatmapRepaintInterval();
       loginOrSignup.logoutUser();
     }
   },
 
   profileClicked(e) {
     if (e.target.textContent === "Profile") {
+      heatmapData.clearHeatmapRepaintInterval();
       profile.loadProfile();
     }
   },
 
   gameplayClicked(e) {
     if (e.target.textContent === "Gameplay") {
+      heatmapData.clearHeatmapRepaintInterval();
       gameplay.loadGameplay();
       shotData.resetGlobalShotVariables();
     }
@@ -104,9 +107,10 @@ const navbar = {
 
   heatmapsClicked(e) {
     if (e.target.textContent === "Heatmaps") {
-      heatmaps.loadHeatmapContainers();
+      heatmapData.clearHeatmapRepaintInterval();
       heatmapData.handleBallSpeedGlobalVariables();
       heatmapData.handleDateFilterGlobalVariables();
+      heatmaps.loadHeatmapContainers();
     }
   }
 
