@@ -109,8 +109,6 @@ const heatmaps = {
     // use fetch to append options to select element if user at least 1 saved heatmap
     API.getAll(`heatmaps?userId=${activeUserId}`)
       .then(heatmaps => {
-        console.log("Array of user's saved heatmaps:", heatmaps);
-
         const icon = elBuilder("i", { "class": "fas fa-fire" }, null);
         const iconSpan = elBuilder("span", { "class": "icon is-left" }, null, icon);
         const sel1_op1 = elBuilder("option", {}, "Basic Heatmap");

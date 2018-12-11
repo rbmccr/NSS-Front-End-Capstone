@@ -414,7 +414,6 @@ const heatmapData = {
         // check for unique heatmap name - if it's unique then save the heatmap and join tables
         API.getAll(`heatmaps?userId=${activeUserId}`)
           .then(heatmaps => {
-            console.log(heatmaps)
             heatmaps.forEach(heatmap => {
               if (heatmap.name.toLowerCase() === heatmapTitle.toLowerCase()) {
                 heatmapNameIsUnique = false // if any names match, variable becomes false
