@@ -438,6 +438,8 @@ const heatmapData = {
   saveJoinTables(heatmapObj) {
     console.log("globalshotsarray", globalShotsArr)
     globalShotsArr.forEach(shot => {
+      console.log("global array when saving join tables", globalShotsArr)
+      console.log("shots", shot.id)
       let joinTableObj = {
         shotId: shot.id,
         heatmapId: heatmapObj.id
