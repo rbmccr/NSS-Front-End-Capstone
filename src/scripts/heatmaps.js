@@ -188,9 +188,10 @@ const heatmaps = {
     // add listener to heatmap title input to clear red highliting and text if an error was thrown
     const saveHeatmapInput = document.getElementById("saveHeatmapInput");
     saveHeatmapInput.addEventListener("click", () => {
-      if (saveHeatmapInput.classList.contains("is-danger")) {
+      if (saveHeatmapInput.classList.contains("is-danger") || saveHeatmapInput.classList.contains("is-success")) {
         saveHeatmapInput.value = "";
         saveHeatmapInput.classList.remove("is-danger");
+        saveHeatmapInput.classList.remove("is-success");
       }
     })
 

@@ -389,56 +389,68 @@ const heatmapData = {
   },*/
 
   saveHeatmap() {
-    // this function is responsible for saving a heatmap object with a name and userId, then making join tables with
-    // TODO: require unique heatmap name (may not need to do this if function below uses ID instead of name)
+    // this function is responsible for saving a heatmap object with a name, userId, and date - then making join tables with heatmapId and each shotId
     const heatmapDropdown = document.getElementById("heatmapDropdown");
     const saveInput = document.getElementById("saveHeatmapInput");
     const fieldContainer = document.getElementById("field-img-parent");
+    const activeUserId = Number(sessionStorage.getItem("activeUserId"));
+    const saveHeatmapBtn = document.getElementById("saveHeatmapBtn");
+    let heatmapNameIsUnique = true;
 
+    saveHeatmapBtn.disabled = true; // immediately disable save button to prevent multiple clicks
     const heatmapTitle = saveInput.value;
     const fieldHeatmapCanvas = fieldContainer.childNodes[2];
 
-
-
-
-
-    // heatmap must have a title, the title cannot be "Save successful!" or "Basic Heatmap"
-    // there must be a heatmap canvas loaded on the page, and the save button will not work if
-    // the user is trying to save an already-saved heatmap (see internal if statement)
-    if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful" && heatmapTitle !== "Basic Heatmap" && fieldHeatmapCanvas !== undefined) {
+    // 1. heatmap must have title & the title cannot be "Save successful!" or "Basic Heatmap" or "Cannot save prior heatmap" or "No title provided" or "Heatmap name not unique"
+    // 2. there must be a heatmap canvas loaded on the page
+    // 3. (see second if statement) the save button will respond work if the user is trying to save an already-saved heatmap
+    if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful" && heatmapTitle !== "Basic Heatmap" && heatmapTitle !== "Cannot save prior heatmap" && heatmapTitle !== "Cannot save prior heatmap" && heatmapTitle !== "Heatmap name not unique" && heatmapTitle !== "No title provided" && fieldHeatmapCanvas !== undefined) {
       if (heatmapDropdown.value !== "Basic Heatmap") {
         saveInput.classList.add("is-danger");
         saveInput.value = "Cannot save prior heatmap"
+        saveHeatmapBtn.disabled = false;
         return
       } else {
-        // check for unique heatmap name
-        const activeUserId = Number(sessionStorage.getItem("activeUserId"));
+        // check for unique heatmap name - if it's unique then save the heatmap and join tables
         API.getAll(`heatmaps?userId=${activeUserId}`)
-          .then(heatmaps => heatmaps.forEach(heatmap => {
-            if (heatmap.name.toLowerCase() === heatmapTitle.toLowerCase()) {
-              saveInput.classList.add("is-danger");
-              saveInput.value = "Heatmap name not unique"
-            } else {
-              // name is unique - all conditions met - save heatmap
+          .then(heatmaps => {
+            console.log(heatmaps)
+            heatmaps.forEach(heatmap => {
+              if (heatmap.name.toLowerCase() === heatmapTitle.toLowerCase()) {
+                heatmapNameIsUnique = false // if any names match, variable becomes false
+              }
+            })
+            // if name is unique - all conditions met - save heatmap
+            if (heatmapNameIsUnique) {
               saveInput.classList.remove("is-danger");
+              saveInput.classList.add("is-success");
               heatmapData.saveHeatmapObject(heatmapTitle, activeUserId)
                 .then(heatmapObj => heatmapData.saveJoinTables(heatmapObj).then(x => {
                   console.log("join tables saved", x)
                   // empty the temporary global array used with Promise.all
-                  joinTableArr = []
+                  joinTableArr = [];
                   // append newly created heatmap as option element in select dropdown
-                  heatmapDropdown.appendChild(elBuilder("option", { "id": `heatmap-${heatmapObj.id}` }, heatmapObj.name));
+                  heatmapDropdown.appendChild(elBuilder("option", { "id": `heatmap-${heatmapObj.id}` }, `${heatmapObj.timeStamp.split("T")[0]}: ${heatmapObj.name}`));
                   saveInput.value = "Save successful";
+                  saveHeatmapBtn.disabled = false;
                 }));
+            } else {
+              saveInput.classList.add("is-danger");
+              saveInput.value = "Heatmap name not unique";
+              saveHeatmapBtn.disabled = false;
             }
-          }));
+          });
       }
     } else {
       saveInput.classList.add("is-danger");
       if (heatmapTitle.length === 0) {
         saveInput.value = "No title provided";
+        saveHeatmapBtn.disabled = false;
       } else if (fieldHeatmapCanvas === undefined) {
         saveInput.value = "No heatmap loaded";
+        saveHeatmapBtn.disabled = false;
+      } else {
+        saveHeatmapBtn.disabled = false;
       }
     }
   },
@@ -457,8 +469,6 @@ const heatmapData = {
   saveJoinTables(heatmapObj) {
     console.log("globalshotsarray", globalShotsArr)
     globalShotsArr.forEach(shot => {
-      console.log("global array when saving join tables", globalShotsArr)
-      console.log("shots", shot.id)
       let joinTableObj = {
         shotId: shot.id,
         heatmapId: heatmapObj.id
