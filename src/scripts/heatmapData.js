@@ -15,7 +15,6 @@ let configHeatmapWithBallspeed = false;
 let startDate;
 let endDate;
 
-// TODO: set interval for container width monitoring
 // FIXME: rendering a saved heatmap with date filter sometimes bugs out
 
 const heatmapData = {
@@ -240,7 +239,7 @@ const heatmapData = {
   },
 
   buildFieldHeatmap(shots) {
-    console.log("Array of fetched shots", shots)
+    console.log("Array of shots", shots)
 
     // create field heatmap with configuration
     const fieldContainer = document.getElementById("field-img-parent");
@@ -284,14 +283,14 @@ const heatmapData = {
 
     if (intervalId !== undefined) {
       clearInterval(intervalId);
-      intervalId = setInterval(function () { heatmapData.getActiveOffsets(fieldContainer, initialWidth, fieldHeatmapInstance, shots); }, 500);
+      intervalId = setInterval(function () { heatmapData.getActiveOffsets(fieldContainer, initialWidth, shots); }, 500);
     } else {
-      intervalId = setInterval(function () { heatmapData.getActiveOffsets(fieldContainer, initialWidth, fieldHeatmapInstance, shots); }, 500);
+      intervalId = setInterval(function () { heatmapData.getActiveOffsets(fieldContainer, initialWidth, shots); }, 500);
     }
 
   },
 
-  getActiveOffsets(fieldContainer, initialWidth, fieldHeatmapInstance, shots) {
+  getActiveOffsets(fieldContainer, initialWidth, shots) {
     // this function evaluates the width of the heatmap container at 0.5 second intervals. If the width has changed,
     // then the heatmap canvas is repainted to fit within the container limits
     let width = initialWidth;
@@ -496,7 +495,6 @@ const heatmapData = {
       confirmDeleteBtn.addEventListener("click", heatmapData.confirmHeatmapDeletion);
       rejectDeleteBtn.addEventListener("click", heatmapData.rejectHeatmapDeletion);
     }
-
   },
 
   rejectHeatmapDeletion() {
@@ -524,7 +522,6 @@ const heatmapData = {
         return
       }
     })
-
   },
 
   deleteHeatmapObjectandJoinTables(heatmapId) {
@@ -545,7 +542,6 @@ const heatmapData = {
     if (returnBoolean) {
       return startDate
     }
-
     // if no input values are provided, that means the variables need to be reset and the date
     // filter button should be outlined - else set global vars for filter
     if (startDateInput === undefined) {
@@ -555,8 +551,14 @@ const heatmapData = {
       startDate = startDateInput;
       endDate = endDateInput;
     }
+  },
 
-
+  clearHeatmapRepaintInterval() {
+    // this function is used when navigating between pages so that the webpage doesn't continue running the heatmap container width tracker
+    if (intervalId !== undefined) {
+      clearInterval(intervalId);
+      intervalId = undefined;
+    }
   }
 
 }

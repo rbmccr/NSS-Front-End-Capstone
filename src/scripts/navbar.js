@@ -86,6 +86,7 @@ const navbar = {
   logoutClicked(e) {
     if (e.target.textContent === "Logout") {
       loginOrSignup.logoutUser();
+      heatmapData.clearHeatmapRepaintInterval();
     }
   },
 
@@ -99,6 +100,7 @@ const navbar = {
     if (e.target.textContent === "Gameplay") {
       gameplay.loadGameplay();
       shotData.resetGlobalShotVariables();
+      heatmapData.clearHeatmapRepaintInterval();
     }
   },
 
@@ -107,6 +109,7 @@ const navbar = {
       heatmaps.loadHeatmapContainers();
       heatmapData.handleBallSpeedGlobalVariables();
       heatmapData.handleDateFilterGlobalVariables();
+      heatmapData.clearHeatmapRepaintInterval();
     }
   }
 
