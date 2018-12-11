@@ -9,8 +9,13 @@ const feedback = {
     let gameIds = [];
 
     shots.forEach(shot => {
-      gameIds.push(shot.gameId); //FIXME: narrow down ids to one of each (since there will be multiples)
+      gameIds.push(shot.gameId);
     })
+
+    // remove duplicate game IDs
+    gameIds = gameIds.filter((item, idx) => {
+      return gameIds.indexOf(item) == idx;
+    });
 
     this.fetchGames(gameIds)
       .then(games => this.calculateFeedback(shots, games));
@@ -36,7 +41,7 @@ const feedback = {
     feedbackResults.now = now;
     console.log(feedbackResults.now)
 
-    // get range of dates on games
+    // get range of dates on games (max and min)
     feedbackResults.firstGame = games.reduce((max, game) => game.timeStamp.split("T")[0] > max ? game.timeStamp.split("T")[0] : max, games[0].timeStamp.split("T")[0]);
     feedbackResults.lastGame = games.reduce((min, game) => game.timeStamp.split("T")[0] < min ? game.timeStamp.split("T")[0] : min, games[0].timeStamp.split("T")[0]);
 
@@ -152,18 +157,72 @@ const feedback = {
       if (shot.aerial === true) {
         aerial++;
       }
-    })
+    });
 
     let aerialPercentage = Number((aerial / shots.length * 100).toFixed(0));
 
     feedbackResults.aerial = aerial;
     feedbackResults.aerialPercentage = aerialPercentage;
 
+    // max ball speed, average ball speed, shots over 70 mph
+    let avgBallSpeed = 0;
+    let shotsOver70mph = 0;
+
+    shots.forEach(shot => {
+      if (shot.ball_speed >= 70) {
+        shotsOver70mph++;
+      }
+      avgBallSpeed += shot.ball_speed
+    });
+
+    avgBallSpeed = Number((avgBallSpeed / shots.length).toFixed(1));
+
+    feedbackResults.maxBallSpeed = shots.reduce((max, shot) => shot.ball_speed > max ? shot.ball_speed : max, shots[0].ball_speed);
+    feedbackResults.avgBallSpeed = avgBallSpeed;
+    feedbackResults.shotsOver70mph = shotsOver70mph;
+
+    // 3v3, 2v2, and 1v1 games played
+    let _3v3 = 0;
+    let _2v2 = 0;
+    let _1v1 = 0;
+
+    games.forEach(game => {
+      if (game.type === "3v3") {
+        _3v3++;
+      } else if (game.type === "2v2") {
+        _2v2++;
+      } else {
+        _1v1++;
+      }
+    });
+
+    feedbackResults._3v3 = _3v3;
+    feedbackResults._2v2 = _2v2;
+    feedbackResults._1v1 = _1v1;
+
+    // total games played, total shots scored, wins/losses/win%
+    feedbackResults.totalGames = games.length;
+    feedbackResults.totalShots = shots.length;
+
+    let wins = 0;
+    let losses = 0;
+
+    games.forEach(game => {
+      if (game.score > game.opp_score) {
+        wins++
+      } else {
+        losses++;
+      }
+    });
+
+    feedbackResults.wins = wins;
+    feedbackResults.losses = losses;
+    feedbackResults.winPct = Number(((wins / (wins + losses) * 100).toFixed(0)));
+
     console.log(feedbackResults);
 
     return this.buildLevels(feedbackResults);
 
-    // let totalGames = games.length;
     // let totalCompetitiveGames;
     // let totalCasualGames;
   },
@@ -171,6 +230,12 @@ const feedback = {
   buildLevels(feedbackResults) {
 
     const feedbackContainer = document.getElementById("heatmapAndFeedbackContainer");
+
+    // reformat heatmap generation time to remove seconds
+    const timeReformat = [feedbackResults.now.split(":")[0], feedbackResults.now.split(":")[1]].join(":") + feedbackResults.now.split(":")[2].slice(2);
+    // reformat dates with slashes and put year at end
+    const dateReformat1 = [feedbackResults.firstGame.split("-")[0], feedbackResults.firstGame.split("-")[0]].join("/");
+    const dateReformat2 = [feedbackResults.lastGame.split("-")[0], feedbackResults.lastGame.split("-")[0]].join("/");
 
     const item3_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.firstGame}`);
     const item3_child = elBuilder("p", { "class": "heading" }, "Last game");
@@ -180,8 +245,8 @@ const feedback = {
     const item2_child = elBuilder("p", { "class": "heading" }, "First game");
     const item2_wrapper = elBuilder("div", {}, null, item2_child, item2_child2)
     const item2 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item2_wrapper);
-    const item1_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.now}`);
-    const item1_child = elBuilder("p", { "class": "heading" }, "Heatmap generated on");
+    const item1_child2 = elBuilder("p", { "class": "title is-5" }, `${timeReformat}`);
+    const item1_child = elBuilder("p", { "class": "heading" }, "Heatmap generated");
     const item1_wrapper = elBuilder("div", {}, null, item1_child, item1_child2)
     const item1 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item1_wrapper);
     const columns1_HeatmapDetails = elBuilder("div", { "id": "feedback-1", "class": "columns" }, null, item1, item2, item3)
@@ -201,35 +266,88 @@ const feedback = {
     const columns2_playerType = elBuilder("div", { "id": "feedback-2", "class": "columns" }, null, item4, item5, item6)
 
     // shots on team/opponent sides of field, defensive redirects, and aerial shots / %
-    const item9_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.aerial} : ${feedbackResults.aerialPercentage}%`);
-    const item9_child = elBuilder("p", { "class": "heading" }, "Aerial Shot Total & Percentage");
-    const item9_wrapper = elBuilder("div", {}, null, item9_child, item9_child2)
+    const item9_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.defensiveRedirect}`);
+    const item9_child = elBuilder("p", { "class": "heading" }, "Redirects from Own Goal");
+    const item9_wrapper = elBuilder("div", {}, null, item9_child, item9_child2);
     const item9 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item9_wrapper);
-    const item8_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.defensiveRedirect}`);
-    const item8_child = elBuilder("p", { "class": "heading" }, "Redirects from Own Goal");
-    const item8_wrapper = elBuilder("div", {}, null, item8_child, item8_child2)
+    const item8_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.teamSideGoals} : ${feedbackResults.opponentSideGoals}`);
+    const item8_child = elBuilder("p", { "class": "heading" }, "Goals Behind & Beyond Midfield");
+    const item8_wrapper = elBuilder("div", {}, null, item8_child, item8_child2);
     const item8 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item8_wrapper);
-    const item7_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.teamSideGoals} : ${feedbackResults.opponentSideGoals}`);
-    const item7_child = elBuilder("p", { "class": "heading" }, "Goals from Behind & Beyond Midfield");
-    const item7_wrapper = elBuilder("div", {}, null, item7_child, item7_child2)
+    const item7_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.aerial} : ${feedbackResults.aerialPercentage}%`);
+    const item7_child = elBuilder("p", { "class": "heading" }, "Aerial Goal Total & Pct");
+    const item7_wrapper = elBuilder("div", {}, null, item7_child, item7_child2);
     const item7 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item7_wrapper);
     const columns3_shotDetails = elBuilder("div", { "id": "feedback-3", "class": "columns" }, null, item7, item8, item9)
 
+    // max ball speed, average ball speed, shots over 70 mph
+    const item12_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.shotsOver70mph}`);
+    const item12_child = elBuilder("p", { "class": "heading" }, "Shots Over 70 mph");
+    const item12_wrapper = elBuilder("div", {}, null, item12_child, item12_child2);
+    const item12 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item12_wrapper);
+    const item11_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.avgBallSpeed} mph`);
+    const item11_child = elBuilder("p", { "class": "heading" }, "Average Ball Speed");
+    const item11_wrapper = elBuilder("div", {}, null, item11_child, item11_child2);
+    const item11 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item11_wrapper);
+    const item10_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.maxBallSpeed} mph`);
+    const item10_child = elBuilder("p", { "class": "heading" }, "Max Ball Speed");
+    const item10_wrapper = elBuilder("div", {}, null, item10_child, item10_child2);
+    const item10 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item10_wrapper);
+    const columns4_ballDetails = elBuilder("div", { "id": "feedback-4", "class": "columns" }, null, item10, item11, item12)
 
-    // remove old content if it's already on page
+    // total games played, total shots scored, wins/losses/win%
+    const item15_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.wins} : ${feedbackResults.losses} : ${feedbackResults.winPct}%`);
+    const item15_child = elBuilder("p", { "class": "heading" }, "Wins / Losses / Win %");
+    const item15_wrapper = elBuilder("div", {}, null, item15_child, item15_child2);
+    const item15 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item15_wrapper);
+    const item14_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.totalShots}`);
+    const item14_child = elBuilder("p", { "class": "heading" }, "Total Goals");
+    const item14_wrapper = elBuilder("div", {}, null, item14_child, item14_child2);
+    const item14 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item14_wrapper);
+    const item13_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults.totalGames}`);
+    const item13_child = elBuilder("p", { "class": "heading" }, "Total Games");
+    const item13_wrapper = elBuilder("div", {}, null, item13_child, item13_child2);
+    const item13 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item13_wrapper);
+    const columns5_victoryDetails = elBuilder("div", { "id": "feedback-5", "class": "columns" }, null, item13, item14, item15)
 
+    // 3v3, 2v2, and 1v1 games played
+    const item18_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults._1v1}`);
+    const item18_child = elBuilder("p", { "class": "heading" }, "1v1 Games");
+    const item18_wrapper = elBuilder("div", {}, null, item18_child, item18_child2);
+    const item18 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item18_wrapper);
+    const item17_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults._2v2}`);
+    const item17_child = elBuilder("p", { "class": "heading" }, "2v2 games");
+    const item17_wrapper = elBuilder("div", {}, null, item17_child, item17_child2);
+    const item17 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item17_wrapper);
+    const item16_child2 = elBuilder("p", { "class": "title is-5" }, `${feedbackResults._3v3}`);
+    const item16_child = elBuilder("p", { "class": "heading" }, "3v3 Games");
+    const item16_wrapper = elBuilder("div", {}, null, item16_child, item16_child2);
+    const item16 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item16_wrapper);
+    const columns6_gameTypeDetails = elBuilder("div", { "id": "feedback-6", "class": "columns" }, null, item16, item17, item18)
+
+
+    // replace old content if it's already on the page
     const feedback1 = document.getElementById("feedback-1");
     const feedback2 = document.getElementById("feedback-2");
     const feedback3 = document.getElementById("feedback-3");
+    const feedback4 = document.getElementById("feedback-4");
+    const feedback5 = document.getElementById("feedback-5");
+    const feedback6 = document.getElementById("feedback-6");
 
     if (feedback1 !== null) {
       feedback1.replaceWith(columns1_HeatmapDetails);
       feedback2.replaceWith(columns2_playerType);
       feedback3.replaceWith(columns3_shotDetails);
+      feedback4.replaceWith(columns4_ballDetails);
+      feedback5.replaceWith(columns5_victoryDetails);
+      feedback6.replaceWith(columns6_gameTypeDetails);
     } else {
       feedbackContainer.appendChild(columns1_HeatmapDetails);
       feedbackContainer.appendChild(columns2_playerType);
+      feedbackContainer.appendChild(columns4_ballDetails);
       feedbackContainer.appendChild(columns3_shotDetails);
+      feedbackContainer.appendChild(columns5_victoryDetails);
+      feedbackContainer.appendChild(columns6_gameTypeDetails);
     }
 
   }
