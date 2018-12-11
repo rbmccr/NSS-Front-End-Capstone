@@ -141,7 +141,6 @@ const heatmapData = {
             globalShotsArr = shots // IMPORTANT! prevents error in heatmap save when rendering saved map after rendering basic heatmap
             feedback.loadFeedback(shots);
           }
-          //FIXME:
           joinTableArr = [];
         })
       )
@@ -390,35 +389,74 @@ const heatmapData = {
   },*/
 
   saveHeatmap() {
-    // this function is responsible for saving a heatmap object with a name and userId, then making join tables with
-    // TODO: require unique heatmap name (may not need to do this if function below uses ID instead of name)
+    // this function is responsible for saving a heatmap object with a name, userId, and date - then making join tables with heatmapId and each shotId
     const heatmapDropdown = document.getElementById("heatmapDropdown");
     const saveInput = document.getElementById("saveHeatmapInput");
     const fieldContainer = document.getElementById("field-img-parent");
+    const activeUserId = Number(sessionStorage.getItem("activeUserId"));
+    const saveHeatmapBtn = document.getElementById("saveHeatmapBtn");
+    let heatmapNameIsUnique = true;
 
+    saveHeatmapBtn.disabled = true; // immediately disable save button to prevent multiple clicks
     const heatmapTitle = saveInput.value;
     const fieldHeatmapCanvas = fieldContainer.childNodes[2];
 
-    // heatmap must have a title, the title cannot be "Save successful!" or "Basic Heatmap", and there must be a heatmap loaded on the page
-    if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful!" && heatmapTitle !== "Basic Heatmap" && fieldHeatmapCanvas !== undefined) {
-      saveInput.classList.remove("is-danger");
-      heatmapData.saveHeatmapObject(heatmapTitle)
-        .then(heatmapObj => heatmapData.saveJoinTables(heatmapObj).then(x => {
-          console.log("join tables saved", x)
-          // empty the temporary global array used with Promise.all
-          joinTableArr = []
-          // append newly created heatmap as option element in select dropdown
-          heatmapDropdown.appendChild(elBuilder("option", { "id": `heatmap-${heatmapObj.id}` }, heatmapObj.name));
-          saveInput.value = "Save successful!";
-        }));
+    // 1. heatmap must have title & the title cannot be "Save successful!" or "Basic Heatmap" or "Cannot save prior heatmap" or "No title provided" or "Heatmap name not unique"
+    // 2. there must be a heatmap canvas loaded on the page
+    // 3. (see second if statement) the save button will respond work if the user is trying to save an already-saved heatmap
+    if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful" && heatmapTitle !== "Basic Heatmap" && heatmapTitle !== "Cannot save prior heatmap" && heatmapTitle !== "Cannot save prior heatmap" && heatmapTitle !== "Heatmap name not unique" && heatmapTitle !== "No title provided" && heatmapTitle !== "No heatmap loaded" && fieldHeatmapCanvas !== undefined) {
+      if (heatmapDropdown.value !== "Basic Heatmap") {
+        saveInput.classList.add("is-danger");
+        saveInput.value = "Cannot save prior heatmap"
+        saveHeatmapBtn.disabled = false;
+        return
+      } else {
+        // check for unique heatmap name - if it's unique then save the heatmap and join tables
+        API.getAll(`heatmaps?userId=${activeUserId}`)
+          .then(heatmaps => {
+            console.log(heatmaps)
+            heatmaps.forEach(heatmap => {
+              if (heatmap.name.toLowerCase() === heatmapTitle.toLowerCase()) {
+                heatmapNameIsUnique = false // if any names match, variable becomes false
+              }
+            })
+            // if name is unique - all conditions met - save heatmap
+            if (heatmapNameIsUnique) {
+              saveInput.classList.remove("is-danger");
+              saveInput.classList.add("is-success");
+              heatmapData.saveHeatmapObject(heatmapTitle, activeUserId)
+                .then(heatmapObj => heatmapData.saveJoinTables(heatmapObj).then(x => {
+                  console.log("join tables saved", x)
+                  // empty the temporary global array used with Promise.all
+                  joinTableArr = [];
+                  // append newly created heatmap as option element in select dropdown
+                  heatmapDropdown.appendChild(elBuilder("option", { "id": `heatmap-${heatmapObj.id}` }, `${heatmapObj.timeStamp.split("T")[0]}: ${heatmapObj.name}`));
+                  saveInput.value = "Save successful";
+                  saveHeatmapBtn.disabled = false;
+                }));
+            } else {
+              saveInput.classList.add("is-danger");
+              saveInput.value = "Heatmap name not unique";
+              saveHeatmapBtn.disabled = false;
+            }
+          });
+      }
     } else {
       saveInput.classList.add("is-danger");
+      if (heatmapTitle.length === 0) {
+        saveInput.value = "No title provided";
+        saveHeatmapBtn.disabled = false;
+      } else if (fieldHeatmapCanvas === undefined) {
+        saveInput.value = "No heatmap loaded";
+        saveHeatmapBtn.disabled = false;
+      } else {
+        saveHeatmapBtn.disabled = false;
+      }
     }
   },
 
-  saveHeatmapObject(heatmapTitle) {
+  saveHeatmapObject(heatmapTitle, activeUserId) {
     // this function saves a heatmap object with the user-provided name, the userId, and the current date/time
-    const activeUserId = Number(sessionStorage.getItem("activeUserId"));
     let timeStamp = new Date();
     const heatmapObj = {
       name: heatmapTitle,
