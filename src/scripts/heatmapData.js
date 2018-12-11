@@ -404,7 +404,7 @@ const heatmapData = {
     // 1. heatmap must have title & the title cannot be "Save successful!" or "Basic Heatmap" or "Cannot save prior heatmap" or "No title provided" or "Heatmap name not unique"
     // 2. there must be a heatmap canvas loaded on the page
     // 3. (see second if statement) the save button will respond work if the user is trying to save an already-saved heatmap
-    if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful" && heatmapTitle !== "Basic Heatmap" && heatmapTitle !== "Cannot save prior heatmap" && heatmapTitle !== "Cannot save prior heatmap" && heatmapTitle !== "Heatmap name not unique" && heatmapTitle !== "No title provided" && fieldHeatmapCanvas !== undefined) {
+    if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful" && heatmapTitle !== "Basic Heatmap" && heatmapTitle !== "Cannot save prior heatmap" && heatmapTitle !== "Cannot save prior heatmap" && heatmapTitle !== "Heatmap name not unique" && heatmapTitle !== "No title provided" && heatmapTitle !== "No heatmap loaded" && fieldHeatmapCanvas !== undefined) {
       if (heatmapDropdown.value !== "Basic Heatmap") {
         saveInput.classList.add("is-danger");
         saveInput.value = "Cannot save prior heatmap"
