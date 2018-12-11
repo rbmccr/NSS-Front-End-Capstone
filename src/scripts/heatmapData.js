@@ -141,7 +141,6 @@ const heatmapData = {
             globalShotsArr = shots // IMPORTANT! prevents error in heatmap save when rendering saved map after rendering basic heatmap
             feedback.loadFeedback(shots);
           }
-          //FIXME:
           joinTableArr = [];
         })
       )
@@ -399,18 +398,26 @@ const heatmapData = {
     const heatmapTitle = saveInput.value;
     const fieldHeatmapCanvas = fieldContainer.childNodes[2];
 
-    // heatmap must have a title, the title cannot be "Save successful!" or "Basic Heatmap", and there must be a heatmap loaded on the page
-    if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful!" && heatmapTitle !== "Basic Heatmap" && fieldHeatmapCanvas !== undefined) {
-      saveInput.classList.remove("is-danger");
-      heatmapData.saveHeatmapObject(heatmapTitle)
-        .then(heatmapObj => heatmapData.saveJoinTables(heatmapObj).then(x => {
-          console.log("join tables saved", x)
-          // empty the temporary global array used with Promise.all
-          joinTableArr = []
-          // append newly created heatmap as option element in select dropdown
-          heatmapDropdown.appendChild(elBuilder("option", { "id": `heatmap-${heatmapObj.id}` }, heatmapObj.name));
-          saveInput.value = "Save successful!";
-        }));
+    // heatmap must have a title, the title cannot be "Save successful!" or "Basic Heatmap"
+    // there must be a heatmap canvas loaded on the page, and the save button will not work if
+    // the user is trying to save an already-saved heatmap (see internal if statement)
+    if (heatmapTitle.length > 0 && heatmapTitle !== "Save successful" && heatmapTitle !== "Basic Heatmap" && fieldHeatmapCanvas !== undefined) {
+      if (heatmapDropdown.value !== "Basic Heatmap") {
+        saveInput.classList.add("is-danger");
+        saveInput.value = "Cannot save prior heatmap"
+        return
+      } else {
+        saveInput.classList.remove("is-danger");
+        heatmapData.saveHeatmapObject(heatmapTitle)
+          .then(heatmapObj => heatmapData.saveJoinTables(heatmapObj).then(x => {
+            console.log("join tables saved", x)
+            // empty the temporary global array used with Promise.all
+            joinTableArr = []
+            // append newly created heatmap as option element in select dropdown
+            heatmapDropdown.appendChild(elBuilder("option", { "id": `heatmap-${heatmapObj.id}` }, heatmapObj.name));
+            saveInput.value = "Save successful";
+          }));
+      }
     } else {
       saveInput.classList.add("is-danger");
     }
