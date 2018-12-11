@@ -62,10 +62,16 @@ const shotData = {
     // the expressions divide the click x and y by the parent full width and height
     const xCoordRelative = Number((e.offsetX / parentContainer.offsetWidth).toFixed(3))
     const yCoordRelative = Number((e.offsetY / parentContainer.offsetHeight).toFixed(3));
-    shotData.markClickonImage(xCoordRelative, yCoordRelative, parentContainer)
+    // restrict user from submitting a click in the goal if y < 0.20 or y > 0.85 or x > 0.90 or x < 0.10
+    if (parentContainer.id === "goal-img-parent" && yCoordRelative < 0.20 || yCoordRelative > 0.85 || xCoordRelative < 0.10 || xCoordRelative > 0.90) {
+      return
+    } else {
+      shotData.markClickonImage(xCoordRelative, yCoordRelative, parentContainer)
+    }
   },
 
   markClickonImage(x, y, parentContainer) {
+    console.log(x, y)
     let markerId;
     if (parentContainer.id === "field-img-parent") {
       markerId = "shot-marker-field";
@@ -92,7 +98,7 @@ const shotData = {
     div.id = markerId;
     div.style.width = "25px";
     div.style.height = "25px";
-    div.style.backgroundColor = "lightgreen";
+    div.style.backgroundColor = "firebrick";
     div.style.border = "1px solid black";
     div.style.borderRadius = "50%";
     div.style.position = "absolute";
