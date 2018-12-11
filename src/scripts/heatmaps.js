@@ -170,7 +170,6 @@ const heatmaps = {
     const generateHeatmapBtn = document.getElementById("generateHeatmapBtn");
     const saveHeatmapBtn = document.getElementById("saveHeatmapBtn");
     const deleteHeatmapBtn = document.getElementById("deleteHeatmapBtn");
-    const resetFiltersBtn = document.getElementById("resetFiltersBtn");
 
     generateHeatmapBtn.addEventListener("click", heatmapData.getUserShots);
     saveHeatmapBtn.addEventListener("click", heatmapData.saveHeatmap);
@@ -186,7 +185,17 @@ const heatmaps = {
       }
     });
 
+    // add listener to heatmap title input to clear red highliting and text if an error was thrown
+    const saveHeatmapInput = document.getElementById("saveHeatmapInput");
+    saveHeatmapInput.addEventListener("click", () => {
+      if (saveHeatmapInput.classList.contains("is-danger")) {
+        saveHeatmapInput.value = "";
+        saveHeatmapInput.classList.remove("is-danger");
+      }
+    })
+
     // add functionality to reset filter button
+    const resetFiltersBtn = document.getElementById("resetFiltersBtn");
     const gameModeFilter = document.getElementById("filter-gameMode");
     const shotTypeFilter = document.getElementById("filter-shotType");
     const gameResultFilter = document.getElementById("filter-gameResult");
