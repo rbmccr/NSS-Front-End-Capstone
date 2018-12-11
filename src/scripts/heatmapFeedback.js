@@ -42,8 +42,8 @@ const feedback = {
     console.log(feedbackResults.now)
 
     // get range of dates on games (max and min)
-    feedbackResults.firstGame = games.reduce((max, game) => game.timeStamp.split("T")[0] > max ? game.timeStamp.split("T")[0] : max, games[0].timeStamp.split("T")[0]);
-    feedbackResults.lastGame = games.reduce((min, game) => game.timeStamp.split("T")[0] < min ? game.timeStamp.split("T")[0] : min, games[0].timeStamp.split("T")[0]);
+    feedbackResults.lastGame = games.reduce((max, game) => game.timeStamp.split("T")[0] > max ? game.timeStamp.split("T")[0] : max, games[0].timeStamp.split("T")[0]);
+    feedbackResults.firstGame = games.reduce((min, game) => game.timeStamp.split("T")[0] < min ? game.timeStamp.split("T")[0] : min, games[0].timeStamp.split("T")[0]);
 
 
     // get average field x,y coordinate of player based on shots and give player feedback
@@ -281,11 +281,11 @@ const feedback = {
     const dateReformat2 = [feedbackResults.lastGame.split("-")[1], feedbackResults.lastGame.split("-")[2]].join("/") + "/" + feedbackResults.lastGame.split("-")[0];
 
     // heatmap generation and range of dates on games (max and min)
-    const item3_child2 = elBuilder("p", { "class": "title is-6" }, `${dateReformat1}`);
+    const item3_child2 = elBuilder("p", { "class": "title is-6" }, `${dateReformat2}`);
     const item3_child = elBuilder("p", { "class": "heading" }, "Last game");
     const item3_wrapper = elBuilder("div", {}, null, item3_child, item3_child2)
     const item3 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item3_wrapper);
-    const item2_child2 = elBuilder("p", { "class": "title is-6" }, `${dateReformat2}`);
+    const item2_child2 = elBuilder("p", { "class": "title is-6" }, `${dateReformat1}`);
     const item2_child = elBuilder("p", { "class": "heading" }, "First game");
     const item2_wrapper = elBuilder("div", {}, null, item2_child, item2_child2)
     const item2 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item2_wrapper);
