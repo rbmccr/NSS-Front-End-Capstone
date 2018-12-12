@@ -9,8 +9,8 @@
 } */
 
 #container-master {
-  min-height: calc(100vh - 52px); /*100vh - height of navbar*/
-  margin: 5px;
+  min-height: calc(100vh - 57px); /*100vh - height of navbar and margin-top of itself*/
+  margin-top: 5px;
 }
 
 /* Positioning of field and goal images on gameplay page */
