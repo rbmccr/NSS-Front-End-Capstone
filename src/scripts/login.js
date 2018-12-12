@@ -12,11 +12,14 @@ const loginOrSignup = {
     const loginInput_username = elBuilder("input", { "id": "usernameInput", "class": "input", "type": "text", "placeholder": "enter username" });
     const loginInput_password = elBuilder("input", { "id": "passwordInput", "class": "input", "type": "password", "placeholder": "enter password" });
     const loginButton = elBuilder("button", { "id": "loginNow", "class": "button is-dark" }, "Login now");
-    const loginForm = elBuilder("form", { "id": "loginForm", "class": "box" }, null, loginInput_username, loginInput_password, loginButton);
+    const loginForm = elBuilder("form", { "id": "loginForm", "class": "container box" }, null, loginInput_username, loginInput_password, loginButton);
 
     webpage.innerHTML = null;
-    webpage.appendChild(loginForm)
-    this.userEventManager()
+    // set style of master container to display flex to align forms in center of container
+    webpage.style.display = "flex";
+    webpage.style.justifyContent = "center";
+    webpage.appendChild(loginForm);
+    this.userEventManager();
   },
 
   signupForm() {
@@ -25,11 +28,13 @@ const loginOrSignup = {
     const signupInput_password = elBuilder("input", { "id": "passwordInput", "class": "input", "type": "text", "placeholder": "enter password" });
     const signupInput_confirm = elBuilder("input", { "id": "confirmPassword", "class": "input", "type": "text", "placeholder": "confirm password" });
     const signupButton = elBuilder("button", { "id": "signupNow", "class": "button is-dark" }, "Sign up now");
-    const signupForm = elBuilder("form", { "id": "signupForm", "class": "box" }, null, signupInput_name, signupInput_username, signupInput_password, signupInput_confirm, signupButton);
+    const signupForm = elBuilder("form", { "id": "signupForm", "class": " container box" }, null, signupInput_name, signupInput_username, signupInput_password, signupInput_confirm, signupButton);
 
     webpage.innerHTML = null;
-    webpage.appendChild(signupForm)
-    this.userEventManager()
+    webpage.style.display = "flex";
+    webpage.style.justifyContent = "center";
+    webpage.appendChild(signupForm);
+    this.userEventManager();
   },
 
   // assign event listeners based on which form is on the webpage
@@ -109,6 +114,7 @@ const loginOrSignup = {
     sessionStorage.setItem("activeUserId", user.id);
     webpage.innerHTML = null;
     webpageNav.innerHTML = null;
+    webpage.style.display = "block";
     navbar.generateNavbar(true); //build logged in version of navbar
   },
 
@@ -116,6 +122,7 @@ const loginOrSignup = {
     sessionStorage.removeItem("activeUserId");
     webpage.innerHTML = null;
     webpageNav.innerHTML = null;
+    webpage.style.display = "block";
     navbar.generateNavbar(false); //build logged out version of navbar
   }
 

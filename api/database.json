@@ -195,17 +195,6 @@
       "overtime": false,
       "timeStamp": "2018-11-30T15:10:06.343Z",
       "id": 16
-    },
-    {
-      "userId": 2,
-      "mode": "casual",
-      "type": "2v2",
-      "party": false,
-      "score": 2,
-      "opp_score": 1,
-      "overtime": false,
-      "timeStamp": "2018-12-12T19:12:15.545Z",
-      "id": 17
     }
   ],
   "shots": [
@@ -615,17 +604,6 @@
       "aerial": true,
       "timeStamp": "2018-11-30T15:09:00.191Z",
       "id": 37
-    },
-    {
-      "gameId": 17,
-      "fieldX": 0.767,
-      "fieldY": 0.537,
-      "goalX": 0.184,
-      "goalY": 0.589,
-      "ball_speed": 100,
-      "aerial": false,
-      "timeStamp": "2018-12-12T19:12:08.286Z",
-      "id": 38
     }
   ],
   "heatmaps": [
