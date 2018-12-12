@@ -9,8 +9,8 @@
 } */
 
 #container-master {
-  min-height: calc(100vh - 52px); /*100vh - height of navbar*/
-  margin: 5px;
+  min-height: calc(100vh - 57px); /*100vh - height of navbar and margin-top of itself*/
+  margin-top: 5px;
 }
 
 /* Positioning of field and goal images on gameplay page */
@@ -48,3 +48,8 @@
     max-width: 550px;
   }
 }
+
+/* background of all container elements */
+/* .testBox {
+  background-color: rgba(0,0,0,0.8);
+} */

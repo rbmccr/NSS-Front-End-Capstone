@@ -33,7 +33,7 @@ const gameplay = {
     const shotButtonContainer = elBuilder("div", { "class": "level" }, null, alignShotButtons);
 
     // ball speed input and aerial select
-    const ballSpeedInputTitle = elBuilder("div", { "class": "level-item" }, "Ball speed (kph):")
+    const ballSpeedInputTitle = elBuilder("div", { "class": "level-item" }, "Ball speed (mph):")
     const ballSpeedInput = elBuilder("input", { "id": "ballSpeedInput", "class": "level-item input", "type":"number", "placeholder": "enter ball speed" });
     const aerialOption1 = elBuilder("option", {}, "Standard");
     const aerialOption2 = elBuilder("option", {}, "Aerial");
