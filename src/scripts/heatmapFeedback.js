@@ -328,7 +328,7 @@ const feedback = {
 
     // max ball speed, average ball speed, shots over 70 mph
     const item12_child2 = elBuilder("p", { "class": "title is-6" }, `${feedbackResults.shotsOver70mph}`);
-    const item12_child = elBuilder("p", { "class": "heading" }, "Shots Over 70 mph");
+    const item12_child = elBuilder("p", { "class": "heading" }, "Goals Over 70 mph");
     const item12_wrapper = elBuilder("div", {}, null, item12_child, item12_child2);
     const item12 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item12_wrapper);
     const item11_child2 = elBuilder("p", { "class": "title is-6" }, `${feedbackResults.avgBallSpeed} mph`);

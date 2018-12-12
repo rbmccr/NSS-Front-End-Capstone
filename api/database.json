@@ -600,6 +600,199 @@
       "id": 37
     }
   ],
-  "heatmaps": [],
-  "shot_heatmap": []
+  "heatmaps": [
+    {
+      "name": "first 37 shots, 16 games",
+      "userId": 1,
+      "timeStamp": "2018-12-12T15:17:57.945Z",
+      "id": 1
+    }
+  ],
+  "shot_heatmap": [
+    {
+      "shotId": 1,
+      "heatmapId": 1,
+      "id": 1
+    },
+    {
+      "shotId": 2,
+      "heatmapId": 1,
+      "id": 2
+    },
+    {
+      "shotId": 3,
+      "heatmapId": 1,
+      "id": 3
+    },
+    {
+      "shotId": 4,
+      "heatmapId": 1,
+      "id": 4
+    },
+    {
+      "shotId": 5,
+      "heatmapId": 1,
+      "id": 5
+    },
+    {
+      "shotId": 6,
+      "heatmapId": 1,
+      "id": 6
+    },
+    {
+      "shotId": 7,
+      "heatmapId": 1,
+      "id": 7
+    },
+    {
+      "shotId": 8,
+      "heatmapId": 1,
+      "id": 8
+    },
+    {
+      "shotId": 9,
+      "heatmapId": 1,
+      "id": 9
+    },
+    {
+      "shotId": 10,
+      "heatmapId": 1,
+      "id": 10
+    },
+    {
+      "shotId": 11,
+      "heatmapId": 1,
+      "id": 11
+    },
+    {
+      "shotId": 12,
+      "heatmapId": 1,
+      "id": 12
+    },
+    {
+      "shotId": 13,
+      "heatmapId": 1,
+      "id": 13
+    },
+    {
+      "shotId": 14,
+      "heatmapId": 1,
+      "id": 14
+    },
+    {
+      "shotId": 15,
+      "heatmapId": 1,
+      "id": 15
+    },
+    {
+      "shotId": 16,
+      "heatmapId": 1,
+      "id": 16
+    },
+    {
+      "shotId": 17,
+      "heatmapId": 1,
+      "id": 17
+    },
+    {
+      "shotId": 18,
+      "heatmapId": 1,
+      "id": 18
+    },
+    {
+      "shotId": 19,
+      "heatmapId": 1,
+      "id": 19
+    },
+    {
+      "shotId": 20,
+      "heatmapId": 1,
+      "id": 20
+    },
+    {
+      "shotId": 21,
+      "heatmapId": 1,
+      "id": 21
+    },
+    {
+      "shotId": 22,
+      "heatmapId": 1,
+      "id": 22
+    },
+    {
+      "shotId": 23,
+      "heatmapId": 1,
+      "id": 23
+    },
+    {
+      "shotId": 24,
+      "heatmapId": 1,
+      "id": 24
+    },
+    {
+      "shotId": 25,
+      "heatmapId": 1,
+      "id": 25
+    },
+    {
+      "shotId": 26,
+      "heatmapId": 1,
+      "id": 26
+    },
+    {
+      "shotId": 27,
+      "heatmapId": 1,
+      "id": 27
+    },
+    {
+      "shotId": 28,
+      "heatmapId": 1,
+      "id": 28
+    },
+    {
+      "shotId": 29,
+      "heatmapId": 1,
+      "id": 29
+    },
+    {
+      "shotId": 30,
+      "heatmapId": 1,
+      "id": 30
+    },
+    {
+      "shotId": 31,
+      "heatmapId": 1,
+      "id": 31
+    },
+    {
+      "shotId": 32,
+      "heatmapId": 1,
+      "id": 32
+    },
+    {
+      "shotId": 33,
+      "heatmapId": 1,
+      "id": 33
+    },
+    {
+      "shotId": 34,
+      "heatmapId": 1,
+      "id": 34
+    },
+    {
+      "shotId": 35,
+      "heatmapId": 1,
+      "id": 35
+    },
+    {
+      "shotId": 36,
+      "heatmapId": 1,
+      "id": 36
+    },
+    {
+      "shotId": 37,
+      "heatmapId": 1,
+      "id": 37
+    }
+  ]
 }
