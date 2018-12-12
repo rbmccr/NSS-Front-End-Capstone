@@ -1,13 +1,5 @@
 import navbar from "./navbar"
-// import gameplay from "./gameplay"
-import heatmaps from "./heatmaps";
+import profile from "./profile";
 
-// function closeBox(e) {
-//   if (e.target.classList.contains("delete")) {
-//     e.target.parentNode.style.display = "none";
-//   }
-// }
-
-// navbar.generateNavbar()
-navbar.generateNavbar(true)
-heatmaps.loadHeatmapContainers();
+navbar.generateNavbar(true);
+profile.loadProfile();

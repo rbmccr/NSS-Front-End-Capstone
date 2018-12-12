@@ -4,13 +4,17 @@
       "id": 1,
       "name": "Brendan",
       "username": "Tremulous",
-      "password": "pass"
+      "password": "pass",
+      "picture": "images/tremulous.jpg",
+      "car": "Octane"
     },
     {
       "id": 2,
       "name": "Zac",
       "username": "Viper16",
-      "password": "word"
+      "password": "word",
+      "picture": "",
+      "car": "Tanuki"
     }
   ],
   "games": [
