@@ -31,16 +31,69 @@ const profile = {
           return API.getAll(URL)
         }).then(shots => {
           console.log("check shots promise", shots)
-          this.buildProfile(user, shots, gameIds);
+          // call next function in chain of functions to get playstyle
+          this.determinePlaystyle(user, shots, gameIds);
           gameIds = [];
         })
     })
 
   },
 
-  buildProfile(user, shots, gameIds) {
+  determinePlaystyle(user, shots, gameIds) {
+    // this function uses avg field coordinates to label the user's playstyle for their profile page
+    let sumX = 0;
+    let sumY = 0;
+    let avgX;
+    let avgY;
+
+    shots.forEach(shot => {
+      sumX += shot.fieldX;
+      sumY += shot.fieldY;
+    })
+
+    avgX = sumX / shots.length;
+    avgY = sumY / shots.length;
+    let fieldPosition;
+
+    if (avgX < 0.15) {
+      fieldPosition = "keeper"
+    } else if (0.15 <= avgX && avgX <= 0.30) {
+      fieldPosition = "sweeper"
+    } else if (0.30 <= avgX && avgX < 0.45 && avgY <= 0.40) {
+      fieldPosition = "left fullback"
+    } else if (0.30 <= avgX && avgX < 0.45 && 0.60 <= avgY) {
+      fieldPosition = "right fullback"
+    } else if (0.30 <= avgX && avgX <= 0.45) {
+      fieldPosition = "center fullback"
+    } else if (0.45 <= avgX && avgX < 0.60 && avgY <= 0.40) {
+      fieldPosition = "left halfback"
+    } else if (0.45 <= avgX && avgX < 0.60 && 0.60 <= avgY) {
+      fieldPosition = "right halfback"
+    } else if (0.45 <= avgX && avgX <= 0.60) {
+      fieldPosition = "center halfback"
+    } else if (0.60 <= avgX && avgX < 0.75 && avgY <= 0.50) {
+      fieldPosition = "left horward"
+    } else if (0.60 <= avgX && avgX < 0.75 && 0.50 < avgY) {
+      fieldPosition = "right forward"
+    } else if (0.75 <= avgX) {
+      fieldPosition = "striker"
+    }
+
+    // call function to load containers using all fetched information
+    this.buildProfile(user, shots, gameIds, fieldPosition);
+  },
+
+  buildProfile(user, shots, gameIds, fieldPosition) {
 
     // media containers showing user stats (appended to card container)
+    const playstyle = elBuilder("div", {"class":"title is-3"}, `Plays ${fieldPosition}`)
+    const playstyleContent = elBuilder("div", { "class": "content" }, null, playstyle)
+    const playstyleContentParent = elBuilder("div", { "class": "media-content" }, null, playstyleContent)
+    const icon3 = elBuilder("img", { "src": "images/icons/icons8-stadium-96.png" }, null)
+    const iconParent3 = elBuilder("figure", { "class": "image is-48x48" }, null, icon3)
+    const left3 = elBuilder("div", { "class": "media-left" }, null, iconParent3);
+    const userPlaystyle = elBuilder("div", { "class": "media is-marginless", "style": "padding:20px;" }, null, left3, playstyleContentParent)
+
     const gameStats = elBuilder("div", {"class":"title is-2"}, `${gameIds.length} games`)
     const gameContent = elBuilder("div", { "class": "content" }, null, gameStats)
     const gameContentParent = elBuilder("div", { "class": "media-content" }, null, gameContent)
@@ -80,7 +133,7 @@ const profile = {
     const Img = elBuilder("img", { "src": `${profileImgVariable}`, "alt": "profile picture", "title": `${profileImgTitle}` });
     const figure = elBuilder("figure", { "class": "image" }, null, Img);
     const profilePicture = elBuilder("div", { "class": "card-image" }, null, figure);
-    const card = elBuilder("div", { "class": "card" }, null, profilePicture, content, totalGoals, totalGames);
+    const card = elBuilder("div", { "class": "card" }, null, profilePicture, content, totalGoals, totalGames, userPlaystyle);
 
     // parent containers that organize profile information into columns
     const blankColumnLeft = elBuilder("div", { "class": "column is-one-fourth" }, null);
