@@ -37,7 +37,6 @@ const profile = {
             return API.getAll(URL)
           }
         }).then(shots => {
-          console.log("check shots promise", shots)
           // call next function in chain of functions to get playstyle
           this.determinePlaystyle(user, shots, gameIds);
           gameIds = [];

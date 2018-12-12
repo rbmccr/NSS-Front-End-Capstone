@@ -9,15 +9,80 @@ const loginOrSignup = {
 
   // build a login form that validates user input. Successful login stores user id in session storage
   loginForm() {
-    const loginInput_username = elBuilder("input", { "id": "usernameInput", "class": "input", "type": "text", "placeholder": "enter username" });
-    const loginInput_password = elBuilder("input", { "id": "passwordInput", "class": "input", "type": "password", "placeholder": "enter password" });
+
+    //   <div class="field is-horizontal">
+    //      <div class="field-label is-normal">
+    //        <label class="label">From</label>
+    //      </div>
+
+    //      <div class="field-body">
+    //        <div class="field">
+    //          <p class="control is-expanded has-icons-left">
+    //            <input class="input" type="text" placeholder="Name">
+    //            <span class="icon is-small is-left">
+    //              <i class="fas fa-user"></i>
+    //            </span>
+    //          </p>
+    //        </div>
+
+    //   <div class="field">
+    //     <p class="control is-expanded has-icons-left has-icons-right">
+    //       <input class="input is-success" type="email" placeholder="Email" value="alex@smith.com">
+    //       <span class="icon is-small is-left">
+    //         <i class="fas fa-envelope"></i>
+    //       </span>
+    //       <span class="icon is-small is-right">
+    //         <i class="fas fa-check"></i>
+    //       </span>
+    //     </p>
+    //   </div>
+
+
+    //     <div class="field">
+    //   <label class="label">Name</label>
+    //   <div class="control">
+    //     <input class="input" type="text" placeholder="Text input">
+    //   </div>
+    // </div>
+
+
     const loginButton = elBuilder("button", { "id": "loginNow", "class": "button is-dark" }, "Login now");
-    const loginForm = elBuilder("form", { "id": "loginForm", "class": "container box" }, null, loginInput_username, loginInput_password, loginButton);
+    const loginBtnControl = elBuilder("div", { "class": "buttons is-centered" }, null, loginButton)
+
+    // password input with icon
+    const loginPasswordIcon = elBuilder("i", { "class": "fas fa-key" })
+    const loginPasswordIconDiv = elBuilder("span", { "class": "icon is-small is-left" }, null, loginPasswordIcon)
+    const loginInput_password = elBuilder("input", { "id": "passwordInput", "class": "input", "type": "password", "placeholder": "enter password" });
+    const loginPasswordControl = elBuilder("div", { "class": "control is-expanded has-icons-left" }, null, loginInput_password, loginPasswordIconDiv)
+
+    const loginPasswordLabel = elBuilder("label", { "class": "label" }, "Password")
+    const loginPasswordLabelDiv = elBuilder("div", { "class": "field-label is-normal" }, null, loginPasswordLabel)
+    const loginPasswordField = elBuilder("div", { "class": "field" }, null, loginPasswordControl)
+
+    const loginFieldBody2 = elBuilder("div", { "class": "field-body" }, null, loginPasswordField)
+    const loginFieldParent2 = elBuilder("div", { "class": "field is-horizontal" }, null, loginPasswordLabelDiv, loginFieldBody2)
+
+    // username input with icon
+    const loginUsernameIcon = elBuilder("i", { "class": "fas fa-user" })
+    const loginUsernameIconDiv = elBuilder("span", { "class": "icon is-small is-left" }, null, loginUsernameIcon)
+    const loginInput_username = elBuilder("input", { "id": "usernameInput", "class": "input", "type": "text", "placeholder": "enter username" });
+    const loginUsernameControl = elBuilder("div", { "class": "control is-expanded has-icons-left" }, null, loginInput_username, loginUsernameIconDiv)
+
+    const loginUsernameLabel = elBuilder("label", { "class": "label" }, "Username")
+    const loginUsernameLabelDiv = elBuilder("div", { "class": "field-label is-normal" }, null, loginUsernameLabel)
+    const loginUsernameField = elBuilder("div", { "class": "field" }, null, loginUsernameControl)
+
+    const loginFieldBody1 = elBuilder("div", { "class": "field-body" }, null, loginUsernameField)
+    const loginFieldParent1 = elBuilder("div", { "class": "field is-horizontal" }, null, loginUsernameLabelDiv, loginFieldBody1)
+
+    // form
+    const loginForm = elBuilder("form", { "id": "loginForm", "class": "box", "style":"margin-top:-57px", "style":"min-width:40%" }, null, loginFieldParent1, loginFieldParent2, loginBtnControl);
 
     webpage.innerHTML = null;
     // set style of master container to display flex to align forms in center of container
     webpage.style.display = "flex";
     webpage.style.justifyContent = "center";
+    webpage.style.alignItems = "center";
     webpage.appendChild(loginForm);
     this.userEventManager();
   },
@@ -28,11 +93,12 @@ const loginOrSignup = {
     const signupInput_password = elBuilder("input", { "id": "passwordInput", "class": "input", "type": "text", "placeholder": "enter password" });
     const signupInput_confirm = elBuilder("input", { "id": "confirmPassword", "class": "input", "type": "text", "placeholder": "confirm password" });
     const signupButton = elBuilder("button", { "id": "signupNow", "class": "button is-dark" }, "Sign up now");
-    const signupForm = elBuilder("form", { "id": "signupForm", "class": " container box" }, null, signupInput_name, signupInput_username, signupInput_password, signupInput_confirm, signupButton);
+    const signupForm = elBuilder("form", { "id": "signupForm", "class": "field box" }, null, signupInput_name, signupInput_username, signupInput_password, signupInput_confirm, signupButton);
 
     webpage.innerHTML = null;
     webpage.style.display = "flex";
     webpage.style.justifyContent = "center";
+    webpage.style.alignItems = "center";
     webpage.appendChild(signupForm);
     this.userEventManager();
   },
