@@ -6,6 +6,21 @@ import shotData from "./shotData"
 import heatmaps from "./heatmaps"
 import heatmapData from "./heatmapData"
 
+/*
+  Bulma navbar structure:
+  <nav>
+    <navbar-brand>
+      <navbar-burger> (optional)
+    </navbar-brand>
+    <navbar-menu>
+      <navbar-start>
+      </navbar-start>
+      <navbar-end>
+      </navbar-end>
+    </navbar-menu>
+  </nav>
+*/
+
 const webpageNav = document.getElementById("nav-master");
 
 const navbar = {
@@ -44,10 +59,10 @@ const navbar = {
       buttonContainer.appendChild(button3);
 
       // create and append new menu items for user
-      const loggedInItem1 = elBuilder("a", { "class": "navbar-item" }, "Profile");
-      const loggedInItem2 = elBuilder("a", { "class": "navbar-item" }, "Gameplay");
-      const loggedInItem3 = elBuilder("a", { "class": "navbar-item" }, "Heatmaps");
-      const loggedInItem4 = elBuilder("a", { "class": "navbar-item" }, "Leaderboard");
+      const loggedInItem1 = elBuilder("a", { "class": "navbar-item" }, "Home");
+      const loggedInItem2 = elBuilder("a", { "class": "navbar-item" }, "Profile");
+      const loggedInItem3 = elBuilder("a", { "class": "navbar-item" }, "Gameplay");
+      const loggedInItem4 = elBuilder("a", { "class": "navbar-item" }, "Heatmaps");
       navbarStart.appendChild(loggedInItem1);
       navbarStart.appendChild(loggedInItem2);
       navbarStart.appendChild(loggedInItem3);
@@ -63,72 +78,43 @@ const navbar = {
   },
 
   navbarEventManager(nav) {
-    nav.addEventListener("click", this.loginClicked, event);
-    nav.addEventListener("click", this.signupClicked, event);
-    nav.addEventListener("click", this.logoutClicked, event);
-    nav.addEventListener("click", this.profileClicked, event);
-    nav.addEventListener("click", this.gameplayClicked, event);
-    nav.addEventListener("click", this.heatmapsClicked, event);
-  },
+    // this function adds a single click listener to the nav that redirects the user to the correct page
+    // based on the text content of the target
+    nav.addEventListener("click", (e) => {
 
-  loginClicked(e) {
-    if (e.target.textContent === "Login") {
-      loginOrSignup.loginForm();
-    }
-  },
+      if (e.target.textContent === "Login") {
+        loginOrSignup.loginForm();
+      }
 
-  signupClicked(e) {
-    if (e.target.textContent === "Sign up") {
-      loginOrSignup.signupForm();
-    }
-  },
+      if (e.target.textContent === "Sign up") {
+        loginOrSignup.signupForm();
+      }
 
-  logoutClicked(e) {
-    if (e.target.textContent === "Logout") {
-      heatmapData.clearHeatmapRepaintInterval();
-      loginOrSignup.logoutUser();
-    }
-  },
+      if (e.target.textContent === "Logout") {
+        heatmapData.clearHeatmapRepaintInterval();
+        loginOrSignup.logoutUser();
+      }
 
-  profileClicked(e) {
-    if (e.target.textContent === "Profile") {
-      heatmapData.clearHeatmapRepaintInterval();
-      profile.loadProfile();
-    }
-  },
+      if (e.target.textContent === "Profile") {
+        heatmapData.clearHeatmapRepaintInterval();
+        profile.loadProfile();
+      }
 
-  gameplayClicked(e) {
-    if (e.target.textContent === "Gameplay") {
-      heatmapData.clearHeatmapRepaintInterval();
-      gameplay.loadGameplay();
-      shotData.resetGlobalShotVariables();
-    }
-  },
+      if (e.target.textContent === "Gameplay") {
+        heatmapData.clearHeatmapRepaintInterval();
+        gameplay.loadGameplay();
+        shotData.resetGlobalShotVariables();
+      }
 
-  heatmapsClicked(e) {
-    if (e.target.textContent === "Heatmaps") {
-      heatmapData.clearHeatmapRepaintInterval();
-      heatmapData.handleBallSpeedGlobalVariables();
-      heatmapData.handleDateFilterGlobalVariables();
-      heatmaps.loadHeatmapContainers();
-    }
+      if (e.target.textContent === "Heatmaps") {
+        heatmapData.clearHeatmapRepaintInterval();
+        heatmapData.handleBallSpeedGlobalVariables();
+        heatmapData.handleDateFilterGlobalVariables();
+        heatmaps.loadHeatmapContainers();
+      }
+    });
   }
 
 }
 
 export default navbar
-
-/*
-  Bulma navbar structure:
-  <nav>
-    <navbar-brand>
-      <navbar-burger> (optional)
-    </navbar-brand>
-    <navbar-menu>
-      <navbar-start>
-      </navbar-start>
-      <navbar-end>
-      </navbar-end>
-    </navbar-menu>
-  </nav>
-*/
