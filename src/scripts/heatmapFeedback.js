@@ -38,10 +38,20 @@ const feedback = {
     let now = new Date().toLocaleString();
     feedbackResults.now = now;
 
-    // get range of dates on games (max and min)
-    feedbackResults.lastGame = games.reduce((max, game) => game.timeStamp.split("T")[0] > max ? game.timeStamp.split("T")[0] : max, games[0].timeStamp.split("T")[0]);
-    feedbackResults.firstGame = games.reduce((min, game) => game.timeStamp.split("T")[0] < min ? game.timeStamp.split("T")[0] : min, games[0].timeStamp.split("T")[0]);
+    // convert game dates out of Z time to get local timezone accuracy
+    let gameTimes = [];
+    games.forEach(game => {
+      gameTimes.push(new Date(game.timeStamp).toLocaleString().split(",")[0]);
+    })
 
+    // sort array of dates from
+    gameTimes.sort((a, b) => {
+      return  Number(new Date(a)) - Number(new Date(b));
+    })
+
+    // get range of dates on games (max and min)
+    feedbackResults.lastGame = gameTimes.pop()
+    feedbackResults.firstGame = gameTimes.shift();
 
     // get average field x,y coordinate of player based on shots and give player feedback
     let sumX = 0;
@@ -240,7 +250,6 @@ const feedback = {
       }
     });
 
-
     let compWinPct = 0;
 
     if (competitiveGames === 0) {
@@ -271,16 +280,13 @@ const feedback = {
 
     // reformat heatmap generation time to remove seconds
     const timeReformat = [feedbackResults.now.split(":")[0], feedbackResults.now.split(":")[1]].join(":") + feedbackResults.now.split(":")[2].slice(2);
-    // reformat dates with slashes and put year at end
-    const dateReformat1 = [feedbackResults.firstGame.split("-")[1], feedbackResults.firstGame.split("-")[2]].join("/") + "/" + feedbackResults.firstGame.split("-")[0];
-    const dateReformat2 = [feedbackResults.lastGame.split("-")[1], feedbackResults.lastGame.split("-")[2]].join("/") + "/" + feedbackResults.lastGame.split("-")[0];
 
     // heatmap generation and range of dates on games (max and min)
-    const item3_child2 = elBuilder("p", { "class": "title is-6" }, `${dateReformat2}`);
+    const item3_child2 = elBuilder("p", { "class": "title is-6" }, `${feedbackResults.lastGame}`);
     const item3_child = elBuilder("p", { "class": "heading" }, "Last game");
     const item3_wrapper = elBuilder("div", {}, null, item3_child, item3_child2)
     const item3 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item3_wrapper);
-    const item2_child2 = elBuilder("p", { "class": "title is-6" }, `${dateReformat1}`);
+    const item2_child2 = elBuilder("p", { "class": "title is-6" }, `${feedbackResults.firstGame}`);
     const item2_child = elBuilder("p", { "class": "heading" }, "First game");
     const item2_wrapper = elBuilder("div", {}, null, item2_child, item2_child2)
     const item2 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item2_wrapper);
