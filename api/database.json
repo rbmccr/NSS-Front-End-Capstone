@@ -6,7 +6,8 @@
       "username": "Tremulous",
       "password": "pass",
       "picture": "images/tremulous.jpg",
-      "car": "Octane"
+      "car": "Octane",
+      "joined":"2018-11-20T21:51:20.683Z"
     },
     {
       "id": 2,
@@ -14,7 +15,8 @@
       "username": "Viper16",
       "password": "word",
       "picture": "",
-      "car": "Tanuki"
+      "car": "Tanuki",
+      "joined":"2018-11-20T21:51:20.683Z"
     }
   ],
   "games": [

@@ -18,46 +18,32 @@ const profile = {
 
 
     // profile content
-    const carImgVariable = `images/cars/${user.car.toLowerCase()}.jpg`;
-    const profileImgVariable = user.picture;
+    let carImgVariable = `images/cars/${user.car.toLowerCase()}.jpg`;
+    let profileImgVariable = user.picture;
     if (user.picture === "") {
       profileImgVariable = "images/profile-placeholder.jpg"
     }
+    let memberSinceDateFormatted = new Date(user.joined).toLocaleString().split(",")[0];
 
-    const carImg = elBuilder("img",{"src":`${carImgVariable}`, "alt":"car"},null)
-    const carImgFigure = elBuilder("figure",{"class":"image is-128x128"},null,carImg);
+    const memberSince = elBuilder("div",{"class":"subtitle is-6", "style":"margin-top:10px"}, `Became a hotshot on ${memberSinceDateFormatted}`)
+    const username = elBuilder("div", { "class": "tag" }, `@${user.username}`);
+    const name = elBuilder("div", { "class": "title is-4 is-marginless" }, `${user.name}`);
+    const userInfo = elBuilder("div", { "class": "media-content" }, null, name, username, memberSince);
+    const carImg = elBuilder("img", { "src": `${carImgVariable}`, "alt": "car" }, null);
+    const carImgFigure = elBuilder("figure", { "class": "image is-96x96" }, null, carImg);
     const carImgParent = elBuilder("div", { "class": "media-left" }, null, carImgFigure);
-    const car = elBuilder("div", { "class": "media" }, null, carImgParent);
-    const content = elBuilder("div", { "class": "card-content" }, null, car);
+    const media = elBuilder("div", { "class": "media" }, null, carImgParent, userInfo);
+    const content = elBuilder("div", { "class": "card-content" }, null, media);
     // main profile picture
-    const Img = elBuilder("img", { "src": `${profileImgVariable}`, "alt":"profile picture" });
+    const Img = elBuilder("img", { "src": `${profileImgVariable}`, "alt": "profile picture" });
     const figure = elBuilder("figure", { "class": "image" }, null, Img);
     const profilePicture = elBuilder("div", { "class": "card-image" }, null, figure);
     const card = elBuilder("div", { "class": "card" }, null, profilePicture, content);
 
-    //     < div class="card" >
-    //       <div class="card-image">
-    //         <figure class="image is-4by3">
-    //           <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-    //   </figure>
-    // </div>
-    //         <div class="card-content">
-    //           <div class="media">
-    //             <div class="media-left">
-    //               <figure class="image is-48x48">
-    //                 <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-    //       </figure>
-    //     </div>
-    //               <div class="media-content">
-    //                 <p class="title is-4">John Smith</p>
-    //                 <p class="subtitle is-6">@johnsmith</p>
-    //               </div>
-    //             </div>
-
     // parent containers that organize profile information into columns
-    const blankColumnLeft = elBuilder("div", { "class": "column is-one-third" }, null);
-    const profileColumn = elBuilder("div", { "class": "column is-one-third" }, null, card);
-    const blankColumnRight = elBuilder("div", { "class": "column is-one-third" }, null);
+    const blankColumnLeft = elBuilder("div", { "class": "column is-one-fourth" }, null);
+    const profileColumn = elBuilder("div", { "class": "column is-half" }, null, card);
+    const blankColumnRight = elBuilder("div", { "class": "column is-one-fourth" }, null);
     const columns = elBuilder("div", { "class": "columns" }, null, blankColumnLeft, profileColumn, blankColumnRight);
     const playerProfile = elBuilder("div", { "id": "profileContainer", "class": "container box" }, null, columns);
 
