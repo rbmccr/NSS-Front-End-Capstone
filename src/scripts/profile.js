@@ -2,6 +2,7 @@ import elBuilder from "./elementBuilder"
 import API from "./API"
 
 const webpage = document.getElementById("container-master");
+let fragment = document.createDocumentFragment();
 // global variable used to count total games and shots
 let gameIds = [];
 
@@ -136,7 +137,7 @@ const profile = {
     const username = elBuilder("div", { "class": "tag" }, `@${user.username}`);
     const name = elBuilder("div", { "class": "title is-4 is-marginless" }, `${user.name}`);
     const userInfo = elBuilder("div", { "class": "media-content" }, null, name, username, memberSince);
-    const carImg = elBuilder("img", { "src": `images/cars/${carImgVariable}.jpg`, "alt": "car", "title": `${carImgVariable}` }, null);
+    const carImg = elBuilder("img", { "src": `images/cars/${carImgVariable}.png`, "alt": "car", "title": `${carImgVariable}` }, null);
     const carImgFigure = elBuilder("figure", { "class": "image is-96x96" }, null, carImg);
     const carImgParent = elBuilder("div", { "class": "media-left" }, null, carImgFigure);
     const media = elBuilder("div", { "class": "media" }, null, carImgParent, userInfo);
@@ -154,7 +155,8 @@ const profile = {
     const columns = elBuilder("div", { "class": "columns is-vcentered" }, null, blankColumnLeft, profileColumn, blankColumnRight);
     const playerProfile = elBuilder("div", { "id": "profileContainer", "class": "container", "style": "padding:20px;" }, null, columns);
 
-    webpage.appendChild(playerProfile)
+    fragment.appendChild(playerProfile);
+    webpage.appendChild(fragment);
   }
 
 }
