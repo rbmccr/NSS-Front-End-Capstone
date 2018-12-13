@@ -66,6 +66,7 @@ const dateFilter = {
     let endDateInput = document.getElementById("endDateInput");
     const dateFilterModal = document.getElementById("modal-dateFilter");
     const setDateFilterBtn = document.getElementById("setDateFilter");
+    const dateRangeBtn = document.getElementById("dateRangeBtn");
 
     heatmapData.handleDateFilterGlobalVariables();
     dateRangeBtn.classList.add("is-outlined");

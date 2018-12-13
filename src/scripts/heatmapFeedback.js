@@ -136,10 +136,9 @@ const feedback = {
     feedbackResults.complementA = complementA;
     feedbackResults.complementB = complementB;
 
-    // shots scored on team side and opponent side of field, & defensive redirects (i.e. within keeper range of goal)
+    // shots scored on team side and opponent side of field
     let teamSide = 0;
     let oppSide = 0;
-    let defensiveRedirect = 0;
 
     shots.forEach(shot => {
       if (shot.fieldX > 0.50) {
@@ -147,15 +146,11 @@ const feedback = {
       } else {
         teamSide++;
       }
-
-      if (shot.fieldX < 0.15) {
-        defensiveRedirect++;
-      }
     })
 
     feedbackResults.teamSideGoals = teamSide;
     feedbackResults.opponentSideGoals = oppSide;
-    feedbackResults.defensiveRedirect = defensiveRedirect;
+    feedbackResults.goalsPerGame = Number((shots.length / games.length).toFixed(1));
 
     // aerial count & percentage of all shots
     let aerial = 0;
@@ -179,7 +174,7 @@ const feedback = {
       if (shot.ball_speed >= 70) {
         shotsOver70mph++;
       }
-      avgBallSpeed += shot.ball_speed
+      avgBallSpeed += shot.ball_speed;
     });
 
     avgBallSpeed = Number((avgBallSpeed / shots.length).toFixed(1));
@@ -216,7 +211,7 @@ const feedback = {
 
     games.forEach(game => {
       if (game.score > game.opp_score) {
-        wins++
+        wins++;
       } else {
         losses++;
       }
@@ -311,9 +306,9 @@ const feedback = {
     const item4 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item4_wrapper);
     const columns2_playerType = elBuilder("div", { "id": "feedback-2", "class": "columns" }, null, item4, item5, item6)
 
-    // shots on team/opponent sides of field, defensive redirects, and aerial shots / %
-    const item9_child2 = elBuilder("p", { "class": "title is-6" }, `${feedbackResults.defensiveRedirect}`);
-    const item9_child = elBuilder("p", { "class": "heading" }, "Redirects from Own Goal");
+    // shots on team/opponent sides of field, and aerial shots / %  games in OT
+    const item9_child2 = elBuilder("p", { "class": "title is-6" }, `${feedbackResults.overtimeGames}`);
+    const item9_child = elBuilder("p", { "class": "heading" }, "Games In Overtime");
     const item9_wrapper = elBuilder("div", {}, null, item9_child, item9_child2);
     const item9 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item9_wrapper);
     const item8_child2 = elBuilder("p", { "class": "title is-6" }, `${feedbackResults.teamSideGoals} : ${feedbackResults.opponentSideGoals}`);
@@ -341,9 +336,9 @@ const feedback = {
     const item10 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item10_wrapper);
     const columns4_ballDetails = elBuilder("div", { "id": "feedback-4", "class": "columns has-background-white-ter" }, null, item10, item11, item12)
 
-    // total games played, total shots scored, wins/losses/win%
-    const item15_child2 = elBuilder("p", { "class": "title is-6" }, `${feedbackResults.wins} : ${feedbackResults.losses} : ${feedbackResults.winPct}%`);
-    const item15_child = elBuilder("p", { "class": "heading" }, "Wins, Losses, & Win Pct");
+    // total games played, total shots scored, goals per game
+    const item15_child2 = elBuilder("p", { "class": "title is-6" }, `${feedbackResults.goalsPerGame}`);
+    const item15_child = elBuilder("p", { "class": "heading" }, "Goals Per Game");
     const item15_wrapper = elBuilder("div", {}, null, item15_child, item15_child2);
     const item15 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item15_wrapper);
     const item14_child2 = elBuilder("p", { "class": "title is-6" }, `${feedbackResults.totalShots}`);
@@ -371,9 +366,9 @@ const feedback = {
     const item16 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item16_wrapper);
     const columns6_gameTypeDetails = elBuilder("div", { "id": "feedback-6", "class": "columns" }, null, item16, item17, item18)
 
-    // comp games / win %, casual games / win %, games in OT
-    const item21_child2 = elBuilder("p", { "class": "title is-6" }, `${feedbackResults.overtimeGames}`);
-    const item21_child = elBuilder("p", { "class": "heading" }, "Overtime Games");
+    // comp games / win %, casual games / win %, wins/losses/win%
+    const item21_child2 = elBuilder("p", { "class": "title is-6" }, `${feedbackResults.wins} : ${feedbackResults.losses} : ${feedbackResults.winPct}%`);
+    const item21_child = elBuilder("p", { "class": "heading" }, "Wins, Losses, & Win Pct");
     const item21_wrapper = elBuilder("div", {}, null, item21_child, item21_child2);
     const item21 = elBuilder("div", { "class": "column is-one-third has-text-centered" }, null, item21_wrapper);
     const item20_child2 = elBuilder("p", { "class": "title is-6" }, `${feedbackResults.competitiveGames} : ${feedbackResults.compWinPct}%`);
@@ -406,10 +401,10 @@ const feedback = {
     } else {
       feedbackContainer.appendChild(columns1_HeatmapDetails);
       feedbackContainer.appendChild(columns2_playerType);
-      feedbackContainer.appendChild(columns4_ballDetails);
-      feedbackContainer.appendChild(columns3_shotDetails);
       feedbackContainer.appendChild(columns5_victoryDetails);
       feedbackContainer.appendChild(columns6_gameTypeDetails);
+      feedbackContainer.appendChild(columns4_ballDetails);
+      feedbackContainer.appendChild(columns3_shotDetails);
       feedbackContainer.appendChild(columns7_overtimeDetails);
     }
 
@@ -418,36 +413,3 @@ const feedback = {
 }
 
 export default feedback
-
-
-/*
-- Heatmap generated on
-- start date
-- end date
--------------
-- relevant soccer position based on avg score position
-- paired best with 1
-- paired best with 2
---------------
-- shots scored left / right of midfield
-- shots scored as redirects beside own goal (Defensive redirects)
-- aerial count & shot %
---------------
-- max ball speed
-- avg ball speed
-- shots over 70mph (~ 110 kph)
---------------
-- 3v3 games played
-- 2v2 games played
-- 1v1 games played
--------------
-- total games played
-- total shots scored
-- win / loss / win%
--------------
-- comp games / win %
-- casual games / win %
-- games in OT
--------------
-
-*/
