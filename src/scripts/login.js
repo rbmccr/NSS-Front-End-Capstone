@@ -31,7 +31,7 @@ const loginOrSignup = {
     const loginUsernameField = elBuilder("div", { "class": "field" }, null, loginUsernameLabel, loginUsernameControl)
 
     // form
-    const loginForm = elBuilder("form", { "id": "loginForm", "class": "box", "style": "margin-top:-57px; min-width:20%"}, null, loginUsernameField, loginPasswordField, loginBtnControl);
+    const loginForm = elBuilder("form", { "id": "loginForm", "class": "box", "style": "margin-top:-57px; min-width:20%" }, null, loginUsernameField, loginPasswordField, loginBtnControl);
 
     webpage.innerHTML = null;
     // set style of master container to display flex to align forms in center of container
@@ -58,7 +58,7 @@ const loginOrSignup = {
     // username input with icon
     const signupUsernameIcon = elBuilder("i", { "class": "fas fa-user" })
     const signupUsernameIconDiv = elBuilder("span", { "class": "icon is-small is-left" }, null, signupUsernameIcon)
-    const signupInput_username = elBuilder("input", { "id": "usernameInput", "class": "input", "type": "text", "placeholder": "enter username" });
+    const signupInput_username = elBuilder("input", { "id": "usernameInput", "class": "input", "type": "text", "placeholder": "enter username", "maxlength": "20" });
 
     const signupUsernameControl = elBuilder("div", { "class": "control has-icons-left" }, null, signupInput_username, signupUsernameIconDiv)
     const signupUsernameLabel = elBuilder("label", { "class": "label" }, "Username")
@@ -91,7 +91,7 @@ const loginOrSignup = {
     const signupConfirmLabel = elBuilder("label", { "class": "label" }, "Confirm Password")
     const signupConfirmField = elBuilder("div", { "class": "field" }, null, signupConfirmLabel, signupConfirmControl)
 
-    // confirm password input with icon
+    // profile pic input with icon
     const signupProfilePicIcon = elBuilder("i", { "class": "fas fa-image" })
     const signupProfilePicIconDiv = elBuilder("span", { "class": "icon is-small is-left" }, null, signupProfilePicIcon)
     const signupInput_profilePic = elBuilder("input", { "id": "profilePicURL", "class": "input", "type": "email", "placeholder": "provide a URL (optional)" });
@@ -100,8 +100,21 @@ const loginOrSignup = {
     const signupProfilePicLabel = elBuilder("label", { "class": "label" }, "Profile Picture")
     const signupProfilePicField = elBuilder("div", { "class": "field" }, null, signupProfilePicLabel, signupProfilePicControl)
 
+    // car type select
+    const sel_icon = elBuilder("i", { "class": "fas fa-car" }, null);
+    const sel_iconSpan = elBuilder("span", { "class": "icon is-left" }, null, sel_icon);
+    const sel1_op1 = elBuilder("option", {}, "Octane");
+    const sel1_op2 = elBuilder("option", {}, "Dominus GT");
+    const sel1_op3 = elBuilder("option", {}, "Breakout Type S");
+    const select = elBuilder("select", { "id": "userCar" }, null, sel1_op1, sel1_op2, sel1_op3);
+    const sel_Div = elBuilder("div", { "class": "select is-white-ter" }, null, select, sel_iconSpan);
+    const sel_control = elBuilder("div", { "class": "control has-icons-left" }, null, sel_Div);
+    const controlLabel = elBuilder("label", { "class": "label" }, "Choose Your Car")
+
+    const carSelectField = elBuilder("div", { "class": "field" }, null, controlLabel, sel_control);
+
     // form
-    const signupForm = elBuilder("form", { "id": "signupForm", "class": "box", "style":"min-width:20%" }, null, signupNameField, signupUsernameField, signupEmailField, signupPasswordField, signupConfirmField, signupProfilePicField, signupBtnControl);
+    const signupForm = elBuilder("form", { "id": "signupForm", "class": "box", "style": "min-width:20%" }, null, signupNameField, signupUsernameField, signupEmailField, signupPasswordField, signupConfirmField, signupProfilePicField, carSelectField, signupBtnControl);
 
     webpage.innerHTML = null;
     webpage.style.display = "flex";
@@ -147,11 +160,13 @@ const loginOrSignup = {
 
   signupUser(e) {
     e.preventDefault();
-    console.log(e)
     const _name = document.getElementById("nameInput").value
     const _username = document.getElementById("usernameInput").value
     const _password = document.getElementById("passwordInput").value
-    const confirm = document.getElementById("confirmPassword").value
+    const _confirm = document.getElementById("confirmPassword").value
+    const _email = document.getElementById("emailInput").value
+    const _picture = document.getElementById("profilePicURL").value
+    const _car = document.getElementById("userCar").value
     let uniqueUsername = true; //changes to false if username already exists
     if (_name === "") {
       return
@@ -159,9 +174,11 @@ const loginOrSignup = {
       return
     } else if (_password === "") {
       return
-    } else if (confirm === "") {
+    } else if (_email === "") {
       return
-    } else if (_password !== confirm) {
+    } else if (_confirm === "") {
+      return
+    } else if (_password !== _confirm) {
       return
     } else {
       API.getAll("users").then(users => users.forEach((user, idx) => {
@@ -174,7 +191,11 @@ const loginOrSignup = {
           let newUser = {
             name: _name,
             username: _username,
+            email: _email,
             password: _password,
+            joined: new Date(),
+            car: _car,
+            picture: _picture,
           };
           API.postItem("users", newUser).then(user => {
             loginOrSignup.loginStatusActive(user)

@@ -4,6 +4,7 @@
       "id": 1,
       "name": "Brendan",
       "username": "Tremulous",
+      "email": "brendan@brendan.com",
       "password": "pass",
       "picture": "images/tremulous.jpg",
       "car": "Octane",
@@ -13,10 +14,21 @@
       "id": 2,
       "name": "Zac",
       "username": "Viper16",
+      "email": "zac@zac.com",
       "password": "word",
       "picture": "",
       "car": "Tanuki",
       "joined": "2018-11-20T21:51:20.683Z"
+    },
+    {
+      "name": "Chris",
+      "username": "DragoonFive",
+      "email": "chris@chris.com",
+      "password": "pass",
+      "joined": "2018-12-13T01:09:09.017Z",
+      "car":"Takumi RXT",
+      "picture": "https://i.ebayimg.com/images/i/262931080913-0-1/s-l1000.jpg",
+      "id": 3
     }
   ],
   "games": [
