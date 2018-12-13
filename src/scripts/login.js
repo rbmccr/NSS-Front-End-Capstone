@@ -173,7 +173,6 @@ const loginOrSignup = {
     const _email = document.getElementById("emailInput").value
     const _picture = document.getElementById("profilePicURL").value
     const _car = document.getElementById("userCar").value
-    let uniqueUsername = true; //changes to false if username already exists
     if (_name === "") {
       return
     } else if (_username === "") {
