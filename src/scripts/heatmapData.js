@@ -354,7 +354,7 @@ const heatmapData = {
       radius: 0.045454545 * fieldContainer.offsetWidth,
       maxOpacity: .6,
       minOpacity: 0,
-      blur: .85
+      blur: 0.925
     };
   },
 
@@ -365,7 +365,7 @@ const heatmapData = {
       radius: .063636363 * goalContainer.offsetWidth,
       maxOpacity: .6,
       minOpacity: 0,
-      blur: .85
+      blur: 0.925
     };
   },
 
@@ -419,7 +419,7 @@ const heatmapData = {
               saveInput.classList.remove("is-danger");
               saveInput.classList.add("is-success");
               heatmapData.saveHeatmapObject(heatmapTitle, activeUserId)
-                .then(heatmapObj => heatmapData.saveJoinTables(heatmapObj).then(x => {
+                .then(heatmapObj => heatmapData.saveJoinTables(heatmapObj).then(() => {
                   // empty the temporary global array used with Promise.all
                   joinTableArr = [];
                   // append newly created heatmap as option element in select dropdown

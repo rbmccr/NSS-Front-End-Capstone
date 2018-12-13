@@ -173,11 +173,11 @@ const gameData = {
     // get number of shots currently saved. If there aren't any, then the user can't save the game
     let shots = shotData.getShotObjectsForSaving().length
 
-    if (inpt_myScore.value === "" || inpt_theirScore.value === "" || inpt_myScore.value === inpt_theirScore.value) {
-      alert("Please enter scores. No tie games accepted.");
+    if (shots === 0) {
+      alert("A game cannot be saved without at least one goal scored.");
       return
-    } else if (shots === 0) {
-      alert("A game cannot be saved without at least one goal scored.")
+    } else if (inpt_myScore.value === "" || inpt_theirScore.value === "" || inpt_myScore.value === inpt_theirScore.value) {
+      alert("Please enter scores. No tie games accepted.");
     } else {
       // playerId
       const activeUserId = Number(sessionStorage.getItem("activeUserId"));
