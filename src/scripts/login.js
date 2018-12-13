@@ -135,8 +135,8 @@ const loginOrSignup = {
     }
   },
 
-  // validate user login form inputs before logging in
   loginUser(e) {
+    // validate user login form inputs before logging in
     e.preventDefault();
     const username = document.getElementById("usernameInput").value
     const password = document.getElementById("passwordInput").value
@@ -145,16 +145,22 @@ const loginOrSignup = {
     } else if (password === "") {
       return
     } else {
-      API.getAll("users").then(users => users.forEach(user => {
+      API.getAll(`users?username=${username}`).then(user => {
         // validate username and password
-        if (user.username.toLowerCase() === username.toLowerCase()) {
-          if (user.password === password) {
-            loginOrSignup.loginStatusActive(user)
+        console.log(user.length)
+        if (user.length === 1) {
+          if (user[0].password === password) {
+            console.log("password check")
+            loginOrSignup.loginStatusActive(user[0])
           } else {
+            alert("Username or password is incorrect.");
             return
           }
+        } else {
+          alert("Username or password is incorrect.");
+          return
         }
-      }))
+      });
     }
   },
 
@@ -190,8 +196,8 @@ const loginOrSignup = {
         if (idx === users.length - 1 && uniqueUsername) {
           let newUser = {
             name: _name,
-            username: _username,
-            email: _email,
+            username: _username.toLowerCase(),
+            email: _email.toLowerCase(),
             password: _password,
             joined: new Date(),
             car: _car,

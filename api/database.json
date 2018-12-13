@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "Brendan",
-      "username": "Tremulous",
+      "username": "tremulous",
       "email": "brendan@brendan.com",
       "password": "pass",
       "picture": "images/tremulous.jpg",
@@ -13,7 +13,7 @@
     {
       "id": 2,
       "name": "Zac",
-      "username": "Viper16",
+      "username": "viper16",
       "email": "zac@zac.com",
       "password": "word",
       "picture": "",
@@ -22,11 +22,11 @@
     },
     {
       "name": "Chris",
-      "username": "DragoonFive",
+      "username": "dragoonfive",
       "email": "chris@chris.com",
       "password": "pass",
       "joined": "2018-12-13T01:09:09.017Z",
-      "car":"Takumi RXT",
+      "car": "Takumi RXT",
       "picture": "https://i.ebayimg.com/images/i/262931080913-0-1/s-l1000.jpg",
       "id": 3
     }
