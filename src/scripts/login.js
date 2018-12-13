@@ -147,10 +147,8 @@ const loginOrSignup = {
     } else {
       API.getAll(`users?username=${username.toLowerCase()}`).then(user => {
         // validate username and password
-        console.log(user.length)
         if (user.length === 1) {
           if (user[0].password === password) {
-            console.log("password check")
             loginOrSignup.loginStatusActive(user[0])
           } else {
             alert("Username or password is incorrect.");

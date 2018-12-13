@@ -1,3 +1,5 @@
 import navbar from "./navbar"
+import gameplay from "./gameplay";
 
-navbar.generateNavbar();
+navbar.generateNavbar(true);
+gameplay.loadGameplay();

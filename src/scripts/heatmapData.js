@@ -15,8 +15,6 @@ let configHeatmapWithBallspeed = false;
 let startDate;
 let endDate;
 
-// FIXME: rendering a saved heatmap with date filter sometimes bugs out
-
 const heatmapData = {
 
   getUserShots() {
@@ -239,8 +237,6 @@ const heatmapData = {
   },
 
   buildFieldHeatmap(shots) {
-    console.log("Array of shots", shots)
-
     // create field heatmap with configuration
     const fieldContainer = document.getElementById("field-img-parent");
     let varWidth = fieldContainer.offsetWidth;
@@ -298,10 +294,9 @@ const heatmapData = {
     let captureWidth = fieldContainer.offsetWidth
     //evaluate container width after 0.5 seconds vs initial container width
     if (captureWidth === width) {
-      console.log("unchanged");
+      return
     } else {
       width = captureWidth;
-      console.log("new width", width);
       // remove current heatmaps
       const heatmapCanvasArr = document.querySelectorAll(".heatmap-canvas");
       heatmapCanvasArr[0].remove();
@@ -425,7 +420,6 @@ const heatmapData = {
               saveInput.classList.add("is-success");
               heatmapData.saveHeatmapObject(heatmapTitle, activeUserId)
                 .then(heatmapObj => heatmapData.saveJoinTables(heatmapObj).then(x => {
-                  console.log("join tables saved", x)
                   // empty the temporary global array used with Promise.all
                   joinTableArr = [];
                   // append newly created heatmap as option element in select dropdown
@@ -466,7 +460,6 @@ const heatmapData = {
   },
 
   saveJoinTables(heatmapObj) {
-    console.log("globalshotsarray", globalShotsArr)
     globalShotsArr.forEach(shot => {
       let joinTableObj = {
         shotId: shot.id,

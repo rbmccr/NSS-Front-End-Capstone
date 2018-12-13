@@ -164,79 +164,87 @@ const gameData = {
   },
 
   packageGameData() {
-
     // get user ID from session storage
     // package each input from game data container into variables
-    // TODO: conditional statement to prevent blank score entries
-    // TODO: create a modal asking user if they want to save game
 
-    // playerId
-    const activeUserId = Number(sessionStorage.getItem("activeUserId"));
-
-    // game type (1v1, 2v2, 3v3)
-    const btn_3v3 = document.getElementById("_3v3");
-    const btn_2v2 = document.getElementById("_2v2");
-    const btn_1v1 = document.getElementById("_1v1");
-    const gameTypeBtns = [btn_3v3, btn_2v2, btn_1v1];
-    let gameType = undefined;
-
-    gameTypeBtns.forEach(btn => {
-      if (btn.classList.contains("is-selected")) {
-        gameType = btn.textContent
-      }
-    })
-
-    // game mode (note: did not use boolean in case more game modes are supported in the future)
-    const sel_gameMode = document.getElementById("gameModeInput");
-    const gameMode = sel_gameMode.value.toLowerCase();
-
-    // my team
-    const sel_team = document.getElementById("teamInput");
-    let teamedUp;
-    if (sel_team.value === "No party") {
-      teamedUp = false;
-    } else {
-      teamedUp = true;
-    }
-
-    // scores
-    let myScore;
-    let theirScore;
+    // conditional statement to prevent blank score entries .... else save game and shots to database
     const inpt_myScore = document.getElementById("myScoreInput");
     const inpt_theirScore = document.getElementById("theirScoreInput");
+    // get number of shots currently saved. If there aren't any, then the user can't save the game
+    let shots = shotData.getShotObjectsForSaving().length
 
-    myScore = Number(inpt_myScore.value);
-    theirScore = Number(inpt_theirScore.value);
-
-    // overtime
-    let overtime;
-    const sel_overtime = document.getElementById("overtimeInput");
-    if (sel_overtime.value === "Overtime") {
-      overtime = true;
+    if (inpt_myScore.value === "" || inpt_theirScore.value === "" || inpt_myScore.value === inpt_theirScore.value) {
+      alert("Please enter scores. No tie games accepted.");
+      return
+    } else if (shots === 0) {
+      alert("A game cannot be saved without at least one goal scored.")
     } else {
-      overtime = false;
-    }
+      // playerId
+      const activeUserId = Number(sessionStorage.getItem("activeUserId"));
 
-    let gameDataObj = {
-      "userId": activeUserId,
-      "mode": gameMode,
-      "type": gameType,
-      "party": teamedUp,
-      "score": myScore,
-      "opp_score": theirScore,
-      "overtime": overtime,
-    };
+      // game type (1v1, 2v2, 3v3)
+      const btn_3v3 = document.getElementById("_3v3");
+      const btn_2v2 = document.getElementById("_2v2");
+      const btn_1v1 = document.getElementById("_1v1");
+      const gameTypeBtns = [btn_3v3, btn_2v2, btn_1v1];
+      let gameType = undefined;
 
-    // determine whether or not a new game or edited game is being saved. If an edited game is being saved, then there is at least one shot saved already, making the return from the shotData function more than 0
-    const savingEditedGame = shotData.getInitialNumOfShots()
-    if (savingEditedGame !== undefined) {
-      gameDataObj.timeStamp = savedGameObject.timeStamp
-      gameData.saveData(gameDataObj, true);
-    } else {
-      // time stamp if new game
-      let timeStamp = new Date();
-      gameDataObj.timeStamp = timeStamp
-      gameData.saveData(gameDataObj, false);
+      gameTypeBtns.forEach(btn => {
+        if (btn.classList.contains("is-selected")) {
+          gameType = btn.textContent
+        }
+      })
+
+      // game mode (note: did not use boolean in case more game modes are supported in the future)
+      const sel_gameMode = document.getElementById("gameModeInput");
+      const gameMode = sel_gameMode.value.toLowerCase();
+
+      // my team
+      const sel_team = document.getElementById("teamInput");
+      let teamedUp;
+      if (sel_team.value === "No party") {
+        teamedUp = false;
+      } else {
+        teamedUp = true;
+      }
+
+      // scores
+      let myScore;
+      let theirScore;
+
+      myScore = Number(inpt_myScore.value);
+      theirScore = Number(inpt_theirScore.value);
+
+      // overtime
+      let overtime;
+      const sel_overtime = document.getElementById("overtimeInput");
+      if (sel_overtime.value === "Overtime") {
+        overtime = true;
+      } else {
+        overtime = false;
+      }
+
+      let gameDataObj = {
+        "userId": activeUserId,
+        "mode": gameMode,
+        "type": gameType,
+        "party": teamedUp,
+        "score": myScore,
+        "opp_score": theirScore,
+        "overtime": overtime,
+      };
+
+      // determine whether or not a new game or edited game is being saved. If an edited game is being saved, then there is at least one shot saved already, making the return from the shotData function more than 0
+      const savingEditedGame = shotData.getInitialNumOfShots()
+      if (savingEditedGame !== undefined) {
+        gameDataObj.timeStamp = savedGameObject.timeStamp
+        gameData.saveData(gameDataObj, true);
+      } else {
+        // time stamp if new game
+        let timeStamp = new Date();
+        gameDataObj.timeStamp = timeStamp
+        gameData.saveData(gameDataObj, false);
+      }
     }
 
   },
@@ -256,7 +264,6 @@ const gameData = {
     const btn_saveGame = document.getElementById("saveGame");
     // in case of lag in fetch, prevent user from double clicking button
     btn_editPrevGame.disabled = true;
-    btn_editPrevGame.classList.add("is-loading");
 
     const btn_cancelEdits = elBuilder("button", { "id": "cancelEdits", "class": "button is-danger" }, "Cancel Edits")
     const btn_saveEdits = elBuilder("button", { "id": "saveEdits", "class": "button is-success" }, "Save Edits")
@@ -339,8 +346,6 @@ const gameData = {
 
   editPrevGame() {
     // fetch content from most recent game saved to be rendered
-
-    // TODO: create a modal asking user if they want to edit previous game
     const activeUserId = sessionStorage.getItem("activeUserId");
 
     API.getSingleItem("users", `${activeUserId}?_embed=games`).then(user => {
