@@ -18,7 +18,7 @@ let initialLengthOfShotArray;
 const shotData = {
 
   resetGlobalShotVariables() {
-    // this function is called when gameplay is clicked on the navbar and when a game is saved, in order to prevent bugs with previously created shots
+    // this function is called when gameplay is clicked on the navbar and when a game is saved, in order to prevent bug conflicts with previously created shots
     shotCounter = 0;
     editingShot = false;
     shotObj = undefined;

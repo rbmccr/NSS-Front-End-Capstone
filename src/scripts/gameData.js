@@ -167,13 +167,17 @@ const gameData = {
     // get user ID from session storage
     // package each input from game data container into variables
 
-    // conditional statement to prevent blank score entries
+    // conditional statement to prevent blank score entries .... else save game and shots to database
     const inpt_myScore = document.getElementById("myScoreInput");
     const inpt_theirScore = document.getElementById("theirScoreInput");
+    // get number of shots currently saved. If there aren't any, then the user can't save the game
+    let shots = shotData.getShotObjectsForSaving().length
 
-    if (inpt_myScore.value === "" || inpt_theirScore.value === "") {
-      alert("Please enter scores");
+    if (inpt_myScore.value === "" || inpt_theirScore.value === "" || inpt_myScore.value === inpt_theirScore.value) {
+      alert("Please enter scores. No tie games accepted.");
       return
+    } else if (shots === 0) {
+      alert("A game cannot be saved without at least one goal scored.")
     } else {
       // playerId
       const activeUserId = Number(sessionStorage.getItem("activeUserId"));
@@ -260,7 +264,6 @@ const gameData = {
     const btn_saveGame = document.getElementById("saveGame");
     // in case of lag in fetch, prevent user from double clicking button
     btn_editPrevGame.disabled = true;
-    btn_editPrevGame.classList.add("is-loading");
 
     const btn_cancelEdits = elBuilder("button", { "id": "cancelEdits", "class": "button is-danger" }, "Cancel Edits")
     const btn_saveEdits = elBuilder("button", { "id": "saveEdits", "class": "button is-success" }, "Save Edits")
