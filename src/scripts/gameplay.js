@@ -79,28 +79,37 @@ const gameplay = {
     const gameType1v1 = elBuilder("div", { "id": "_1v1", "class": "button" }, "1v1");
     const gameType1v1Control = elBuilder("div", { "class": "control" }, null, gameType1v1);
     const gameTypeButtonField = elBuilder("div", { "class": "field has-addons" }, null, gameType3v3Control, gameType2v2Control, gameType1v1Control);
-    const gameTypeButtonContainer = elBuilder("div", { "class": "level-item" }, null, gameTypeButtonField);
+    // const gameTypeButtonContainer = elBuilder("div", { "class": "field is-grouped is-grouped-centered" }, null, gameTypeButtonField);
 
     // game mode select
     const modeOption1 = elBuilder("option", {}, "Casual");
     const modeOption2 = elBuilder("option", {}, "Competitive");
     const modeSelect = elBuilder("select", { "id": "gameModeInput", "class": "select" }, null, modeOption1, modeOption2);
     const modeSelectParent = elBuilder("div", { "class": "select" }, null, modeSelect);
-    const modeControl = elBuilder("div", { "class": "control level-item" }, null, modeSelectParent);
+    const modeControl = elBuilder("div", { "class": "control" }, null, modeSelectParent);
+    // const modeContainer = elBuilder("div", { "class": "field is-grouped is-grouped-centered" }, null, modeControl)
 
     // team select
     const teamOption1 = elBuilder("option", {}, "No party");
     const teamOption2 = elBuilder("option", {}, "Party");
     const teamSelect = elBuilder("select", { "id": "teamInput", "class": "select" }, null, teamOption1, teamOption2);
     const teamSelectParent = elBuilder("div", { "class": "select" }, null, teamSelect);
-    const teamControl = elBuilder("div", { "class": "control level-item" }, null, teamSelectParent);
+    const teamControl = elBuilder("div", { "class": "control" }, null, teamSelectParent);
+    // const teamContainer = elBuilder("div", { "class": "field is-grouped is-grouped-centered" }, null, teamControl)
 
     // overtime select
     const overtimeOption1 = elBuilder("option", {}, "No overtime");
     const overtimeOption2 = elBuilder("option", {}, "Overtime");
     const overtimeSelect = elBuilder("select", { "id": "overtimeInput", "class": "select" }, null, overtimeOption1, overtimeOption2);
     const overtimeSelectParent = elBuilder("div", { "class": "select" }, null, overtimeSelect);
-    const overtimeControl = elBuilder("div", { "class": "control level-item" }, null, overtimeSelectParent);
+    const overtimeControl = elBuilder("div", { "class": "control" }, null, overtimeSelectParent);
+    // const overtimeContainer = elBuilder("div", { "class": "field is-grouped is-grouped-centered" }, null, overtimeControl)
+
+    const selectField1 = elBuilder("div", { "class": "field is-grouped is-grouped-centered column is-3 is-offset-1" }, null, gameTypeButtonField);
+    const selectField2 = elBuilder("div", { "class": "field is-grouped is-grouped-centered column is-2" }, null, modeControl);
+    const selectField3 = elBuilder("div", { "class": "field is-grouped is-grouped-centered column is-2" }, null, teamControl);
+    const selectField4 = elBuilder("div", { "class": "field is-grouped is-grouped-centered column is-3" }, null, overtimeControl);
+    const emptyColumnRight = elBuilder("div", { "class": "column is-1" });
 
     // ---------- bottom container
     const myScoreIcon = elBuilder("i", { "class": "fas fa-handshake" });
@@ -125,7 +134,7 @@ const gameplay = {
     const gameButtonContainer = elBuilder("div", { "class": "column" }, null, gameButtonAlignment);
 
     // append to webpage
-    const gameContainerTop = elBuilder("div", { "class": "level" }, null, gameTypeButtonContainer, modeControl, teamControl, overtimeControl);
+    const gameContainerTop = elBuilder("div", { "class": "columns" }, null, selectField1, selectField2, selectField3, selectField4, emptyColumnRight);
     const gameContainerBottom = elBuilder("div", { "class": "columns" }, null, myScoreColumn, theirscoreColumn, gameButtonContainer);
     const parentGameContainer = elBuilder("div", { "class": "container box" }, null, titleContainer, gameContainerTop, gameContainerBottom);
     webpage.appendChild(parentGameContainer);
