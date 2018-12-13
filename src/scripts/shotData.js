@@ -228,7 +228,6 @@ const shotData = {
           shotBtnContainer.appendChild(newShotBtn);
           document.getElementById(`shot-${shotCounter}`).addEventListener("click", shotData.renderSavedShot);
         }
-        //TODO: add condition to prevent blank entries and missing coordinates
 
         inpt_ballSpeed.value = null;
         sel_aerial.value = "Standard";
