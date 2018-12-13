@@ -145,7 +145,7 @@ const loginOrSignup = {
     } else if (password === "") {
       return
     } else {
-      API.getAll(`users?username=${username}`).then(user => {
+      API.getAll(`users?username=${username.toLowerCase()}`).then(user => {
         // validate username and password
         console.log(user.length)
         if (user.length === 1) {
@@ -187,13 +187,13 @@ const loginOrSignup = {
     } else if (_password !== _confirm) {
       return
     } else {
-      API.getAll("users").then(users => users.forEach((user, idx) => {
-        // check for existing username in database
-        if (user.username.toLowerCase() === _username.toLowerCase()) {
-          uniqueUsername = false;
-        }
-        //at the end of the loop, post
-        if (idx === users.length - 1 && uniqueUsername) {
+      API.getAll(`users?username=${_username.toLowerCase()}`).then(user => {
+        // check for existing username in database. Length = 1 if username is not unique
+        if (user.length === 1) {
+          alert("this username already exists");
+          return
+        } else {
+          //post the new user if username is unique
           let newUser = {
             name: _name,
             username: _username.toLowerCase(),
@@ -202,12 +202,12 @@ const loginOrSignup = {
             joined: new Date(),
             car: _car,
             picture: _picture,
-          };
+          }
           API.postItem("users", newUser).then(user => {
             loginOrSignup.loginStatusActive(user)
-          })
+          });
         }
-      }))
+      })
     }
   },
 

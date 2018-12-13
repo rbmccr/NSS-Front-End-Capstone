@@ -29,6 +29,16 @@
       "car": "Takumi RXT",
       "picture": "https://i.ebayimg.com/images/i/262931080913-0-1/s-l1000.jpg",
       "id": 3
+    },
+    {
+      "name": "guy",
+      "username": "guy",
+      "email": "guy@guy.com",
+      "password": "pass",
+      "joined": "2018-12-13T01:41:50.253Z",
+      "car": "Breakout Type S",
+      "picture": "https://cdn.vox-cdn.com/thumbor/ZpVfqWKdId_lt8H5ZiBvnwqn_s8=/0x0:1920x1080/1200x800/filters:focal(1364x531:1670x837)/cdn.vox-cdn.com/uploads/chorus_image/image/53354633/rocket_league_dominus_screenshot_1920.0.jpg",
+      "id": 4
     }
   ],
   "games": [
