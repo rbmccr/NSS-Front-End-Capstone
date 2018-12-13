@@ -34,7 +34,7 @@ const gameplay = {
 
     // ball speed input and aerial select
     const ballSpeedInputTitle = elBuilder("div", { "class": "level-item" }, "Ball speed (mph):")
-    const ballSpeedInput = elBuilder("input", { "id": "ballSpeedInput", "class": "level-item input", "type":"number", "placeholder": "enter ball speed" });
+    const ballSpeedInput = elBuilder("input", { "id": "ballSpeedInput", "class": "level-item input", "type": "number", "placeholder": "enter ball speed" });
     const aerialOption1 = elBuilder("option", {}, "Standard");
     const aerialOption2 = elBuilder("option", {}, "Aerial");
     const aerialSelect = elBuilder("select", { "id": "aerialInput", "class": "select" }, null, aerialOption1, aerialOption2);
@@ -103,26 +103,30 @@ const gameplay = {
     const overtimeControl = elBuilder("div", { "class": "control level-item" }, null, overtimeSelectParent);
 
     // ---------- bottom container
-
-    // score inputs
-    // ****Note inline styling of input widths
-    const myScoreInputTitle = elBuilder("div", { "class": "level-item" }, "Score:");
+    const myScoreIcon = elBuilder("i", { "class": "fas fa-handshake" });
+    const myScoreIconSpan = elBuilder("span", { "class": "icon is-small is-left" }, null, myScoreIcon);
     const myScoreInput = elBuilder("input", { "id": "myScoreInput", "class": "input", "type": "number", "placeholder": "my team's score" });
-    const myScoreControl = elBuilder("div", { "class": "level-item control" }, null, myScoreInput);
-    const theirScoreInputTitle = elBuilder("div", { "class": "level-item" }, "Opponent's score:")
-    const theirScoreInput = elBuilder("input", { "id": "theirScoreInput", "class": "input", "type": "number", "placeholder": "their team's score" });
-    const theirScoreControl = elBuilder("div", { "class": "level-item control" }, null, theirScoreInput);
-    const scoreInputContainer = elBuilder("div", { "class": "level-left" }, null, myScoreInputTitle, myScoreControl, theirScoreInputTitle, theirScoreControl);
+    const myScoreControl = elBuilder("div", { "class": "control is-expanded has-icons-left" }, null, myScoreInput, myScoreIconSpan);
+
+    const theirScoreIcon = elBuilder("i", { "class": "far fa-handshake" });
+    const theirScoreIconSpan = elBuilder("span", { "class": "icon is-small is-left" }, null, theirScoreIcon);
+    const theirScoreInput = elBuilder("input", { "id": "theirScoreInput", "class": "input", "type": "number", "placeholder": "opponent's score" });
+    const theirScoreControl = elBuilder("div", { "class": "control is-expanded has-icons-left" }, null, theirScoreInput, theirScoreIconSpan);
+
+    const myScoreField = elBuilder("div", { "class": "field is-grouped is-grouped-centered" }, null, myScoreControl);
+    const theirScoreField = elBuilder("div", { "class": "field is-grouped is-grouped-centered" }, null, theirScoreControl);
+    const myScoreColumn = elBuilder("div", { "class": "column is-3 is-offset-1" }, null, myScoreField);
+    const theirscoreColumn = elBuilder("div", { "class": "column is-3" }, null, theirScoreField);
 
     // edit/save game buttons
     const editPreviousGame = elBuilder("button", { "id": "editPrevGame", "class": "button is-danger" }, "Edit Previous Game");
     const saveGame = elBuilder("button", { "id": "saveGame", "class": "button is-success" }, "Save Game");
-    const gameButtonAlignment = elBuilder("div", { "class": "buttons level-item" }, null, saveGame, editPreviousGame);
-    const gameButtonContainer = elBuilder("div", { "class": "level-right" }, null, gameButtonAlignment);
+    const gameButtonAlignment = elBuilder("div", { "class": "buttons is-centered" }, null, saveGame, editPreviousGame);
+    const gameButtonContainer = elBuilder("div", { "class": "column" }, null, gameButtonAlignment);
 
     // append to webpage
     const gameContainerTop = elBuilder("div", { "class": "level" }, null, gameTypeButtonContainer, modeControl, teamControl, overtimeControl);
-    const gameContainerBottom = elBuilder("div", { "class": "level" }, null, scoreInputContainer, gameButtonContainer);
+    const gameContainerBottom = elBuilder("div", { "class": "columns" }, null, myScoreColumn, theirscoreColumn, gameButtonContainer);
     const parentGameContainer = elBuilder("div", { "class": "container box" }, null, titleContainer, gameContainerTop, gameContainerBottom);
     webpage.appendChild(parentGameContainer);
   },
