@@ -2,6 +2,7 @@ import elBuilder from "./elementBuilder"
 import API from "./API"
 
 const webpage = document.getElementById("container-master");
+let fragment = document.createDocumentFragment();
 // global variable used to count total games and shots
 let gameIds = [];
 
@@ -19,18 +20,24 @@ const profile = {
         return Promise.all(gameIds);
       })
         .then(gameIds => {
-          console.log("check promise", gameIds)
-          let URL = "shots";
-          gameIds.forEach(id => {
-            if (URL === "shots") {
-              URL += `?gameId=${id}`
-            } else {
-              URL += `&gameId=${id}`
-            }
-          })
-          return API.getAll(URL)
+          if (gameIds.length === 0) {
+            // call next function in chain of functions to get playstyle
+            let shots = [];
+            this.determinePlaystyle(user, shots, gameIds);
+            gameIds = [];
+            return
+          } else {
+            let URL = "shots";
+            gameIds.forEach(id => {
+              if (URL === "shots") {
+                URL += `?gameId=${id}`
+              } else {
+                URL += `&gameId=${id}`
+              }
+            })
+            return API.getAll(URL)
+          }
         }).then(shots => {
-          console.log("check shots promise", shots)
           // call next function in chain of functions to get playstyle
           this.determinePlaystyle(user, shots, gameIds);
           gameIds = [];
@@ -41,6 +48,12 @@ const profile = {
 
   determinePlaystyle(user, shots, gameIds) {
     // this function uses avg field coordinates to label the user's playstyle for their profile page
+
+    // if user hasn't saved any games, pass correct information to build function
+    if (gameIds.length === 0) {
+      return this.buildProfile(user, shots, gameIds, "unknown position")
+    }
+
     let sumX = 0;
     let sumY = 0;
     let avgX;
@@ -72,7 +85,7 @@ const profile = {
     } else if (0.45 <= avgX && avgX <= 0.60) {
       fieldPosition = "center halfback"
     } else if (0.60 <= avgX && avgX < 0.75 && avgY <= 0.50) {
-      fieldPosition = "left horward"
+      fieldPosition = "left forward"
     } else if (0.60 <= avgX && avgX < 0.75 && 0.50 < avgY) {
       fieldPosition = "right forward"
     } else if (0.75 <= avgX) {
@@ -86,7 +99,7 @@ const profile = {
   buildProfile(user, shots, gameIds, fieldPosition) {
 
     // media containers showing user stats (appended to card container)
-    const playstyle = elBuilder("div", {"class":"title is-3"}, `Plays ${fieldPosition}`)
+    const playstyle = elBuilder("div", { "class": "title is-3" }, `Plays ${fieldPosition}`)
     const playstyleContent = elBuilder("div", { "class": "content" }, null, playstyle)
     const playstyleContentParent = elBuilder("div", { "class": "media-content" }, null, playstyleContent)
     const icon3 = elBuilder("img", { "src": "images/icons/icons8-stadium-96.png" }, null)
@@ -94,7 +107,7 @@ const profile = {
     const left3 = elBuilder("div", { "class": "media-left" }, null, iconParent3);
     const userPlaystyle = elBuilder("div", { "class": "media is-marginless", "style": "padding:20px;" }, null, left3, playstyleContentParent)
 
-    const gameStats = elBuilder("div", {"class":"title is-2"}, `${gameIds.length} games`)
+    const gameStats = elBuilder("div", { "class": "title is-2" }, `${gameIds.length} games`)
     const gameContent = elBuilder("div", { "class": "content" }, null, gameStats)
     const gameContentParent = elBuilder("div", { "class": "media-content" }, null, gameContent)
     const icon2 = elBuilder("img", { "src": "images/icons/icons8-game-controller-100.png" }, null)
@@ -102,7 +115,7 @@ const profile = {
     const left2 = elBuilder("div", { "class": "media-left" }, null, iconParent2);
     const totalGames = elBuilder("div", { "class": "media is-marginless", "style": "padding:20px;" }, null, left2, gameContentParent)
 
-    const goalStats = elBuilder("div", {"class":"title is-2"}, `${shots.length} goals`)
+    const goalStats = elBuilder("div", { "class": "title is-2" }, `${shots.length} goals`)
     const goalContent = elBuilder("div", { "class": "content" }, null, goalStats)
     const goalContentParent = elBuilder("div", { "class": "media-content" }, null, goalContent)
     const icon1 = elBuilder("img", { "src": "images/icons/icons8-soccer-ball-96.png" }, null)
@@ -124,7 +137,7 @@ const profile = {
     const username = elBuilder("div", { "class": "tag" }, `@${user.username}`);
     const name = elBuilder("div", { "class": "title is-4 is-marginless" }, `${user.name}`);
     const userInfo = elBuilder("div", { "class": "media-content" }, null, name, username, memberSince);
-    const carImg = elBuilder("img", { "src": `images/cars/${carImgVariable}.jpg`, "alt": "car", "title": `${carImgVariable}` }, null);
+    const carImg = elBuilder("img", { "src": `images/cars/${carImgVariable}.png`, "alt": "car", "title": `${carImgVariable}` }, null);
     const carImgFigure = elBuilder("figure", { "class": "image is-96x96" }, null, carImg);
     const carImgParent = elBuilder("div", { "class": "media-left" }, null, carImgFigure);
     const media = elBuilder("div", { "class": "media" }, null, carImgParent, userInfo);
@@ -142,7 +155,8 @@ const profile = {
     const columns = elBuilder("div", { "class": "columns is-vcentered" }, null, blankColumnLeft, profileColumn, blankColumnRight);
     const playerProfile = elBuilder("div", { "id": "profileContainer", "class": "container", "style": "padding:20px;" }, null, columns);
 
-    webpage.appendChild(playerProfile)
+    fragment.appendChild(playerProfile);
+    webpage.appendChild(fragment);
   }
 
 }

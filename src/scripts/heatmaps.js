@@ -2,7 +2,6 @@ import elBuilder from "./elementBuilder";
 import heatmapData from "./heatmapData";
 import API from "./API";
 import dateFilter from "./dateFilter";
-import feedback from "./heatmapFeedback";
 
 const webpage = document.getElementById("container-master");
 
