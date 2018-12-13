@@ -33,14 +33,18 @@ const gameplay = {
     const shotButtonContainer = elBuilder("div", { "class": "level" }, null, alignShotButtons);
 
     // ball speed input and aerial select
+    const ballSpeedIcon = elBuilder("i", { "class": "fas fa-bolt" });
+    const ballSpeedIconSpan = elBuilder("span", { "class": "icon is-small is-left" }, null, ballSpeedIcon);
     const ballSpeedInputTitle = elBuilder("div", { "class": "level-item" }, "Ball speed (mph):")
-    const ballSpeedInput = elBuilder("input", { "id": "ballSpeedInput", "class": "level-item input", "type": "number", "placeholder": "enter ball speed" });
+    const ballSpeedInput = elBuilder("input", { "id": "ballSpeedInput", "class": "input", "type": "number", "placeholder": "enter ball speed" });
+    const ballSpeedControl = elBuilder("div", { "class": "control has-icons-left level-item" }, null, ballSpeedInput, ballSpeedIconSpan)
+
     const aerialOption1 = elBuilder("option", {}, "Standard");
     const aerialOption2 = elBuilder("option", {}, "Aerial");
     const aerialSelect = elBuilder("select", { "id": "aerialInput", "class": "select" }, null, aerialOption1, aerialOption2);
     const aerialSelectParent = elBuilder("div", { "class": "select" }, null, aerialSelect);
     const aerialControl = elBuilder("div", { "class": "control level-item" }, null, aerialSelectParent);
-    const shotDetails = elBuilder("div", { "class": "level-left" }, null, ballSpeedInputTitle, ballSpeedInput, aerialControl);
+    const shotDetails = elBuilder("div", { "class": "level-left" }, null, ballSpeedInputTitle, ballSpeedControl, aerialControl);
     const shotDetailsContainer = elBuilder("div", { "class": "level" }, null, shotDetails);
 
     // field and goal images (note field-img is clipped to restrict click area coordinates in later function.
@@ -79,7 +83,6 @@ const gameplay = {
     const gameType1v1 = elBuilder("div", { "id": "_1v1", "class": "button" }, "1v1");
     const gameType1v1Control = elBuilder("div", { "class": "control" }, null, gameType1v1);
     const gameTypeButtonField = elBuilder("div", { "class": "field has-addons" }, null, gameType3v3Control, gameType2v2Control, gameType1v1Control);
-    // const gameTypeButtonContainer = elBuilder("div", { "class": "field is-grouped is-grouped-centered" }, null, gameTypeButtonField);
 
     // game mode select
     const modeOption1 = elBuilder("option", {}, "Casual");
@@ -87,7 +90,6 @@ const gameplay = {
     const modeSelect = elBuilder("select", { "id": "gameModeInput", "class": "select" }, null, modeOption1, modeOption2);
     const modeSelectParent = elBuilder("div", { "class": "select" }, null, modeSelect);
     const modeControl = elBuilder("div", { "class": "control" }, null, modeSelectParent);
-    // const modeContainer = elBuilder("div", { "class": "field is-grouped is-grouped-centered" }, null, modeControl)
 
     // team select
     const teamOption1 = elBuilder("option", {}, "No party");
@@ -95,7 +97,6 @@ const gameplay = {
     const teamSelect = elBuilder("select", { "id": "teamInput", "class": "select" }, null, teamOption1, teamOption2);
     const teamSelectParent = elBuilder("div", { "class": "select" }, null, teamSelect);
     const teamControl = elBuilder("div", { "class": "control" }, null, teamSelectParent);
-    // const teamContainer = elBuilder("div", { "class": "field is-grouped is-grouped-centered" }, null, teamControl)
 
     // overtime select
     const overtimeOption1 = elBuilder("option", {}, "No overtime");
@@ -103,8 +104,8 @@ const gameplay = {
     const overtimeSelect = elBuilder("select", { "id": "overtimeInput", "class": "select" }, null, overtimeOption1, overtimeOption2);
     const overtimeSelectParent = elBuilder("div", { "class": "select" }, null, overtimeSelect);
     const overtimeControl = elBuilder("div", { "class": "control" }, null, overtimeSelectParent);
-    // const overtimeContainer = elBuilder("div", { "class": "field is-grouped is-grouped-centered" }, null, overtimeControl)
 
+    // column layout - empty column width 1/12 of container on left and right
     const selectField1 = elBuilder("div", { "class": "field is-grouped is-grouped-centered column is-3 is-offset-1" }, null, gameTypeButtonField);
     const selectField2 = elBuilder("div", { "class": "field is-grouped is-grouped-centered column is-2" }, null, modeControl);
     const selectField3 = elBuilder("div", { "class": "field is-grouped is-grouped-centered column is-2" }, null, teamControl);

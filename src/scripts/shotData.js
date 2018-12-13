@@ -71,7 +71,6 @@ const shotData = {
   },
 
   markClickonImage(x, y, parentContainer) {
-    console.log(x, y)
     let markerId;
     if (parentContainer.id === "field-img-parent") {
       markerId = "shot-marker-field";
@@ -329,7 +328,6 @@ const shotData = {
       shotArray.push(savedShotObj);
     })
 
-    console.log(shotArray);
     shotArray.forEach((shot, idx) => {
       const newShotBtn = elBuilder("button", { "id": `shot-${idx + 1}`, "class": "button is-link" }, `Shot ${idx + 1}`);
       shotBtnContainer.appendChild(newShotBtn);
