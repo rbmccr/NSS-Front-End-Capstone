@@ -1,5 +1,5 @@
+/* Position background gif on pre-login page */
 .bodyWithBg {
-  /* background: url("../images/pre-login/home-small.gif") no-repeat center center fixed; */
   background-image: url("../images/pre-login/hotshot-small.gif");
   background-repeat: no-repeat;
   background-position: center center;
@@ -7,10 +7,12 @@
   background-size: 270px;
 }
 
+/* Bump all content down from navbar */
 .navbar {
   margin-bottom: 5px;
 }
 
+/* Handle navbar size relative to master content container */
 #container-master {
   min-height: calc(100vh - 57px); /*100vh - height of navbar and margin-top of itself*/
 }
@@ -56,4 +58,37 @@
   #field-img-parent, #goal-img-parent {
     max-width: 550px;
   }
+}
+
+/* Home page CSS scroll effect */
+.scrollEffectContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  /* explicit height required for functionality with flex-direction: column */
+  max-height: 4000px;
+  /* determines width of image container */
+  width: 100%;
+}
+
+.bg1, .bg2, .bg3 {
+  height: 100vh;
+  position: relative; /* used to position text elements */
+}
+
+.bg1 {
+  background: url("../images/home/banner-rocket2.png") no-repeat center center fixed;
+}
+
+.bg2 {
+  background: url("../images/home/aftershock.png") no-repeat center center fixed;
+}
+
+.bg3 {
+  background: url("../images/home/img4.png") no-repeat center center fixed;
+}
+
+.divider {
+  flex-basis: 0.1px;
+  background-color: white;
 }

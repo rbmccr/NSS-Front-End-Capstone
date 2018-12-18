@@ -1,10 +1,11 @@
-import elBuilder from "./elementBuilder"
-import loginOrSignup from "./login"
-import profile from "./profile"
-import gameplay from "./gameplay"
-import shotData from "./shotData"
-import heatmaps from "./heatmaps"
-import heatmapData from "./heatmapData"
+import elBuilder from "./elementBuilder";
+import loginOrSignup from "./login";
+import profile from "./profile";
+import gameplay from "./gameplay";
+import shotData from "./shotData";
+import heatmaps from "./heatmaps";
+import heatmapData from "./heatmapData";
+import homePage from "./home";
 
 /*
   Bulma navbar structure:
@@ -28,13 +29,13 @@ const navbar = {
   generateNavbar(loggedInBoolean) {
 
     // navbar-menu (right side of navbar - appears on desktop 1024px+)
-    const button2 = elBuilder("a", { "class": "button is-dark" }, "Login")
-    const button1 = elBuilder("a", { "class": "button is-dark" }, "Sign up")
-    const buttonContainer = elBuilder("div", { "class": "buttons" }, null, button1, button2)
-    const menuItem1 = elBuilder("div", { "class": "navbar-item" }, null, buttonContainer)
-    const navbarEnd = elBuilder("div", { "class": "navbar-end" }, null, menuItem1)
-    const navbarStart = elBuilder("div", { "class": "navbar-start" })
-    const navbarMenu = elBuilder("div", { "id": "navbarMenu", "class": "navbar-menu" }, null, navbarStart, navbarEnd)
+    const button2 = elBuilder("a", { "class": "button is-dark" }, "Login");
+    const button1 = elBuilder("a", { "class": "button is-dark" }, "Sign up");
+    const buttonContainer = elBuilder("div", { "class": "buttons" }, null, button1, button2);
+    const menuItem1 = elBuilder("div", { "class": "navbar-item" }, null, buttonContainer);
+    const navbarEnd = elBuilder("div", { "class": "navbar-end" }, null, menuItem1);
+    const navbarStart = elBuilder("div", { "class": "navbar-start" });
+    const navbarMenu = elBuilder("div", { "id": "navbarMenu", "class": "navbar-menu" }, null, navbarStart, navbarEnd);
 
     // navbar-brand (left side of navbar - includes mobile hamburger menu)
     const burgerMenuSpan1 = elBuilder("span", { "aria-hidden": "true" });
@@ -93,20 +94,29 @@ const navbar = {
       if (e.target.textContent === "Logout") {
         heatmapData.clearHeatmapRepaintInterval();
         loginOrSignup.logoutUser();
+        homePage.modifyNavbarCSS(false);
+      }
+
+      if (e.target.textContent === "Home") {
+        heatmapData.clearHeatmapRepaintInterval();
+        homePage.loadHomePage();
       }
 
       if (e.target.textContent === "Profile") {
+        homePage.modifyNavbarCSS(false);
         heatmapData.clearHeatmapRepaintInterval();
         profile.loadProfile();
       }
 
       if (e.target.textContent === "Gameplay") {
+        homePage.modifyNavbarCSS(false);
         heatmapData.clearHeatmapRepaintInterval();
         gameplay.loadGameplay();
         shotData.resetGlobalShotVariables();
       }
 
       if (e.target.textContent === "Heatmaps") {
+        homePage.modifyNavbarCSS(false);
         heatmapData.clearHeatmapRepaintInterval();
         heatmapData.handleBallSpeedGlobalVariables();
         heatmapData.handleDateFilterGlobalVariables();
