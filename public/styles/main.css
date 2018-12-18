@@ -1,3 +1,12 @@
+.bodyWithBg {
+  /* background: url("../images/pre-login/home-small.gif") no-repeat center center fixed; */
+  background-image: url("../images/pre-login/hotshot-small.gif");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: 270px;
+}
+
 .navbar {
   margin-bottom: 5px;
 }
