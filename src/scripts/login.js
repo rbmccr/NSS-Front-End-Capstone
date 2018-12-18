@@ -211,10 +211,10 @@ const loginOrSignup = {
 
   loginStatusActive(user) {
     sessionStorage.setItem("activeUserId", user.id);
-    document.body.classList.remove("bodyWithBg");
     webpage.innerHTML = null;
     webpageNav.innerHTML = null;
     webpage.style.display = "block";
+    document.body.classList.remove("bodyWithBg");
     navbar.generateNavbar(true); //build logged in version of navbar
     homePage.loadHomePage();
   },
