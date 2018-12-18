@@ -6,6 +6,13 @@
   min-height: calc(100vh - 57px); /*100vh - height of navbar and margin-top of itself*/
 }
 
+/* Position feedback on heatmap page */
+@media only screen and (min-width: 768px) {
+  #heatmapAndFeedbackContainer .level:first-of-type {
+    margin-bottom: 36px; /* normal for this Bulma class is 24, but first columns class below has margin -12px */
+  }
+}
+
 /* Positioning of field and goal images on gameplay page */
 #field-img-parent, #goal-img-parent {
   max-width: 400px;
