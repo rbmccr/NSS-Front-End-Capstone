@@ -41,7 +41,7 @@ const navbar = {
     const burgerMenuSpan2 = elBuilder("span", { "aria-hidden": "true" });
     const burgerMenuSpan3 = elBuilder("span", { "aria-hidden": "true" });
     const navbarBrandChild2 = elBuilder("a", { "role": "button", "class": "navbar-burger burger", "aria-label": "menu", "aria-expanded": "false", "data-target": "navbarMenu" }, null, burgerMenuSpan1, burgerMenuSpan2, burgerMenuSpan3);
-    const navbarBrandChild1 = elBuilder("a", { "class": "navbar-item", "href": "#" }, null, elBuilder("img", { "src": "images/fire90deg.png", "width": "112", "height": "28" }));
+    const navbarBrandChild1 = elBuilder("a", { "class": "navbar-item", "href": "#" }, null, elBuilder("img", { "src": "images/logo/logo-transparent-cropped.png", "width": "112", "height": "28" }));
     const navbarBrand = elBuilder("div", { "class": "navbar-brand" }, null, navbarBrandChild1, navbarBrandChild2);
 
     // nav (parent nav HTML element)
