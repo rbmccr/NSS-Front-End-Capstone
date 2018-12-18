@@ -1,16 +1,9 @@
-/* for heatmap: */
-/*
-#container {
-  box-sizing: border-box;
-  margin: 0 auto;
-  height: 400px;
-  width: 90%;
-  border: 1px solid black;
-} */
+.navbar {
+  margin-bottom: 5px;
+}
 
 #container-master {
   min-height: calc(100vh - 57px); /*100vh - height of navbar and margin-top of itself*/
-  margin-top: 5px;
 }
 
 /* Positioning of field and goal images on gameplay page */
@@ -48,8 +41,3 @@
     max-width: 550px;
   }
 }
-
-/* background of all container elements */
-/* .testBox {
-  background-color: rgba(0,0,0,0.8);
-} */
