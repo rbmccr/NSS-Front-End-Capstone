@@ -1,19 +1,30 @@
-/* for heatmap: */
-/*
-#container {
-  box-sizing: border-box;
-  margin: 0 auto;
-  height: 400px;
-  width: 90%;
-  border: 1px solid black;
-} */
-
-#container-master {
-  min-height: calc(100vh - 57px); /*100vh - height of navbar and margin-top of itself*/
-  margin-top: 5px;
+/* Position background image on pre-login page */
+.bodyWithBg {
+  background-image: url("../images/pre-login/hotshot-small.gif");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: 270px;
 }
 
-/* Positioning of field and goal images on gameplay page */
+/* Bump all content down from navbar */
+.navbar {
+  margin-bottom: 5px;
+}
+
+/* Handle navbar size relative to master content container */
+#container-master {
+  min-height: calc(100vh - 57px); /*100vh - height of navbar and margin-top of itself*/
+}
+
+/* Position feedback on heatmap page */
+@media only screen and (min-width: 768px) {
+  #heatmapAndFeedbackContainer .level:first-of-type {
+    margin-bottom: 36px; /* normal for this Bulma class is 24, but first columns class below has margin -12px */
+  }
+}
+
+/* Position field and goal images on gameplay page */
 #field-img-parent, #goal-img-parent {
   max-width: 400px;
   position: relative;
@@ -42,14 +53,76 @@
   }
 }
 
-/* full hd width + */
-@media only screen and (min-width: 1408px) {
+@media only screen and (min-width: 1408px) { /* full hd width + */
   #field-img-parent, #goal-img-parent {
     max-width: 550px;
   }
 }
 
-/* background of all container elements */
-/* .testBox {
-  background-color: rgba(0,0,0,0.8);
-} */
+/* Manage home page CSS scroll effect */
+.scrollEffectContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  /* explicit height required for functionality with flex-direction: column */
+  max-height: 4000px;
+}
+
+.bg1, .bg2, .bg3 {
+  height: 100vh;
+  position: relative; /* used to position text elements */
+}
+
+.bg1 {
+  background: url("../images/home/img1.png") no-repeat center center fixed;
+}
+
+.bg2 {
+  background: url("../images/home/img2.png") no-repeat center center fixed;
+}
+
+.bg3 {
+  background: url("../images/home/img3.png") no-repeat center center fixed;
+}
+
+.divider {
+  flex-basis: 0.1px;
+  background-color: white;
+}
+
+#absoluteText1, #absoluteText2, #absoluteText3 {
+  position: absolute;
+  top: 25%;
+}
+
+#absoluteText1 {
+  left: calc(50% - 157px);
+}
+
+#absoluteText2 {
+  left: calc(50% - 188px);
+}
+
+#absoluteText3 {
+  left: calc(50% - 172px);
+}
+
+@media only screen and (max-width: 768px) { /* full hd width + */
+  #absoluteText1, #absoluteText2, #absoluteText3 {
+    font-size: 22px;
+    top: 17.5%;
+  }
+
+  #absoluteText1 {
+    left: calc(50% - 108px);
+  }
+
+  #absoluteText2 {
+    left: calc(50% - 129px);
+  }
+
+  #absoluteText3 {
+    left: calc(50% - 118px);
+  }
+
+}

@@ -22,7 +22,7 @@ const dateFilter = {
     const clearFilterButtonControl = elBuilder("div", { "class": "control" }, null, clearFilterBtn);
     const dateSaveBtn = elBuilder("button", { "id": "setDateFilter", "class": "button is-success" }, "Set Filter");
     const saveButtonControl = elBuilder("div", { "class": "control" }, null, dateSaveBtn);
-    const cancelBtn = elBuilder("button", { "id": "cancelModalWindow", "class": "button is-danger" }, "Cancel");
+    const cancelBtn = elBuilder("button", { "id": "cancelModalWindow", "class": "button is-dark" }, "Cancel");
     const cancelButtonControl = elBuilder("div", { "class": "control" }, null, cancelBtn);
     const buttonField = elBuilder("div", { "class": "field is-grouped is-grouped-centered is-grouped-multiline" }, null, saveButtonControl, clearFilterButtonControl, cancelButtonControl);
 

@@ -25,7 +25,7 @@ const gameplay = {
     const shotTitleContainer = elBuilder("div", { "class": "level" }, null, shotTitle);
 
     // new shot and save shot buttons
-    const newShot = elBuilder("button", { "id": "newShot", "class": "button is-success" }, "New Shot");
+    const newShot = elBuilder("button", { "id": "newShot", "class": "button is-dark" }, "New Shot");
     const saveShot = elBuilder("button", { "id": "saveShot", "class": "button is-success" }, "Save Shot");
     const cancelShot = elBuilder("button", { "id": "cancelShot", "class": "button is-danger" }, "Cancel Shot");
     const shotButtons = elBuilder("div", { "id": "shotControls", "class": "level-item buttons" }, null, newShot, saveShot, cancelShot);

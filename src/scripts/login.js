@@ -1,6 +1,7 @@
 import elBuilder from "./elementBuilder"
 import API from "./API"
 import navbar from "./navbar"
+import homePage from "./home";
 
 const webpage = document.getElementById("container-master");
 const webpageNav = document.getElementById("nav-master");
@@ -213,11 +214,14 @@ const loginOrSignup = {
     webpage.innerHTML = null;
     webpageNav.innerHTML = null;
     webpage.style.display = "block";
+    document.body.classList.remove("bodyWithBg");
     navbar.generateNavbar(true); //build logged in version of navbar
+    homePage.loadHomePage();
   },
 
   logoutUser() {
     sessionStorage.removeItem("activeUserId");
+    document.body.classList.add("bodyWithBg");
     webpage.innerHTML = null;
     webpageNav.innerHTML = null;
     webpage.style.display = "block";

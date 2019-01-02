@@ -110,8 +110,7 @@ const gameData = {
     if (savingEditedGame) {
       // use ID of game stored in global var
       API.putItem(`games/${savedGameObject.id}`, gameDataObj)
-        .then(gamePUT => {
-          console.log("PUT GAME", gamePUT)
+        .then(() => {
           // post shots with gameId
           const shotArr = shotData.getShotObjectsForSaving();
           const previouslySavedShotsArr = [];
@@ -129,8 +128,7 @@ const gameData = {
           // call functions to PUT and POST
           // call functions that clear gameplay content and reset global shot/game data variables
           gameData.putEditedShots(previouslySavedShotsArr)
-            .then(x => {
-              console.log("PUTS:", x)
+            .then(() => {
               // if no new shots were made, reload. else post new shots
               if (shotsNotYetPostedArr.length === 0) {
                 gameplay.loadGameplay();
@@ -138,8 +136,7 @@ const gameData = {
                 gameData.resetGlobalGameVariables();
               } else {
                 gameData.postNewShotsMadeDuringEditMode(shotsNotYetPostedArr)
-                  .then(y => {
-                    console.log("POSTS:", y)
+                  .then(() => {
                     gameplay.loadGameplay();
                     shotData.resetGlobalShotVariables();
                     gameData.resetGlobalGameVariables();
@@ -153,8 +150,7 @@ const gameData = {
         .then(game => game.id)
         .then(gameId => {
           gameData.postNewShots(gameId)
-            .then(z => {
-              console.log("SAVED NEW SHOTS", z);
+            .then(() => {
               gameplay.loadGameplay();
               shotData.resetGlobalShotVariables();
               gameData.resetGlobalGameVariables();
@@ -279,7 +275,6 @@ const gameData = {
   renderPrevGame(game) {
     // this function is responsible for rendering the saved game information in the "Enter Game Data" container.
     // it relies on a function in shotData.js to render the shot buttons
-    console.log(game)
 
     // call function in shotData that calls gamaData.provideShotsToShotData()
     // the function will capture the array of saved shots and render the shot buttons
