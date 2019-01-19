@@ -16,7 +16,7 @@ const loginOrSignup = {
     // password input with icon
     const loginPasswordIcon = elBuilder("i", { "class": "fas fa-lock" })
     const loginPasswordIconDiv = elBuilder("span", { "class": "icon is-small is-left" }, null, loginPasswordIcon)
-    const loginInput_password = elBuilder("input", { "id": "passwordInput", "class": "input", "type": "password", "placeholder": "enter password" });
+    const loginInput_password = elBuilder("input", { "id": "passwordInput", "class": "input", "type": "password", "placeholder": "enter: \"pass\"" });
 
     const loginPasswordControl = elBuilder("div", { "class": "control has-icons-left" }, null, loginInput_password, loginPasswordIconDiv)
     const loginPasswordLabel = elBuilder("label", { "class": "label" }, "Password")
@@ -25,7 +25,7 @@ const loginOrSignup = {
     // username input with icon
     const loginUsernameIcon = elBuilder("i", { "class": "fas fa-user" })
     const loginUsernameIconDiv = elBuilder("span", { "class": "icon is-small is-left" }, null, loginUsernameIcon)
-    const loginInput_username = elBuilder("input", { "id": "usernameInput", "class": "input", "type": "text", "placeholder": "enter username" });
+    const loginInput_username = elBuilder("input", { "id": "usernameInput", "class": "input", "type": "text", "placeholder": "enter: \"tremulous\"" });
 
     const loginUsernameControl = elBuilder("div", { "class": "control has-icons-left" }, null, loginInput_username, loginUsernameIconDiv)
     const loginUsernameLabel = elBuilder("label", { "class": "label" }, "Username")
