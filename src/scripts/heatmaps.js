@@ -119,7 +119,7 @@ const heatmaps = {
         const deleteBtnControl = elBuilder("div", { "class": "control" }, null, deleteHeatmapBtn)
         const saveBtn = elBuilder("button", { "id": "saveHeatmapBtn", "class": "button is-success" }, "Save Heatmap")
         const saveBtnControl = elBuilder("div", { "class": "control" }, null, saveBtn)
-        const saveInput = elBuilder("input", { "id": "saveHeatmapInput", "class": "input", "type": "text", "placeholder": "Name and save this heatmap", "maxlength": "25" }, null)
+        const saveInput = elBuilder("input", { "id": "saveHeatmapInput", "class": "input", "type": "text", "placeholder": "Name and save this heatmap", "maxlength": "22" }, null)
         const saveControl = elBuilder("div", { "class": "control is-expanded" }, null, saveInput)
 
         const generatorButton = elBuilder("button", { "id": "generateHeatmapBtn", "class": "button is-dark" }, "Generate Heatmap");
