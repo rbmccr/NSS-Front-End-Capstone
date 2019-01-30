@@ -23,6 +23,9 @@
     "load-grunt-config": "^0.19.2",
     "bulma": "^0.7.2"
   },
+  "scripts": {
+    "start":"grunt"
+  },
   "dependencies": {
     "heatmap.js": "^2.0.5"
   }
