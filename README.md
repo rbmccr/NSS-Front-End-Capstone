@@ -18,7 +18,7 @@
   <img src="https://nodejs.org/static/images/logos/nodejs-new-pantone-black.png" alt="node.js" height="75"/>&nbsp;&nbsp;&nbsp;
   <img src="https://i.pinimg.com/originals/52/c1/fb/52c1fbca3e9e8f6fbc84272a171ac815.png" alt="browserify" height="75"/>&nbsp;&nbsp;&nbsp;
   <img src="https://blog.toggl.com/wp-content/uploads/2018/08/grunt-logo.png" alt="grunt" height="75"/>&nbsp;&nbsp;&nbsp;
-  <img src="https://www.vectorlogo.zone/logos/eslint/eslint-card.png" alt="eslint" height="75">
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJ-pMrdOSqtIDw_HmY23jTaGp_iHxyz7wtXt7hMbg8fkaGrrgR" alt="eslint" height="75">
   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Babel_Logo.svg/1280px-Babel_Logo.svg.png" alt="Babel.js" height="75"/>
   <img src="http://www.softwaresamurai.org/wp-content/uploads/2017/12/RESTfil-API.png" alt="RESTful API" height="75"/>
 </p>
@@ -29,10 +29,10 @@
 
 If you do not have Node.js installed on your machine, visit the [Node.js Download Page](https://nodejs.org/en/download/) and follow the installation instructions.
 
-After cloning this repository from github, the npm modules and json-server (local RESTful API) must be installed and built. To complete this process, access the lib folder in the project directory and type the following commands in your terminal.
+After cloning this repository from github, the npm modules and json-server (local RESTful API) must be installed and built. To complete this process, type the following commands in your terminal from the main directory.
 
 ```
-npm init
+cd src/lib/
 npm i
 sudo npm install -g json-server
 ```
