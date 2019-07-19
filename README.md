@@ -29,12 +29,13 @@
 
 If you do not have Node.js installed on your machine, visit the [Node.js Download Page](https://nodejs.org/en/download/) and follow the installation instructions.
 
-After cloning this repository from github, the npm modules and json-server (local RESTful API) must be installed and built. To complete this process, type the following commands in your terminal from the main directory.
+After cloning this repository from github, the dependencies must be installed. In addition, you'll need to install JSON-server (local RESTful API) and the grunt cli. To complete this process, type the following commands in your terminal from the main directory.
 
 ```
 cd src/lib/
 npm i
 sudo npm install -g json-server
+sudo npm install -g grunt-cli
 ```
 
 Once complete, the program can be intialized from the lib folder by typing the following command.
